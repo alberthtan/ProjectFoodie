@@ -3,7 +3,7 @@ import React from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import CustomButton from '../../components/CustomButton'
 import CheckoutItem from '../../components/CheckoutItem'
-// import AddItemsButton from '../../components/AddItemsButton'
+import AddItemsButton from '../../components/AddItemsButton'
 
 const CheckoutScreen = ({route, navigation}) => {
   const {cart, count} = route.params
@@ -38,9 +38,9 @@ const CheckoutScreen = ({route, navigation}) => {
                 />
             ))}
 
-            {/* <AddItemsButton
+            <AddItemsButton
                 onPress = {() => navigation.navigate('Menu', {cart: cart, count: count})}
-            /> */}
+            />
 
             <View style = {{borderTopWidth: 1, marginTop: 20, borderTopColor: "#D9D9D9"}}>
                 <Text style = {styles.totals}>
