@@ -4,9 +4,12 @@ import { ScrollView } from 'react-native-gesture-handler'
 import CustomButton from '../../components/CustomButton'
 import CheckoutItem from '../../components/CheckoutItem'
 import AddItemsButton from '../../components/AddItemsButton'
+import CheckoutSubtotal from '../../components/CheckoutSubtotal'
+import CheckoutTaxes from '../../components/CheckoutTaxes'
+import CheckoutTotal from '../../components/CheckoutTotal/CheckoutTotal'
 
 const CheckoutScreen = ({route, navigation}) => {
-  const {cart, count} = route.params
+  const {cart, count, subtotal} = route.params
   console.log(cart)
 
   return (
@@ -39,19 +42,20 @@ const CheckoutScreen = ({route, navigation}) => {
             ))}
 
             <AddItemsButton
-                onPress = {() => navigation.navigate('Menu', {cart: cart, count: count})}
+                onPress = {() => navigation.navigate('Menu', {cart: cart, count: count, subtotal: subtotal})}
             />
 
             <View style = {{borderTopWidth: 1, marginTop: 20, borderTopColor: "#D9D9D9"}}>
-                <Text style = {styles.totals}>
-                    Subtotal
-                </Text>
-                <Text style = {styles.totals}>
-                    Taxes
-                </Text>
-                <Text style = {[styles.totals, {fontWeight: 'bold'}]}>
-                    Total
-                </Text>
+                <CheckoutSubtotal
+                    subtotal = {subtotal}/>
+
+                <CheckoutTaxes
+                    subtotal = {subtotal}
+                    taxRate = {0.08}/>
+                
+                <CheckoutTotal
+                    subtotal={subtotal}
+                    taxRate={0.08}/>
             </View>
 
             <View style = {{marginTop: 30}}/>

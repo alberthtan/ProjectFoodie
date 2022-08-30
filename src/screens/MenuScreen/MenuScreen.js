@@ -8,7 +8,7 @@ import sanityClient from '../../../sanity/sanity'
 import CustomButton from '../../components/CustomButton'
 
 const MenuScreen = ({route, navigation}) => {
-    const { cart, count } = route.params
+    const { cart, count, subtotal } = route.params
     
     const [MenuCategories, setMenuCategories] = useState([])
     const [MenuItems, setMenuItems] = useState([])
@@ -58,6 +58,7 @@ const MenuScreen = ({route, navigation}) => {
             description = {item.short_description}
             count = {count}
             cart = {cart}
+            subtotal = {subtotal}
         />
     )
 
@@ -67,7 +68,7 @@ const MenuScreen = ({route, navigation}) => {
                     <CustomButton 
                         text={"VIEW ORDER (" + count + ")"}
                         style = {{bottom: 0, position: 'absolute'}}
-                        onPress = {() => {navigation.navigate('Checkout', {cart: cart, count: count}), console.log(cart)}}/>
+                        onPress = {() => {navigation.navigate('Checkout', {cart: cart, count: count, subtotal: subtotal}), console.log(cart)}}/>
                 </View>
     }
 

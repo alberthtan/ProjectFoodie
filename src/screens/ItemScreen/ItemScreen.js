@@ -5,7 +5,7 @@ import CustomButton from '../../components/CustomButton';
 
 const ItemScreen = ({route, navigation}) => {
 
-  const { name, price, description, count, cart } = route.params;
+  const { name, price, description, count, cart, subtotal } = route.params;
   console.log(cart)
 
   return (
@@ -22,7 +22,7 @@ const ItemScreen = ({route, navigation}) => {
       <View style = {styles.addToCart}>
         <CustomButton
           text = "ADD TO ORDER"
-          onPress = {() => {cart.push({name: name, price: price}), navigation.navigate('Menu', {cart: cart, count: count + 1})}}
+          onPress = {() => {cart.push({name: name, price: price}), navigation.navigate('Menu', {cart: cart, count: count + 1, subtotal: subtotal + price})}}
         />
       </View>
     </View>

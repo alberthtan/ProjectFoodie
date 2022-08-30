@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const MenuItem = ({navigation, name, price, description, count, cart}) => {
+const MenuItem = ({navigation, name, price, description, count, cart, subtotal}) => {
   return (
     <TouchableOpacity
         style = {styles.container}
-        onPress = {() => navigation.navigate('Item', {name: name, description: description, price: price, count: count, cart: cart})}>
+        onPress = {() => navigation.navigate('Item', {name: name, description: description, price: price, count: count, cart: cart, subtotal: subtotal})}>
             
       <Text style = {styles.itemName}>{name}</Text>
 

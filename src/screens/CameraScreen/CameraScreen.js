@@ -41,14 +41,13 @@ const CameraScreen = ({navigation}) => {
             </View> */}
 
             <BarCodeScanner
-                onBarCodeScanned={() => navigation.navigate('Menu', {cart: [], count: 0})}
+                onBarCodeScanned={() => navigation.navigate('Menu', {cart: [], count: 0, subtotal: 0})}
                 style = {[StyleSheet.absoluteFillObject]}
             > 
                 <TouchableOpacity 
                     style = {styles.button}
                     onPress = {() => navigation.navigate('Home')}
-                >
-                </TouchableOpacity>
+                />
 
                 <View style = {styles.viewInstruction}>
                     <Text style = {styles.instruction}>
