@@ -1,11 +1,20 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import NumberFormat from 'react-number-format'
 
 const CheckoutItem = ({navigation, name, price}) => {
   return (
     <View style = {styles.container}>
         <Text style = {styles.name}>{name}</Text>
-        <Text style = {styles.price}>${price}</Text>
+        <NumberFormat
+            value = {price}
+            displayType = "text"
+            thousandSeparator={true}
+            prefix = "$"
+            decimalScale={2}
+            fixedDecimalScale = {true}
+            renderText={(value) => <Text style = {styles.price}>{value}</Text>}>
+        </NumberFormat>
     </View>
   )
 }

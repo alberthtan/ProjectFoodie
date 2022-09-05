@@ -2,6 +2,7 @@ import { Dimensions, ScrollView, View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import { useRoute } from '@react-navigation/native';
 import CustomButton from '../../components/CustomButton';
+import NumberFormat from 'react-number-format';
 
 const ItemScreen = ({route, navigation}) => {
 
@@ -15,7 +16,15 @@ const ItemScreen = ({route, navigation}) => {
           <Text>Picture of Food</Text>
         </View>
         <Text style = {styles.itemName}>{name}</Text>
-        <Text style = {styles.price}>${price}</Text>
+        <NumberFormat
+            value = {price}
+            displayType = "text"
+            thousandSeparator={true}
+            prefix = "$"
+            decimalScale={2}
+            fixedDecimalScale = {true}
+            renderText={(value) => <Text style = {styles.price}>{value}</Text>}>
+        </NumberFormat>
         <Text style = {styles.description}>{description}</Text>
       </ScrollView>
 

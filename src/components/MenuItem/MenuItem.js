@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native'
 import React from 'react'
+import NumberFormat from 'react-number-format'
 
 const MenuItem = ({navigation, name, price, description, count, cart, subtotal}) => {
   return (
@@ -9,7 +10,15 @@ const MenuItem = ({navigation, name, price, description, count, cart, subtotal})
             
       <Text style = {styles.itemName}>{name}</Text>
 
-      <Text style = {styles.itemPrice}>${price}</Text>
+      <NumberFormat
+            value = {price}
+            displayType = "text"
+            thousandSeparator={true}
+            prefix = "$"
+            decimalScale={2}
+            fixedDecimalScale = {true}
+            renderText={(value) => <Text style = {styles.itemPrice}>{value}</Text>}>
+        </NumberFormat>
 
       <Text style = {styles.itemDescription}>
         {description}

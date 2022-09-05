@@ -64,6 +64,7 @@ const CheckoutScreen = ({route, navigation}) => {
         <View style = {[styles.orderButton]}>
             <CustomButton
                 text = "ORDER"
+                onPress = {() => navigation.navigate('PopUp')}
             />
         </View>
     </View>
