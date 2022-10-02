@@ -18,7 +18,7 @@ import CheckoutTotal from '../../components/CheckoutTotal/CheckoutTotal'
 //     .catch((err) => console.log(err))
 
 const CheckoutScreen = ({route, navigation}) => {
-  const {cart, count, subtotal} = route.params
+  const {cart, count, subtotal, restaurant_id} = route.params
   console.log(cart)
 
   return (
@@ -51,7 +51,7 @@ const CheckoutScreen = ({route, navigation}) => {
             ))}
 
             <AddItemsButton
-                onPress = {() => navigation.navigate('Menu', {cart: cart, count: count, subtotal: subtotal})}
+                onPress = {() => navigation.navigate('Menu', {cart: cart, count: count, subtotal: subtotal, restaurant_id: restaurant_id})}
             />
 
             <View style = {{borderTopWidth: 1, marginTop: 20, borderTopColor: "#D9D9D9"}}>

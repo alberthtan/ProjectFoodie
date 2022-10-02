@@ -6,7 +6,7 @@ import NumberFormat from 'react-number-format';
 
 const ItemScreen = ({route, navigation}) => {
 
-  const { name, price, description, count, cart, subtotal } = route.params;
+  const { name, price, description, count, cart, subtotal, restaurant_id } = route.params;
   console.log(cart)
 
   return (
@@ -31,7 +31,7 @@ const ItemScreen = ({route, navigation}) => {
       <View style = {styles.addToCart}>
         <CustomButton
           text = "ADD TO ORDER"
-          onPress = {() => {cart.push({name: name, price: price}), navigation.navigate('Menu', {cart: cart, count: count + 1, subtotal: subtotal + price})}}
+          onPress = {() => {cart.push({name: name, price: price}), navigation.navigate('Menu', {cart: cart, count: count + 1, subtotal: subtotal + price, restaurant_id: restaurant_id})}}
         />
       </View>
     </View>

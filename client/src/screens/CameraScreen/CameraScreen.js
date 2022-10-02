@@ -5,11 +5,14 @@ import { BarCodeScanner } from 'expo-barcode-scanner'
 import { YellowBox } from 'react-native-web';
 // import QRCodeScanner from 'react-native-qrcode-scanner';
 
+import { firebase } from '../../firebase/config'
+
 
 const CameraScreen = ({navigation}) => {
 
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
+    const db = firebase.firestore()
 
     useEffect(()=> {
         (async()=> {
@@ -18,9 +21,21 @@ const CameraScreen = ({navigation}) => {
         })();
     }, [])
 
-    const handleSuccess = ({type, data}) => {
-        setScanned(true)
-        alert('Bar Code with Type ' + {type})
+    const handleBarCodeScanned = (result) => {
+        const id = JSON.stringify(result.data).replace(/['"]+/g, '')
+        db.collection('Restaurants').get()
+            .then(snap => {
+                snap.forEach(doc => {
+                    if(id == doc.id) {
+                        console.log("Restaurant found!")
+                        setScanned(true)
+                        navigation.navigate('Menu', {cart: [], count: 0, subtotal: 0, restaurant_id : id})
+                    }
+                })
+            })
+
+        // console.log('Bar Code with Type ' + {result.type} + ' and data ' + {result.data} + ' has been scanned')
+       
     }
 
     if(hasPermission === null || hasPermission === false)
@@ -41,7 +56,8 @@ const CameraScreen = ({navigation}) => {
             </View> */}
 
             <BarCodeScanner
-                onBarCodeScanned={() => navigation.navigate('Menu', {cart: [], count: 0, subtotal: 0})}
+                // onBarCodeScanned={() => navigation.navigate('Menu', {cart: [], count: 0, subtotal: 0})}
+                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style = {[StyleSheet.absoluteFillObject]}
             > 
                 <TouchableOpacity 

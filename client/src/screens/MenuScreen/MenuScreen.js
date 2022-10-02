@@ -9,44 +9,98 @@ import CustomButton from '../../components/CustomButton'
 import { firebase } from '../../firebase/config'
 
 const MenuScreen = ({route, navigation}) => {
-    const { cart, count, subtotal } = route.params
+    const { cart, count, subtotal, restaurant_id } = route.params
     // const items = []
     const [MenuCategories, setMenuCategories] = useState([])
     const [MenuItems, setMenuItems] = useState([])
     const [currentCategory, setCurrentCategory] = useState('')
     // const [count, setCount] = useState(0)
+    const db = firebase.firestore()
  
     useEffect(() => {
 
-        firebase.firestore().collection('Categories').get()
-                        .then(snap => {
+        db.collection('Restaurants').get()
+                        .then(
+                            snap => {
                             const categories = []
-                            snap.forEach(doc => {
+                            snap.forEach(
+                                doc => {
+                                    if(doc.id == restaurant_id) {
+                                        db.collection('Menus').get()
+                                        .then(snap => {
+                                            snap.forEach(doc2 => {
+                                                if(doc2.id == doc.data()['Menus'][0].id) {
+                                                    db.collection('Categories').get()
+                                                    .then(snap => {
+                                                        snap.forEach(doc3 => {
+                                                            console.log("category: " + doc3.id)
+                                                            categories.push(doc3.data())
+                                                            console.log("categories: " + categories)
+                                                        })
+                                                        setMenuCategories(categories)
+                                                        setCurrentCategory(categories[0]['title'])
+                                                    })
+                                                }
+                                            })
+                                        })
+                                    }
                                 // console.log(doc.data())
                                 // console.log(doc.id)
-                                categories.push(doc.data())
                             })
-                            setMenuCategories(categories)
-                            setCurrentCategory(categories[0]['title'])
+                            console.log("cat")
+                            console.log("Categories array: " + MenuCategories)
+                            // setMenuCategories(categories)
+                            // setCurrentCategory(categories[0]['title'])
                             // console.log("called")
                         })
+                        
+
+        // db.collection('Categories').get()
+        //                 .then(snap => {
+        //                     const categories = []
+        //                     snap.forEach(doc => {
+        //                         // console.log(doc.data())
+        //                         // console.log(doc.id)
+        //                         categories.push(doc.data())
+        //                     })
+        //                     setMenuCategories(categories)
+        //                     setCurrentCategory(categories[0]['title'])
+        //                     // console.log("called")
+        //                 })
     }, [])
 
     useEffect(() => {
 
-        console.log("x called")
-    
-        firebase.firestore().collection('Items').get()
+        db.collection('Items').get()
                         .then(snap => {
                             const items = []
                             snap.forEach(doc => {
                                 if(doc.data()["category_name"] == currentCategory) {
                                     items.push(doc.data())
-                                    console.log("SAME")
                                 }
                             })
                             setMenuItems(items)
                         })
+
+        // db.collection('Restaurants').get('DVYuyJMBoh5FnoUfpWXr')
+        //                 .then(snap => {
+        //                     const restaurants = []
+        //                     snap.forEach(doc => {
+        //                         console.log("restaurant id: " + doc.id)
+        //                         const category_id = doc.data()['Menus'][0].id
+        //                         console.log("Menu ID: " + doc.data()['Menus'][0].id)
+                                
+        //                         db.collection('Menus').get(doc.data()['Menus'][0].id)
+        //                         .then(snap => {
+        //                             snap.forEach(doc2 => 
+        //                                 console.log('Menu Name: ' + doc2.data()['name'])
+        //                             )
+        //                         })
+        //                         console.log("restauarant data: " + doc.data())
+
+        //                     })
+        //                 })
+                    
     }, [currentCategory])
 
     const oneCategory = ({item}) => (
@@ -68,6 +122,7 @@ const MenuScreen = ({route, navigation}) => {
             count = {count}
             cart = {cart}
             subtotal = {subtotal}
+            restaurant_id = {restaurant_id}
         />
     )
 
