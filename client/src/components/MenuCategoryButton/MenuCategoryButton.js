@@ -2,13 +2,13 @@ import { View, StyleSheet, Text, Pressable} from 'react-native'
 import React from 'react'
 
 
-const MenuCategoryButton = ({navigation, name, currentCategory, color_id, setCurrentCategory}) => {
+const MenuCategoryButton = ({navigation, name, currentCategory, setCurrentCategory}) => {
   // console.log(currentCategory)
   // console.log(color_id)
-  const compareId = (currentCategory == color_id)
+  const compareId = (currentCategory == name)
   return (
     <Pressable
-      onPress = {() => {setCurrentCategory(color_id)}}
+      onPress = {() => {setCurrentCategory(name)}}
       style={[styles.container, compareId ? styles.green: styles.gray]}
       >
         <View style = {{flex: 1, alignItems: 'center', justifyContent: 'center'}}>

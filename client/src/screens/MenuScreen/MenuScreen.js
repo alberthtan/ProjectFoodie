@@ -4,52 +4,61 @@ import { FlatList } from 'react-native-gesture-handler'
 
 import MenuCategoryButton from '../../components/MenuCategoryButton'
 import MenuItem from '../../components/MenuItem'
-import sanityClient from '../../../sanity/sanity'
 import CustomButton from '../../components/CustomButton'
+
+import { firebase } from '../../firebase/config'
 
 const MenuScreen = ({route, navigation}) => {
     const { cart, count, subtotal } = route.params
-    
+    // const items = []
     const [MenuCategories, setMenuCategories] = useState([])
     const [MenuItems, setMenuItems] = useState([])
     const [currentCategory, setCurrentCategory] = useState('')
     // const [count, setCount] = useState(0)
+ 
+    useEffect(() => {
 
-    useEffect(()=> {
-        sanityClient.fetch(`*[_type == "category"] {
-            ...,
-          }`).then(data => {
-            setMenuCategories(data)
-          })
+        firebase.firestore().collection('Categories').get()
+                        .then(snap => {
+                            const categories = []
+                            snap.forEach(doc => {
+                                // console.log(doc.data())
+                                // console.log(doc.id)
+                                categories.push(doc.data())
+                            })
+                            setMenuCategories(categories)
+                            setCurrentCategory(categories[0]['title'])
+                            // console.log("called")
+                        })
     }, [])
 
+    useEffect(() => {
 
-    useEffect(()=> {
-        sanityClient.fetch(`*[_type == "dish"] {
-            ...,
-          }`).then(data => {
-            setMenuItems(data)
-          })
-    }, [])
-
-    useEffect(()=> {
-        sanityClient.fetch(`*[_type == "category"] {
-            ...,
-          }[0]._id`).then(data => {
-            setCurrentCategory(data)
-          })
-    }, [])
+        console.log("x called")
+    
+        firebase.firestore().collection('Items').get()
+                        .then(snap => {
+                            const items = []
+                            snap.forEach(doc => {
+                                if(doc.data()["category_name"] == currentCategory) {
+                                    items.push(doc.data())
+                                    console.log("SAME")
+                                }
+                            })
+                            setMenuItems(items)
+                        })
+    }, [currentCategory])
 
     const oneCategory = ({item}) => (
         <MenuCategoryButton
             navigation = {navigation}
             name = {item.title}
-            color_id = {item._id}
             currentCategory = {currentCategory}
             setCurrentCategory = {setCurrentCategory}
         />
     )
 
+    
     const oneDish = ({item}) => (
         <MenuItem
             navigation = {navigation}
