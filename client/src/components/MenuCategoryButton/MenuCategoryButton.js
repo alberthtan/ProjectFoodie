@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Pressable} from 'react-native'
+import { View, StyleSheet, Text, Pressable, TouchableOpacity} from 'react-native'
 import React from 'react'
 
 
@@ -7,27 +7,28 @@ const MenuCategoryButton = ({navigation, name, currentCategory, setCurrentCatego
   // console.log(color_id)
   const compareId = (currentCategory == name)
   return (
-    <Pressable
+    <TouchableOpacity
       onPress = {() => {setCurrentCategory(name)}}
       style={[styles.container, compareId ? styles.green: styles.gray]}
       >
-        <View style = {{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={[{fontWeight: 'bold'}, compareId ? {color: 'white'}: {color: 'black'}]}> {name}</Text>
-        </View>
-    </Pressable>
+        <Text style={[{fontWeight: 'bold'}, compareId ? {color: 'white'}: {color: 'black'}]}>{name}</Text>
+    </TouchableOpacity>
   )
 
 }
 
 const styles = StyleSheet.create({
   container: {
-      width: 100,
-      height: 30,
+      // width: 100,
+      // height: 30,
       borderRadius: 30,
-      // backgroundColor: '#D9D9D9',
+      padding: 10,
+      alignSelf: 'flex-start',
       marginLeft: 10,
       marginRight: 5,
-      marginBottom: 30
+      // justifyContent: 'center',
+      // alignItems: 'center',
+      // flex: 1
   },
 
   gray: {

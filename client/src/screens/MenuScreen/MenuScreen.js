@@ -7,6 +7,8 @@ import MenuItem from '../../components/MenuItem'
 import CustomButton from '../../components/CustomButton'
 
 import { firebase } from '../../firebase/config'
+import { getFirestore, doc, getDoc } from '@firebase/firestore'
+import { getSupportedCurrencies } from 'react-native-format-currency'
 
 const MenuScreen = ({route, navigation}) => {
     const { cart, count, subtotal, restaurant_id } = route.params
@@ -30,6 +32,7 @@ const MenuScreen = ({route, navigation}) => {
                                         .then(snap => {
                                             snap.forEach(doc2 => {
                                                 if(doc2.id == doc.data()['Menus'][0].id) {
+                                                    // getDoc()
                                                     db.collection('Categories').get()
                                                     .then(snap => {
                                                         snap.forEach(doc3 => {
@@ -144,9 +147,7 @@ const MenuScreen = ({route, navigation}) => {
                 onPress = {() => navigation.navigate('Home')} />
 
             <View style = {styles.rectangle}>
-                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style = {{fontWeight:'bold', fontSize: 16, marginLeft: 5}}>Table Number: 123456</Text>
-                </View>
+                <Text style = {{fontWeight:'bold', fontSize: 16, marginLeft: 5}}>Table Number: 123456</Text>
             </View>
         </View>
 
@@ -164,18 +165,18 @@ const MenuScreen = ({route, navigation}) => {
         ))} */}
 
         <View style = {{flex: 1}}>
-            <FlatList
-                horizontal= {true}
-                showsHorizontalScrollIndicator = {false}
-                data = { MenuCategories }
-                renderItem = { oneCategory }
-                style={{marginTop: 20}}
-            />
+            <View style = {{height: 50}}>
+                <FlatList
+                    horizontal= {true}
+                    showsHorizontalScrollIndicator = {false}
+                    data = { MenuCategories }
+                    renderItem = { oneCategory }
+                />
+            </View>
             <FlatList
                 showsVerticalScrollIndicator = {false}
                 data = { MenuItems }
                 renderItem = { oneDish }
-                style = {{height: Dimensions.get('window').height}}
             />
         {button}
         </View>
@@ -199,15 +200,18 @@ const styles = StyleSheet.create({
     restaurantName: {
         fontSize: 30,
         fontWeight:"bold",
-        marginLeft: 10
+        marginLeft: 10,
+        marginBottom: 20
     },
 
     rectangle: {
-        width: 200,
-        height: 30,
+        // width: 200,
+        // height: 30,
         backgroundColor: '#D9D9D9',
+        alignSelf: "flex-start",
         marginLeft: 140,
         marginTop: 50,
+        padding: 10,
         marginVertical: 30
       },
 })

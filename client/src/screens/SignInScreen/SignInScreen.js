@@ -25,7 +25,7 @@ const SignInScreen = ({navigation}) => {
 
   return (
     <View style= {styles.root}>
-      <Text style = {styles.logo}>ProjectFoodie</Text>
+      <Text style = {styles.logo}>DutchPay</Text>
       <CustomInput 
         placeholder="Username or Email"
         value={username} 

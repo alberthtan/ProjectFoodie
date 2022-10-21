@@ -1,7 +1,6 @@
 import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
-// import { connect} from 'mongoose'
 
 import CustomButton from '../../components/CustomButton'
 import CheckoutItem from '../../components/CheckoutItem'
@@ -9,13 +8,6 @@ import AddItemsButton from '../../components/AddItemsButton'
 import CheckoutSubtotal from '../../components/CheckoutSubtotal'
 import CheckoutTaxes from '../../components/CheckoutTaxes'
 import CheckoutTotal from '../../components/CheckoutTotal/CheckoutTotal'
-
-// const mongoose = require('mongoose')
-
-// const dbURI = 'mongodb+srv://allenchun360:time24@dutchpay.oqx353s.mongodb.net/?retryWrites=true&w=majority'
-// mongoose.connect(dbURI, { useNewURLParser: true, useUnifiedTopology: true})
-//     .then((result) => console.log('connected to db'))
-//     .catch((err) => console.log(err))
 
 const CheckoutScreen = ({route, navigation}) => {
   const {cart, count, subtotal, restaurant_id} = route.params

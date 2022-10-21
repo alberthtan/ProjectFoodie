@@ -6,7 +6,9 @@ const MenuItem = ({navigation, name, price, description, count, cart, subtotal, 
   return (
     <TouchableOpacity
         style = {styles.container}
-        onPress = {() => navigation.navigate('Item', {name: name, description: description, price: price, count: count, cart: cart, subtotal: subtotal, restaurant_id : restaurant_id})}>
+        onPress = {() => navigation.navigate('Item', {name: name, description: description, 
+                                                      price: price, count: count, cart: cart, 
+                                                      subtotal: subtotal, restaurant_id : restaurant_id})}>
             
       <Text style = {styles.itemName}>{name}</Text>
 
@@ -23,7 +25,6 @@ const MenuItem = ({navigation, name, price, description, count, cart, subtotal, 
       <Text style = {styles.itemDescription}>
         {description}
       </Text>
-      {/* Infused with fresh rosemary and sage. Served with smooth mashed potatoes and char-grilled, crispy asparagus, topped with a tangy golden-brown glaze */}
       
     </TouchableOpacity>
   )
@@ -32,12 +33,12 @@ const MenuItem = ({navigation, name, price, description, count, cart, subtotal, 
 const styles = StyleSheet.create({
     container: {
         marginVertical: 10,
-        marginLeft: 15,
+        marginLeft: 10
     },
 
     itemName: {
         fontWeight: 'bold',
-        fontSize: 18
+        // fontSize: 18
     },
 
     itemPrice:{

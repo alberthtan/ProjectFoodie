@@ -6,7 +6,7 @@ const AddItemsButton = ({onPress}) => {
     <TouchableOpacity
       onPress={onPress} 
       style={styles.container}>
-      <Text style={styles.text}> + Add Items</Text>
+      <Text style={styles.text}>+ Add Items</Text>
     </TouchableOpacity>
   )
 }
@@ -15,21 +15,22 @@ export default AddItemsButton
 
 const styles = StyleSheet.create({
     container: {
-        width: '30%',
+        // width: '30%',
+        alignSelf: "flex-start",
         padding: 15,
         marginTop: 30,
         marginLeft: 20,
         borderRadius: 5,
         backgroundColor: '#3C6F37',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // flex: 1,
     },
 
     text: {
         fontWeight: 'bold',
         color: 'white',
-        justifyContent: 'center',
-        flex: 1,
+        // justifyContent: 'center',
+        // flex: 1,
     },
 })
