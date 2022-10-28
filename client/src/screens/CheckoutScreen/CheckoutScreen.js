@@ -23,11 +23,11 @@ const CheckoutScreen = ({route, navigation}) => {
         
         <ScrollView showsVerticalScrollIndicator = {false}>
 
-            <View style = {styles.rectangle}>
+            {/* <View style = {styles.rectangle}>
                 <Text style = {{fontWeight: 'bold'}}>
                     Table Number: 123456
                 </Text>
-            </View>
+            </View> */}
 
             <Text style = {[styles.totals, {fontWeight: 'bold', fontSize: 18}]}>
                 Your Items
@@ -65,7 +65,7 @@ const CheckoutScreen = ({route, navigation}) => {
         <View style = {[styles.orderButton]}>
             <CustomButton
                 text = "ORDER"
-                // onPress = {() => navigation.navigate('PopUp')}
+                onPress = {() => navigation.navigate('Home')}
             />
         </View>
     </View>

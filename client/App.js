@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React, {lazy, Suspense} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Tabs from './src/navigation/tabs'
 
 //screens
 import SignInScreen from './src/screens/SignInScreen';
@@ -17,37 +18,39 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   console.log("App Executed")
   return (
-    <Suspense fallback={<Text>Loading...</Text>}>
-      <NavigationContainer style={styles.container}>
-        <Stack.Navigator initialRouteName='SignIn'>
-          <Stack.Screen
-            options={{headerShown: false}}
-            name="SignIn"
-            component={SignInScreen} />
-          <Stack.Screen
-            options={{headerShown: false}}
-            name="Home"
-            component={HomeScreen}/>
-          <Stack.Screen
-            options={{headerShown: false}}
-            name="Camera"
-            component={CameraScreen}/>
-          <Stack.Screen
-            options={{headerShown: false, gestureEnabled: false}}
-            name="Menu"
-            component={MenuScreen}/>
-          <Stack.Screen
-            options={{headerShown: false}}
-            name="Item"
-            component={ItemScreen}/>
-          <Stack.Screen
-            options={{headerShown: false}}
-            name="Checkout"
-            component={CheckoutScreen}/>
-        </Stack.Navigator>
-        <StatusBar style="auto" />  
-      </NavigationContainer>
-    </Suspense>
+    <NavigationContainer style={styles.container}>
+      <Stack.Navigator initialRouteName='SignIn'>
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="SignIn"
+          component={SignInScreen} />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="HomeTabs"
+          component={Tabs}/>
+        {/* <Stack.Screen
+          options={{headerShown: false}}
+          name="Home"
+          component={HomeScreen}/> */}
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Camera"
+          component={CameraScreen}/>
+        <Stack.Screen
+          options={{headerShown: false, gestureEnabled: false}}
+          name="Menu"
+          component={MenuScreen}/>
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Item"
+          component={ItemScreen}/>
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Checkout"
+          component={CheckoutScreen}/>
+      </Stack.Navigator>
+      <StatusBar/>
+    </NavigationContainer>
   );
 }
 

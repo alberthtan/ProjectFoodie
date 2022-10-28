@@ -40,7 +40,7 @@ const SignInScreen = ({navigation}) => {
 
       <CustomButton
         text="Login In"
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('HomeTabs')}
       />
 
       <CustomButton
