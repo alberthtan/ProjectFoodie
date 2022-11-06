@@ -2,52 +2,25 @@ import { Dimensions, Text, View, StyleSheet} from 'react-native'
 import React, {useState}  from 'react'
 
 import QRButton from '../../components/QRButton'
+import StatusBar from '../../components/StatusBar'
 // import TableInput from '../../components/TableInput'
 
-// import NavigationBar from 'react-native-navigation-bar'
-// import NavigationBar from 'react-native-navbar';
-
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({route, navigation}) => {
+  const { ordered } = route.params
 
   // const [tableid, setTableID] = useState('')
-
-  const rightButtonConfig = {
-    title: 'Next',
-    handler: () => alert('hello!'),
-  };
-   
-  const titleConfig = {
-    title: 'Hello, world',
-  };
-
+let statusbar // based on updating database, true for now
+if (ordered) {
+  statusbar = <StatusBar/>
+}
 
   return (
-    <View style={styles.container}>
-
-      <QRButton navigation = {navigation}/>
-
-      {/* <NavigationBar 
-          title='Main title'
-          height={50}
-          leftButtonTitle='back'
-          rightButtonTitle='forward'
-        /> */}
-
-      {/* <NavigationBar
-        title={titleConfig}
-        rightButton={rightButtonConfig}
-        // title={titleConfig}
-        // rightButton={rightButtonConfig}
-      /> */}
-
-      {/* <TableInput 
-        value={tableid} 
-        setValue={setTableID}
-        placeholder='table id'
-      /> */}
-
+    <View style = {styles.container}>
+      {statusbar}
+      <View style={styles.button}>
+        <QRButton navigation = {navigation}/>
+      </View>
     </View>
-
 
   )
 }
@@ -55,11 +28,18 @@ const HomeScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        justifyContent: 'center',
+        // justifyContent: 'center',
         flex: 1,
         // backgroundColor: '#3C6F37',  
-        backgroundColor: 'F8F8F8'
+        // backgroundColor: 'FFFFFF'
     },
+
+    button: {
+      marginTop: Dimensions.get('window').height * (0.5 - 0.12) ,
+      // position: 'relative',
+      // flex: 1
+      
+    }
 })
 
 export default HomeScreen

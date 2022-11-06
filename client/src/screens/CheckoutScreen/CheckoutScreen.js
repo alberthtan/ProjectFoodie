@@ -65,7 +65,7 @@ const CheckoutScreen = ({route, navigation}) => {
         <View style = {[styles.orderButton]}>
             <CustomButton
                 text = "ORDER"
-                onPress = {() => navigation.navigate('Home')}
+                onPress = {() => navigation.navigate('Home', {ordered: true})}
             />
         </View>
     </View>
