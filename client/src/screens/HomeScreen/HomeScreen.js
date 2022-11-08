@@ -17,9 +17,9 @@ if (ordered) {
   return (
     <View style = {styles.container}>
       {statusbar}
-      <View style={styles.button}>
+      {/* <View style={styles.button}>
         <QRButton navigation = {navigation}/>
-      </View>
+      </View> */}
     </View>
 
   )

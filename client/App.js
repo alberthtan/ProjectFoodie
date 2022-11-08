@@ -33,7 +33,7 @@ export default function App() {
           name="Home"
           component={HomeScreen}/> */}
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureDirection: 'vertical'}}
           name="Camera"
           component={CameraScreen}/>
         <Stack.Screen
