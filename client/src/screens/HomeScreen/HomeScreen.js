@@ -1,17 +1,53 @@
-import { Dimensions, Text, View, StyleSheet} from 'react-native'
+import { Dimensions, Text, View, StyleSheet, SafeAreaView} from 'react-native'
 import React, {useState}  from 'react'
 
 import QRButton from '../../components/QRButton'
 import StatusBar from '../../components/StatusBar'
+import BottomUp from '../../components/BottomUp'
 // import TableInput from '../../components/TableInput'
+
+const popuplist = [
+  {
+    id: 1,
+    name: 'Task',
+  },
+  {
+    id: 2,
+    name: 'Message',
+  },
+  {
+    id: 3,
+    name: 'Note',
+  }
+]
 
 const HomeScreen = ({route, navigation}) => {
   const { ordered } = route.params
+  let popupRef = React.createRef()
+
+  const onShowPopUp = () => {
+    // console.log(popupRef)
+    popupRef.show()
+  }
+
+  const onClosePopUp = () => {
+    popupRef.close()
+  }
 
   // const [tableid, setTableID] = useState('')
 let statusbar // based on updating database, true for now
+let bottomPopUp
 if (ordered) {
-  statusbar = <StatusBar/>
+  statusbar = <StatusBar
+    onPress={onShowPopUp}
+  />
+  bottomPopUp = 
+  <BottomUp
+    title="Receipt"
+    ref={(target) => popupRef = target}
+    onTouchOutside={onClosePopUp}
+    data={popuplist}
+  />
 }
 
   return (
@@ -20,8 +56,10 @@ if (ordered) {
       {/* <View style={styles.button}>
         <QRButton navigation = {navigation}/>
       </View> */}
+      <SafeAreaView style={styles.container}>
+        {bottomPopUp}
+      </SafeAreaView>
     </View>
-
   )
 }
 

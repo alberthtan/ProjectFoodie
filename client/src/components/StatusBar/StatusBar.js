@@ -1,9 +1,9 @@
 import { Dimensions, StyleSheet, Text, View, Pressable } from 'react-native'
 import React from 'react'
 
-const StatusBar = () => {
+const StatusBar = ({onPress}) => {
   return (
-    <Pressable style={styles.rectangle}>
+    <Pressable style={styles.rectangle} onPress={onPress}>
         <Text style={styles.message}>
             Order Received
         </Text>
