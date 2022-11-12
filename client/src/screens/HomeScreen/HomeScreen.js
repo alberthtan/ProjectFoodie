@@ -1,10 +1,12 @@
-import { Dimensions, Text, View, StyleSheet, SafeAreaView} from 'react-native'
+import { Dimensions, Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity} from 'react-native'
 import React, {useState}  from 'react'
 
 import QRButton from '../../components/QRButton'
 import StatusBar from '../../components/StatusBar'
 import BottomUp from '../../components/BottomUp'
+import SearchBar from '../../components/SearchBar'
 // import TableInput from '../../components/TableInput'
+import filterIcon from '../../../assets/icons/filter.png'
 
 const popuplist = [
   {
@@ -20,6 +22,7 @@ const popuplist = [
 ]
 
 const HomeScreen = ({route, navigation}) => {
+  const [search, setSearch] = useState('')
   const { ordered } = route.params
   let popupRef = React.createRef()
 
@@ -51,9 +54,25 @@ if (ordered) {
   return (
     <View style = {styles.container}>
       {statusbar}
-      {/* <View style={styles.button}>
-        <QRButton navigation = {navigation}/>
-      </View> */}
+      <Text style = {styles.title}>
+            Discovery
+      </Text>
+
+      <View style = {{flexDirection: 'row', alignItems: 'center', alignContent: 'center', justifyContent: 'center'}}>
+        <SearchBar
+          placeholder="Search"
+          value={search} 
+          setValue={setSearch}
+          style={{flex: 1}}
+        />
+        <TouchableOpacity
+            style={{height: 30}}>
+          <Image source={filterIcon} style={styles.filter}/>
+        </TouchableOpacity>
+        
+      </View>
+      
+
       <SafeAreaView style={styles.container}>
         {bottomPopUp}
       </SafeAreaView>
@@ -63,20 +82,24 @@ if (ordered) {
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: 'center',
-        // justifyContent: 'center',
         flex: 1,
-        // justifyContent: "center"
-        // backgroundColor: '#3C6F37',  
-        // backgroundColor: 'FFFFFF'
     },
 
-    button: {
-      marginTop: Dimensions.get('window').height * (0.5 - 0.12) ,
-      // position: 'relative',
-      // flex: 1
-      
-    }
+    title: {
+      fontSize: 30,
+      fontWeight:"bold",
+      marginLeft: 20,
+      marginBottom: 20,
+      marginTop: Dimensions.get('window').height * 0.07,
+  },
+
+    filter: {
+      height: 15,
+      width: 15,
+      padding: 12,
+      justifyContent: 'center',
+      marginLeft: 15
+  },
 })
 
 export default HomeScreen

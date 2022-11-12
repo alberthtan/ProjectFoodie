@@ -1,10 +1,11 @@
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions} from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 
 import MenuCategoryButton from '../../components/MenuCategoryButton'
 import MenuItem from '../../components/MenuItem'
 import CustomButton from '../../components/CustomButton'
+import backIcon from '../../../assets/icons/backicon.png';
 
 import { firebase } from '../../firebase/config'
 import { getFirestore, doc, getDoc } from '@firebase/firestore'
@@ -143,12 +144,22 @@ const MenuScreen = ({route, navigation}) => {
     <View style = {{flex: 1}}>
         <View style={{flexDirection: 'row'}}>
             <TouchableOpacity
-                style = {styles.container}
-                onPress = {() => navigation.navigate('Home')} />
+                    style={styles.backButton}
+                    onPress={() => navigation.navigate('Home')}>
+                        <Image source={backIcon} resizeMode="contain" style={{
+                            width: 30,
+                            height: 30,
+                            alignSelf:'center',
+                            justifyContent: 'center',
+                            flex: 1,
+                            // marginBottom: 8,
+                            tintColor: '#000000',
+                        }}/>
+                </TouchableOpacity>
 
-            <View style = {styles.rectangle}>
+            {/* <View style = {styles.rectangle}>
                 <Text style = {{fontWeight:'bold', fontSize: 16, marginLeft: 5}}>Table Number: 123456</Text>
-            </View>
+            </View> */}
         </View>
 
         <Text style = {styles.restaurantName}>
@@ -185,23 +196,28 @@ const MenuScreen = ({route, navigation}) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        width: 10,
-        height: 10,
+    backButton: {
+        // width: 10,
+        // height: 10,
 
-        padding: 15,
-        marginVertical: 5,
-        borderRadius: 50,
-        backgroundColor: '#24891A',
-        marginLeft: 10,
-        marginTop: 50
+        // padding: 15,
+        // marginVertical: 5,
+        // borderRadius: 50,
+        // backgroundColor: '#24891A',
+        // marginLeft: 10,
+        // marginTop: 50
+        height: 30,
+        marginTop: Dimensions.get('window').height * 0.07,
+        marginLeft: 10
     },
 
     restaurantName: {
         fontSize: 30,
         fontWeight:"bold",
         marginLeft: 10,
-        marginBottom: 20
+        marginBottom: 20,
+        marginTop: 20,
+        // textAlign: 'center'
     },
 
     rectangle: {

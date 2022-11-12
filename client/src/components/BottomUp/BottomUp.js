@@ -101,10 +101,11 @@ class BottomUp extends React.Component {
     }
 
     renderItem = ({item}) => {
+        var itemHeight = 20
         return (
-            <View style={{height: 20, flex: 1, flexDirection: "row",  alignItems: 'flex-start', justifyContent: 'center', marginLeft: 20, marginTop: 30, marginRight: 20}}>
-                <Text style={{fontSize: 18, flex: 1, fontWeight: 'normal', color:'#FFFFFF'}}>{item.name}</Text>
-                <Text style={{fontSize: 18, fontWeight: 'normal', color:'#FFFFFF'}}>{item.price}</Text>
+            <View style={{height: itemHeight, flex: 1, flexDirection: "row",  alignItems: 'flex-start', justifyContent: 'center', marginLeft: 20, marginTop: 30, marginRight: 20}}>
+                <Text style={{fontSize: itemHeight * 0.75, flex: 1, fontWeight: 'normal', color:'#FFFFFF'}}>{item.name}</Text>
+                <Text style={{fontSize: itemHeight * 0.75, fontWeight: 'normal', color:'#FFFFFF'}}>{item.price}</Text>
             </View>
         )
     }
