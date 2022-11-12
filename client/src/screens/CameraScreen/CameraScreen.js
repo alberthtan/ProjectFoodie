@@ -62,7 +62,7 @@ const CameraScreen = ({navigation}) => {
             > 
                 <TouchableOpacity 
                     style = {styles.button}
-                    onPress = {() => navigation.navigate('Home')}
+                    onPress = {() => navigation.goBack()}
                 />
 
                 <View style = {styles.viewInstruction}>

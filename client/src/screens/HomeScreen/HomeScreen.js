@@ -9,16 +9,14 @@ import BottomUp from '../../components/BottomUp'
 const popuplist = [
   {
     id: 1,
-    name: 'Task',
+    name: 'Chicken Karaage',
+    price: '$5.80'
   },
   {
     id: 2,
-    name: 'Message',
+    name: 'Takoyaki',
+    price: '$5.80'
   },
-  {
-    id: 3,
-    name: 'Note',
-  }
 ]
 
 const HomeScreen = ({route, navigation}) => {
@@ -38,12 +36,12 @@ const HomeScreen = ({route, navigation}) => {
 let statusbar // based on updating database, true for now
 let bottomPopUp
 if (ordered) {
-  statusbar = <StatusBar
+  statusbar = <StatusBar barStyle="dark-content"
     onPress={onShowPopUp}
   />
   bottomPopUp = 
   <BottomUp
-    title="Receipt"
+    title="Your Orders"
     ref={(target) => popupRef = target}
     onTouchOutside={onClosePopUp}
     data={popuplist}
@@ -68,6 +66,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // justifyContent: 'center',
         flex: 1,
+        // justifyContent: "center"
         // backgroundColor: '#3C6F37',  
         // backgroundColor: 'FFFFFF'
     },

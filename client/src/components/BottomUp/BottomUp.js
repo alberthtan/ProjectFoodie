@@ -1,6 +1,8 @@
-import {Modal, Dimensions, Pressable, Stylesheet, View, Text} from 'react-native'
+import {Modal, Dimensions, Pressable, Stylesheet, View, Text, Image, TouchableOpacity} from 'react-native'
 import React from 'react'
 import { FlatList } from 'react-native-gesture-handler'
+import xicon from '../../../assets/icons/xicon.png';
+import ReceiptButton from '../ReceiptButton';
 
 const deviceHeight = Dimensions.get("window").height
 class BottomUp extends React.Component {
@@ -30,15 +32,40 @@ class BottomUp extends React.Component {
         )
     }
 
+    renderXButton = () => {
+        return (
+            <View style={{flexDirection: 'row', height: '5%'}}>
+                <View style={{flex: 1}}></View>
+                <TouchableOpacity
+                    style={{height: 30, backgroundColor: "#FFFFFF"}}
+                    onPress={this.close}>
+                        <Image source={xicon} resizeMode="contain" style={{
+                            width: 30,
+                            height: 30,
+                            alignSelf:'center',
+                            justifyContent: 'center',
+                            flex: 1,
+                            // marginBottom: 8,
+                            tintColor: '#000000',
+                        }}/>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
     renderTitle = () => {
         const {title} = this.props
         return (
-            <View>
+            <View style={{
+                alignItems: 'center',
+                height: '10%'
+                }}>
                 <Text style={{
                     color: '#182E44',
-                    fontSize: 20,
-                    fontWeight: '500',
-                    margin: 15
+                    fontSize: 25,
+                    fontWeight: 'bold',
+                    marginTop: 15,
+                    marginBottom: 30
                 }}>
                     {title}
                 </Text>
@@ -49,7 +76,14 @@ class BottomUp extends React.Component {
     renderContent = () => {
         const {data} = this.props
         return (
-            <View>
+            <View style={{
+                height: '65%',
+                width: '90%',
+                backgroundColor: '#3C6F37',
+                justifyContent: 'center',
+                alignContent: 'center',
+                borderRadius: 30,
+            }}>
                 <FlatList
                     style={{marginBottom: 20}}
                     showsVerticalScrollIndicator={false}
@@ -57,7 +91,7 @@ class BottomUp extends React.Component {
                     renderItem={this.renderItem}
                     extraData={data}
                     keyExtractor={(item, index) => index.toString()}
-                    ItemSeparatorComponent={this.renderSeparator}
+                    // ItemSeparatorComponent={this.renderSeparator}
                     contentContainerStyle={{
                         paddingBottom: 40
                     }}
@@ -68,23 +102,37 @@ class BottomUp extends React.Component {
 
     renderItem = ({item}) => {
         return (
-            <View>
-                <Text>{item.name}</Text>
+            <View style={{height: 20, flex: 1, flexDirection: "row",  alignItems: 'flex-start', justifyContent: 'center', marginLeft: 20, marginTop: 30, marginRight: 20}}>
+                <Text style={{fontSize: 18, flex: 1, fontWeight: 'normal', color:'#FFFFFF'}}>{item.name}</Text>
+                <Text style={{fontSize: 18, fontWeight: 'normal', color:'#FFFFFF'}}>{item.price}</Text>
             </View>
         )
     }
 
-    renderSeparator = () => {
+    renderReceiptButton = () => {
         return (
-        <View
-            style={{
-                opacity: 0.1,
-                backgroundColor: '#182E44',
-                height: 1,
-            }}
-        />
+            <View style={{
+                flexDirection: 'row', 
+                alignContent: 'center', 
+                justfiyContent: 'center',
+                height: '10%'}}>
+                <ReceiptButton name="Add to Order"/>
+                <ReceiptButton name="Cancel Order"/>
+            </View>
         )
     }
+
+    // renderSeparator = () => {
+    //     return (
+    //     <View
+    //         style={{
+    //             opacity: 0.1,
+    //             backgroundColor: '#182E44',
+    //             height: 1,
+    //         }}
+    //     />
+    //     )
+    // }
 
     render() {
         let {show} =this.state
@@ -92,7 +140,7 @@ class BottomUp extends React.Component {
         
         return (
             <Modal
-                animationType={'fade'}
+                animationType={'slide'}
                 transparent={true}
                 visible={show}
                 onRequestClose={this.close}
@@ -103,16 +151,20 @@ class BottomUp extends React.Component {
                         justifyContent: 'flex-end'}}>
                             {this.renderOutsideTouchable(onTouchOutside)}
                             <View style={{
-                                backgroundColor: "FFFFFF",
+                                backgroundColor: "#FFFFFF",
                                 width: '100%',
-                                borderTopRightRadius: 10,
-                                borderTopLeftRadius: 10,
+                                borderTopRightRadius: 30,
+                                borderTopLeftRadius: 30,
                                 paddingHorizontal: 10,
-                                maxHeight: deviceHeight * 0.4,
+                                height: deviceHeight * 0.9,
+                                paddingTop: 20,
+                                // justifyContent: 'flex-start',
+                                alignItems: 'center'
                             }}>
-                                
-                            {this.renderTitle()}
-                            {this.renderContent()}
+                                {this.renderXButton()}
+                                {this.renderTitle()}
+                                {this.renderContent()}
+                                {this.renderReceiptButton()}
                             </View>
                     </View>
 

@@ -17,15 +17,16 @@ const styles = StyleSheet.create({
     rectangle: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height * 0.12,
-        backgroundColor: '#D9D9D9',
+        backgroundColor: '#3C6F37',
         position:'absolute'
       },
 
     message: {
         position: 'absolute',
-        fontSize: 15,
+        fontSize: 18,
         fontWeight:"bold",
         marginTop: Dimensions.get('window').height * 0.12 * 0.7,
         marginLeft: 10,
+        color: "#FFFFFF"
     }
 })
