@@ -39,15 +39,18 @@ const HomeScreen = ({route, navigation}) => {
 let statusbar // based on updating database, true for now
 let bottomPopUp
 if (ordered) {
-  statusbar = <StatusBar barStyle="dark-content"
-    onPress={onShowPopUp}
-  />
+  statusbar = 
+  <View style ={{paddingBottom: 50}}>
+    <StatusBar barStyle="dark-content"
+                onPress={onShowPopUp}/>
+  </View>
   bottomPopUp = 
   <BottomUp
     title="Your Orders"
     ref={(target) => popupRef = target}
     onTouchOutside={onClosePopUp}
     data={popuplist}
+    navigation={navigation}
   />
 }
 
@@ -82,7 +85,9 @@ if (ordered) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1, 
+        // flexDirection: 'column',
+        // justifyContent: 'center'
     },
 
     title: {

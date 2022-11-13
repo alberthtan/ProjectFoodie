@@ -142,8 +142,7 @@ const MenuScreen = ({route, navigation}) => {
 
   return (
     <View style = {{flex: 1}}>
-        <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity
+        <TouchableOpacity
                     style={styles.backButton}
                     onPress={() => navigation.navigate('Home')}>
                         <Image source={backIcon} resizeMode="contain" style={{
@@ -155,12 +154,7 @@ const MenuScreen = ({route, navigation}) => {
                             // marginBottom: 8,
                             tintColor: '#000000',
                         }}/>
-                </TouchableOpacity>
-
-            {/* <View style = {styles.rectangle}>
-                <Text style = {{fontWeight:'bold', fontSize: 16, marginLeft: 5}}>Table Number: 123456</Text>
-            </View> */}
-        </View>
+        </TouchableOpacity>
 
         <Text style = {styles.restaurantName}>
             Restaurant Name
@@ -197,18 +191,10 @@ const MenuScreen = ({route, navigation}) => {
 
 const styles = StyleSheet.create({
     backButton: {
-        // width: 10,
-        // height: 10,
-
-        // padding: 15,
-        // marginVertical: 5,
-        // borderRadius: 50,
-        // backgroundColor: '#24891A',
-        // marginLeft: 10,
-        // marginTop: 50
         height: 30,
         marginTop: Dimensions.get('window').height * 0.07,
-        marginLeft: 10
+        marginLeft: 10,
+        alignSelf: 'flex-start'
     },
 
     restaurantName: {

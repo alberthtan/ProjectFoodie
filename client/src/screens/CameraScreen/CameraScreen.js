@@ -1,9 +1,10 @@
-import { View, Text, Dimensions, TouchableOpacity, StyleSheet} from 'react-native'
+import { View, Text, Dimensions, TouchableOpacity, StyleSheet, Image} from 'react-native'
 import React, {useEffect, useState}  from 'react'
 // import tw from 'tailwind-react-native-classnames'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { YellowBox } from 'react-native-web';
 // import QRCodeScanner from 'react-native-qrcode-scanner';
+import xicon from '../../../assets/icons/xicon.png';
 
 import { firebase } from '../../firebase/config'
 
@@ -60,10 +61,19 @@ const CameraScreen = ({navigation}) => {
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style = {[StyleSheet.absoluteFillObject]}
             > 
-                <TouchableOpacity 
-                    style = {styles.button}
-                    onPress = {() => navigation.goBack()}
-                />
+                <TouchableOpacity
+                    style={styles.backButton}
+                    onPress={() => navigation.goBack()}>
+                        <Image source={xicon} resizeMode="contain" style={{
+                            width: 30,
+                            height: 30,
+                            alignSelf:'center',
+                            justifyContent: 'center',
+                            flex: 1,
+                            // marginBottom: 8,
+                            tintColor: '#FFFFFF',
+                        }}/>
+                </TouchableOpacity>
 
                 <View style = {styles.viewInstruction}>
                     <Text style = {styles.instruction}>
@@ -84,6 +94,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',
+    },
+
+    backButton: {
+        height: 30,
+        marginTop: Dimensions.get('window').height * 0.07,
+        marginLeft: 10,
+        alignSelf: 'flex-start'
     },
 
     button: {

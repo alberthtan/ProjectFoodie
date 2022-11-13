@@ -45,7 +45,6 @@ class BottomUp extends React.Component {
                             alignSelf:'center',
                             justifyContent: 'center',
                             flex: 1,
-                            // marginBottom: 8,
                             tintColor: '#000000',
                         }}/>
                 </TouchableOpacity>
@@ -111,6 +110,7 @@ class BottomUp extends React.Component {
     }
 
     renderReceiptButton = () => {
+        const {navigation} = this.props
         return (
             <View style={{
                 flexDirection: 'row', 

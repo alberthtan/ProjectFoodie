@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height * 0.12,
         backgroundColor: '#3C6F37',
-        position:'absolute'
+        position:'absolute',
       },
 
     message: {
