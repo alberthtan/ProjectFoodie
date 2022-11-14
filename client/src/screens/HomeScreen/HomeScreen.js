@@ -3,10 +3,11 @@ import React, {useState}  from 'react'
 
 import QRButton from '../../components/QRButton'
 import StatusBar from '../../components/StatusBar'
-import BottomUp from '../../components/BottomUp'
+import BottomUpReceipt from '../../components/BottomUpReceipt'
 import SearchBar from '../../components/SearchBar'
 // import TableInput from '../../components/TableInput'
 import filterIcon from '../../../assets/icons/filter.png'
+import BottomUpFilter from '../../components/BottomUpFilter'
 
 const popuplist = [
   {
@@ -25,14 +26,23 @@ const HomeScreen = ({route, navigation}) => {
   const [search, setSearch] = useState('')
   const { ordered } = route.params
   let popupRef = React.createRef()
+  let filterpopupRef = React.createRef()
 
   const onShowPopUp = () => {
-    // console.log(popupRef)
     popupRef.show()
   }
 
   const onClosePopUp = () => {
     popupRef.close()
+  }
+
+  const onShowFilterPopUp = () => {
+    // console.log(popupRef)
+    filterpopupRef.filterShow()
+  }
+
+  const onCloseFilterPopUp = () => {
+    filterpopupRef.filterClose()
   }
 
   // const [tableid, setTableID] = useState('')
@@ -45,7 +55,7 @@ if (ordered) {
                 onPress={onShowPopUp}/>
   </View>
   bottomPopUp = 
-  <BottomUp
+  <BottomUpReceipt
     title="Your Orders"
     ref={(target) => popupRef = target}
     onTouchOutside={onClosePopUp}
@@ -69,6 +79,7 @@ if (ordered) {
           style={{flex: 1}}
         />
         <TouchableOpacity
+            onPress={onShowFilterPopUp}
             style={{height: 30}}>
           <Image source={filterIcon} style={styles.filter}/>
         </TouchableOpacity>
@@ -78,6 +89,15 @@ if (ordered) {
 
       <SafeAreaView style={styles.container}>
         {bottomPopUp}
+      </SafeAreaView>
+      <SafeAreaView style={styles.container}>
+        <BottomUpFilter
+          title="Sort and Filter"
+          ref={(target) => filterpopupRef = target}
+          onTouchOutside={onCloseFilterPopUp}
+          // data={popuplist}
+          // navigation={navigation}
+        />
       </SafeAreaView>
     </View>
   )

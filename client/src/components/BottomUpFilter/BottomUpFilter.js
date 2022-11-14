@@ -1,25 +1,37 @@
-import {Modal, Dimensions, Pressable, Stylesheet, View, Text, Image, TouchableOpacity} from 'react-native'
+import { Modal, Dimensions, Pressable, StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native'
 import React from 'react'
 import { FlatList } from 'react-native-gesture-handler'
-import xicon from '../../../assets/icons/xicon.png';
+import xIcon from '../../../assets/icons/xicon.png';
+import checkIcon from '../../../assets/icons/checkmark.png';
+import dollarIcon from '../../../assets/icons/dollar.png';
 import ReceiptButton from '../ReceiptButton';
+import PriceFilterButton from '../PriceFilterButton';
 
 const deviceHeight = Dimensions.get("window").height
-class BottomUp extends React.Component {
+// const [isPressed, setPressed] = useState(false)
+
+class BottomUpFilter extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             show: false
         }
+        // this.isPressed = {
+        //     pressed: false
+        // }
     }
     
-    show = () => {
+    filterShow = () => {
         this.setState({show: true})
     }
 
-    close = () => {
+    filterClose = () => {
         this.setState({show: false})
     }
+
+    // change = () => {
+    //     this.setState({pressed: true})
+    // }
 
     renderOutsideTouchable(onTouch) {
         const view = <View style={{flex: 1, width: '100%'}}/>
@@ -37,9 +49,9 @@ class BottomUp extends React.Component {
             <View style={{flexDirection: 'row', height: '5%'}}>
                 <View style={{flex: 1}}></View>
                 <TouchableOpacity
-                    style={{height: 30, backgroundColor: "#FFFFFF"}}
-                    onPress={this.close}>
-                        <Image source={xicon} resizeMode="contain" style={{
+                    style={{height: 30, marginRight: 5, backgroundColor: "#FFFFFF"}}
+                    onPress={this.filterClose}>
+                        <Image source={xIcon} resizeMode="contain" style={{
                             width: 30,
                             height: 30,
                             alignSelf:'center',
@@ -57,14 +69,14 @@ class BottomUp extends React.Component {
         return (
             <View style={{
                 alignItems: 'center',
-                height: '10%'
+                justifyContent: 'center',
+                height: '10%',
                 }}>
                 <Text style={{
                     color: '#182E44',
-                    fontSize: 25,
+                    fontSize: 22,
                     fontWeight: 'bold',
-                    marginTop: 15,
-                    marginBottom: 30
+                    // marginTop: 15,
                 }}>
                     {title}
                 </Text>
@@ -109,31 +121,42 @@ class BottomUp extends React.Component {
         )
     }
 
-    renderReceiptButton = () => {
+    renderPriceRange = () => {
         const {navigation} = this.props
+        // let {pressed} = this.isPressed
+        // console.log(pressed)
+
         return (
-            <View style={{
-                flexDirection: 'row', 
-                alignContent: 'center', 
-                justfiyContent: 'center',
-                height: '10%'}}>
-                <ReceiptButton name="Add to Order"/>
-                <ReceiptButton name="Cancel Order"/>
-            </View>
+            <>
+                <View style={{
+                    // alignItems: 'start',
+                    justifyContent: 'flex-start',
+                    height: '12%',
+                    }}>
+                    <Text style={{
+                        color: '#182E44',
+                        fontSize: 18,
+                        fontWeight: 'bold',
+                        marginTop: 15,
+                        marginLeft: 10,
+                    }}>
+                        Price Range
+                    </Text>
+                </View>    
+                <View style={{
+                    flexDirection: 'row',
+                    alignSelf: 'center', 
+                    justfiyContent: 'center',
+                    height: '10%'}}>
+                        <PriceFilterButton name='$'/>
+                        <PriceFilterButton name='$$'/>
+                        <PriceFilterButton name='$$$'/>
+                        <PriceFilterButton name='$$$$'/>
+                </View>        
+            </>
+            
         )
     }
-
-    // renderSeparator = () => {
-    //     return (
-    //     <View
-    //         style={{
-    //             opacity: 0.1,
-    //             backgroundColor: '#182E44',
-    //             height: 1,
-    //         }}
-    //     />
-    //     )
-    // }
 
     render() {
         let {show} =this.state
@@ -144,7 +167,7 @@ class BottomUp extends React.Component {
                 animationType={'slide'}
                 transparent={true}
                 visible={show}
-                onRequestClose={this.close}
+                onRequestClose={this.filterClose}
                 >
                     <View style={{
                         flex: 1,
@@ -157,15 +180,14 @@ class BottomUp extends React.Component {
                                 borderTopRightRadius: 30,
                                 borderTopLeftRadius: 30,
                                 paddingHorizontal: 10,
-                                height: deviceHeight * 0.9,
+                                height: deviceHeight * 0.6,
                                 paddingTop: 20,
                                 // justifyContent: 'flex-start',
-                                alignItems: 'center'
                             }}>
                                 {this.renderXButton()}
                                 {this.renderTitle()}
-                                {this.renderContent()}
-                                {this.renderReceiptButton()}
+                                {/* {this.renderFilters()} */}
+                                {this.renderPriceRange()}
                             </View>
                     </View>
 
@@ -174,4 +196,6 @@ class BottomUp extends React.Component {
     }
 }
 
-export default BottomUp;
+
+
+export default BottomUpFilter;
