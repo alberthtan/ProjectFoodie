@@ -12,6 +12,7 @@ import CameraScreen from './src/screens/CameraScreen';
 import MenuScreen from './src/screens/MenuScreen';
 import ItemScreen from './src/screens/ItemScreen';
 import CheckoutScreen from './src/screens/CheckoutScreen';
+import RestaurantScreen from './src/screens/RestaurantScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +49,10 @@ export default function App() {
           options={{headerShown: false}}
           name="Checkout"
           component={CheckoutScreen}/>
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Restaurant"
+          component={RestaurantScreen}/>
       </Stack.Navigator>
       <StatusBar/>
     </NavigationContainer>

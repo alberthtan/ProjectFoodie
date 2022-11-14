@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
 
     itemName: {
         fontWeight: 'bold',
-        // fontSize: 18
     },
 
     itemPrice:{

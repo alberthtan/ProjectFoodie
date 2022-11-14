@@ -1,11 +1,11 @@
 import { Dimensions, Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity} from 'react-native'
 import React, {useState}  from 'react'
+import { FlatList } from 'react-native-gesture-handler'
 
-import QRButton from '../../components/QRButton'
 import StatusBar from '../../components/StatusBar'
 import BottomUpReceipt from '../../components/BottomUpReceipt'
 import SearchBar from '../../components/SearchBar'
-// import TableInput from '../../components/TableInput'
+import RestaurantItem from '../../components/RestaurantItem'
 import filterIcon from '../../../assets/icons/filter.png'
 import BottomUpFilter from '../../components/BottomUpFilter'
 
@@ -13,12 +13,30 @@ const popuplist = [
   {
     id: 1,
     name: 'Chicken Karaage',
-    price: '$5.80'
+    price: '$5.80',
   },
   {
     id: 2,
     name: 'Takoyaki',
-    price: '$5.80'
+    price: '$5.80',
+  },
+]
+
+const restaurantList = [
+  {
+    id: 1,
+    name: 'Ippudo',
+    description: 'Japanese - Ramen - Vegetarian - Asian',
+  },
+  {
+    id: 2,
+    name: 'Jack\'s Wife Freda',
+    description: 'American - Burger - Group Friendly',
+  },
+  {
+    id: 3,
+    name: 'Samwon Garden',
+    description: 'Korean - Meat - Group Friendly - Asian',
   },
 ]
 
@@ -37,7 +55,6 @@ const HomeScreen = ({route, navigation}) => {
   }
 
   const onShowFilterPopUp = () => {
-    // console.log(popupRef)
     filterpopupRef.filterShow()
   }
 
@@ -64,6 +81,14 @@ if (ordered) {
   />
 }
 
+const oneRestaurant = ({item}) => (
+  <RestaurantItem
+      navigation = {navigation}
+      name = {item.name}
+      description = {item.description}
+  />
+)
+
   return (
     <View style = {styles.container}>
       {statusbar}
@@ -71,7 +96,7 @@ if (ordered) {
             Discovery
       </Text>
 
-      <View style = {{flexDirection: 'row', alignItems: 'center', alignContent: 'center', justifyContent: 'center'}}>
+      {/* <View style = {{flexDirection: 'row', alignItems: 'center', alignContent: 'center', justifyContent: 'center'}}>
         <SearchBar
           placeholder="Search"
           value={search} 
@@ -84,13 +109,19 @@ if (ordered) {
           <Image source={filterIcon} style={styles.filter}/>
         </TouchableOpacity>
         
-      </View>
-      
+      </View> */}
 
-      <SafeAreaView style={styles.container}>
-        {bottomPopUp}
-      </SafeAreaView>
-      <SafeAreaView style={styles.container}>
+      <View style={{flex: 1}}>
+        <FlatList
+          data={restaurantList}
+          renderItem={oneRestaurant}
+          showsHorizontalScrollIndicator = {false}
+        />
+      </View>
+
+      
+      {bottomPopUp}
+      {/* <SafeAreaView style={styles.container}>
         <BottomUpFilter
           title="Sort and Filter"
           ref={(target) => filterpopupRef = target}
@@ -98,7 +129,7 @@ if (ordered) {
           // data={popuplist}
           // navigation={navigation}
         />
-      </SafeAreaView>
+      </SafeAreaView> */}
     </View>
   )
 }

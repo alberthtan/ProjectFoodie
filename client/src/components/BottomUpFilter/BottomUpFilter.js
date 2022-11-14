@@ -142,7 +142,7 @@ class BottomUpFilter extends React.Component {
                     }}>
                         Price Range
                     </Text>
-                </View>    
+                </View>
                 <View style={{
                     flexDirection: 'row',
                     alignSelf: 'center', 
