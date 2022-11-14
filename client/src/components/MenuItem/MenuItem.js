@@ -2,13 +2,13 @@ import { StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-nativ
 import React from 'react'
 import NumberFormat from 'react-number-format'
 
-const MenuItem = ({navigation, name, price, description, count, cart, subtotal, restaurant_id}) => {
+const MenuItem = ({navigation, name, price, description, count, cart, subtotal, restaurant_id, isOrdering}) => {
   return (
     <TouchableOpacity
         style = {styles.container}
         onPress = {() => navigation.navigate('Item', {name: name, description: description, 
                                                       price: price, count: count, cart: cart, 
-                                                      subtotal: subtotal, restaurant_id : restaurant_id})}>
+                                                      subtotal: subtotal, restaurant_id : restaurant_id, isOrdering: isOrdering})}>
             
       <Text style = {styles.itemName}>{name}</Text>
 

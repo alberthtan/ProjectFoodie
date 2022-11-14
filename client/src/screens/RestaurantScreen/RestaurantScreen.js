@@ -125,9 +125,10 @@ const RestaurantScreen = ({navigation}) => {
             name = {item.name}
             price = {item.price}
             description = {item.short_description}
-            // cart = {cart}
-            // subtotal = {subtotal}
+            cart = {[]}
+            subtotal = {0}
             restaurant_id = {restaurant_id}
+            isOrdering = {false}
         />
     )
 

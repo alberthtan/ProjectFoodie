@@ -127,6 +127,7 @@ const MenuScreen = ({route, navigation}) => {
             cart = {cart}
             subtotal = {subtotal}
             restaurant_id = {restaurant_id}
+            isOrdering = {true}
         />
     )
 

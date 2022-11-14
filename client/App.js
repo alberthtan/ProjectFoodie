@@ -51,7 +51,7 @@ export default function App() {
           component={CheckoutScreen}/>
         <Stack.Screen
           options={{headerShown: false}}
-          name="Restaurant"
+          name="RestaurantScreen"
           component={RestaurantScreen}/>
       </Stack.Navigator>
       <StatusBar/>
