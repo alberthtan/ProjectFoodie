@@ -56,7 +56,7 @@ const LoginHomeScreen = ({navigation}) => {
                     onPress={() => {
                         console.log("opening privacy policy")
                     }}>
-                    privacy
+                    privacy policy
                 </Text>
             </Text>
         </View>
