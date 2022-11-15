@@ -41,7 +41,7 @@ const RegisterScreen1 = ({navigation}) => {
             <View style={{width:'100%', flex: 1, marginTop: '65%', alignItems: 'center'}}>
                 <CustomButton
                     text="Continue"
-                    onPress={() => navigation.navigate('Login2', {phoneNumber: phoneNumber}) }
+                    onPress={() => navigation.navigate('Register2', {phoneNumber: phoneNumber}) }
                 />
             </View>
         </View>

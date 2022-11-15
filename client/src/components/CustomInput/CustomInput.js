@@ -20,7 +20,7 @@ const CustomInput = ({value, setValue, placeholder, autoFocus, keyboardType, sec
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#EFEDED', 
-        width: '90%',
+        width: '95%',
         height: 40,
 
         borderRadius: 10,

@@ -37,12 +37,12 @@ const LoginHomeScreen = ({navigation}) => {
             />
 
             <CustomButton
-                text="Login In"
+                text="Login"
                 onPress={() => navigation.navigate('Login1')}
             />
-
-            <Text style={styles.textStyle}>
-                By continuing, you agree to our{' '}
+            
+            <Text style={styles.textStyle} numberOfLines={2}>
+                By continuing, you agree to our{'\n'}
                 <Text
                     style={styles.hyperlinkStyle}
                     onPress={() => {
@@ -56,7 +56,7 @@ const LoginHomeScreen = ({navigation}) => {
                     onPress={() => {
                         console.log("opening privacy policy")
                     }}>
-                    privacy policy
+                    privacy
                 </Text>
             </Text>
         </View>
@@ -92,7 +92,8 @@ const styles = StyleSheet.create({
     textStyle: {
         margin: 10,
         opacity: 0.5,
-        width: '60%',
+        width: '80%',
+        textAlign: 'center',
     },
 
     hyperlinkStyle: {

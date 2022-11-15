@@ -23,27 +23,31 @@ const LoginScreen1 = ({navigation}) => {
                     }}/>
             </TouchableOpacity>
 
-            <View style={styles.titleContainer}>
-                <Text style = {styles.title}>
-                    Welcome back
-                </Text>
-                <Text style = {styles.subtitle}>
-                    Enter your number for a one-time login code
-                </Text>
-            </View>
-            <CustomInput 
-                placeholder="(615) 975-4270"
-                value={phoneNumber} 
-                setValue={setPhoneNumber}
-                autoFocus={true}
-                keyboardType="numeric"
-            />
-            <View style={{width:'100%', flex: 1, marginTop: '65%', alignItems: 'center'}}>
-                <CustomButton
-                    text="Continue"
-                    onPress={() => navigation.navigate('Login2', {phoneNumber: phoneNumber}) }
+
+            <View style={styles.container}>
+                <View style={styles.titleContainer}>
+                    <Text style = {styles.title}>
+                        Welcome back
+                    </Text>
+                    <Text style = {styles.subtitle}>
+                        Enter your number for a one-time login code
+                    </Text>
+                </View>
+                <CustomInput 
+                    placeholder="(615) 975-4270"
+                    value={phoneNumber} 
+                    setValue={setPhoneNumber}
+                    autoFocus={true}
+                    keyboardType="numeric"
                 />
+                <View style={{width:'100%', flex: 1, marginTop: '65%', alignItems: 'center'}}>
+                    <CustomButton
+                        text="Continue"
+                        onPress={() => navigation.navigate('Login2', {phoneNumber: phoneNumber}) }
+                    />
+                </View>
             </View>
+            
             
             
 
@@ -52,6 +56,10 @@ const LoginScreen1 = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        width: '100%',
+        height: '100%',
+    },
     root: {
         alignItems: 'center',
         flex:1,
@@ -71,7 +79,6 @@ const styles = StyleSheet.create({
       fontSize: 25,
       color: '#3C6F37',
       fontWeight: 'bold',
-      alignSelf: 'flex-start',
       marginTop: 10
     },
 

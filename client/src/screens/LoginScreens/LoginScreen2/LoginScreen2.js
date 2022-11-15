@@ -24,33 +24,35 @@ const LoginScreen2 = ({navigation, route}) => {
                     }}/>
             </TouchableOpacity>
 
-            <View style={styles.titleContainer}>
-                <Text style = {styles.title}>
-                    Enter your 6 digit code
-                </Text>
-                <Text style = {styles.subtitle}>
-                    Sent to {phoneNumber}
-                </Text>
-            </View>
-            
-            <CustomInput 
-                value={verificationCode} 
-                setValue={setVerificationCode}
-                autoFocus={true}
-                keyboardType="numeric"
-            />
-            <Text
-                style={styles.hyperlinkStyle}
-                onPress={() => {
-                    console.log('resending code')
-                }}>
-                Resend
-            </Text>
-            <View style={{width:'100%', flex: 1, marginTop: '60%', alignItems: 'center'}}>
-                <CustomButton
-                    text="Continue"
-                    onPress={() => navigation.navigate('HomeTabs')}
+            <View style={styles.container}>
+                <View style={styles.titleContainer}>
+                    <Text style = {styles.title}>
+                        Enter your 6 digit code
+                    </Text>
+                    <Text style = {styles.subtitle}>
+                        Sent to {phoneNumber}
+                    </Text>
+                </View>
+                
+                <CustomInput 
+                    value={verificationCode} 
+                    setValue={setVerificationCode}
+                    autoFocus={true}
+                    keyboardType="numeric"
                 />
+                <Text
+                    style={styles.hyperlinkStyle}
+                    onPress={() => {
+                        console.log('resending code')
+                    }}>
+                    Resend
+                </Text>
+                <View style={{width:'100%', flex: 1, marginTop: '60%', alignItems: 'center'}}>
+                    <CustomButton
+                        text="Continue"
+                        onPress={() => navigation.navigate('HomeTabs')}
+                    />
+                </View>
             </View>
             
         </View>
@@ -58,6 +60,10 @@ const LoginScreen2 = ({navigation, route}) => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        width: '100%',
+        height: '100%',
+    },
     root: {
         alignItems: 'center',
         flex:1,
@@ -77,7 +83,6 @@ const styles = StyleSheet.create({
       fontSize: 25,
       color: '#3C6F37',
       fontWeight: 'bold',
-      alignContent: 'flex-start',
       marginTop: 10,
     },
 
@@ -86,14 +91,12 @@ const styles = StyleSheet.create({
         color: 'black',
         marginTop: 10,
         marginBottom: 10,
-        width: '100%',
-        justifyContent: 'flex-start',
     },
 
     hyperlinkStyle: {
         color: 'green',
         alignSelf: 'flex-end',
-        marginRight: 20,
+        marginRight: '5%',
     },
 })
 

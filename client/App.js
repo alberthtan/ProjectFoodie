@@ -75,14 +75,14 @@ export default function App() {
           options={{headerShown: false}}
           name="Register1"
           component={RegisterScreen1}/>
-        {/* <Stack.Screen
+        <Stack.Screen
           options={{headerShown: false}}
           name="Register2"
           component={RegisterScreen2}/>
         <Stack.Screen
           options={{headerShown: false}}
           name="Register3"
-          component={RegisterScreen3}/> */}
+          component={RegisterScreen3}/>
       </Stack.Navigator>
       <StatusBar/>
     </NavigationContainer>
