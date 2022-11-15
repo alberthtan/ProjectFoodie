@@ -2,17 +2,18 @@ import { Alert, View, TextInput, StyleSheet} from 'react-native'
 import React from 'react'
 
 
-const CustomInput = ({value, setValue, placeholder, secureTextEntry}) => {
+const CustomInput = ({value, setValue, placeholder, autoFocus, keyboardType, secureTextEntry}) => {
   return (
     <View style={styles.container}>
         <TextInput
             style={styles.custom}
             value={value}
-            // onfocus="if(this.value=='table id')this.value='table id'"
+            autoFocus={autoFocus}
+            keyboardType={keyboardType}
             placeholder = {placeholder}
             onChangeText= {setValue}
             secureTextEntry = {secureTextEntry} />
-      </View>
+   </View>
   )
 }
 
