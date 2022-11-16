@@ -2,7 +2,7 @@ import { TouchableOpacity, View, Text, Image, StyleSheet} from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/HomeScreen';
 import CameraScreen from '../screens/CameraScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import ProfileScreen from '../screens/ProfileScreens/ProfileScreen';
 import { StatusBar } from 'react-native-web';
 import homeIcon from '../../assets/icons/home.png';
 import accountIcon from '../../assets/icons/account.png';
