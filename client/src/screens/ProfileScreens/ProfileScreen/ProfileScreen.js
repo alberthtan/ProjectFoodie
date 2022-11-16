@@ -1,11 +1,13 @@
-import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity, Touchable } from 'react-native'
+import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
 import React from 'react'
 import profileIcon from '../../../../assets/icons/profileicon.png'
 import frontArrowIcon from '../../../../assets/icons/frontarrow.png'
 
-const ProfileScreen = () => {
+const ProfileScreen = ({navigation}) => {
   return (
-    <>
+    // <ScrollView style ={{height: '100%', flex:}}>
+    <View style={{flex: 1}}>
+    <ScrollView style ={{height: '100%'}}>
       <View style={styles.profileHeader}>
         <TouchableOpacity
             style={styles.profilePicture}
@@ -51,11 +53,14 @@ const ProfileScreen = () => {
           </TouchableOpacity>
       </View>
       <View style={styles.profileFooter}>
-          <TouchableOpacity>
+          <TouchableOpacity
+              onPress={() => navigation.navigate("LoginHome")}>
             <Text style={styles.signOut}>Sign Out</Text>
           </TouchableOpacity>
       </View>
-    </>
+      </ScrollView>
+      </View>
+ 
   )
 }
 
@@ -63,10 +68,11 @@ const styles = StyleSheet.create({
   // HEADER
   profileHeader: {
     width: '100%',
-    flex: 1,
+    flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    marginTop: 20,
     marginBottom: 20,
   },
   
@@ -85,7 +91,7 @@ const styles = StyleSheet.create({
   // BODY
   profileBody: {
     width: '100%',
-    flex: 2,
+    flex: 4,
     padding: 20
   },
 
@@ -113,7 +119,8 @@ const styles = StyleSheet.create({
   // FOOTER
   profileFooter: {
     width: '100%',
-    flex: 1,
+    height: '70%',
+    // flex: 1,
     // backgroundColor: 'green',
     alignItems: 'center',
     justifyContent: 'center'
@@ -121,7 +128,7 @@ const styles = StyleSheet.create({
   signOut: {
     color: '#327CEC',
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   }
 })
 
