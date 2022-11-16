@@ -19,6 +19,7 @@ import LoginScreen2 from './src/screens/LoginScreens/LoginScreen2';
 import RegisterScreen1 from './src/screens/LoginScreens/RegisterScreen1';
 import RegisterScreen2 from './src/screens/LoginScreens/RegisterScreen2';
 import RegisterScreen3 from './src/screens/LoginScreens/RegisterScreen3';
+import EditProfileScreen from './src/screens/ProfileScreens/EditProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -83,6 +84,10 @@ export default function App() {
           options={{headerShown: false}}
           name="Register3"
           component={RegisterScreen3}/>
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="EditProfile"
+          component={EditProfileScreen}/>
       </Stack.Navigator>
       <StatusBar/>
     </NavigationContainer>

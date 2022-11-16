@@ -38,7 +38,7 @@ const LoginScreen2 = ({navigation, route}) => {
                     value={verificationCode} 
                     setValue={setVerificationCode}
                     autoFocus={true}
-                    keyboardType="numeric"
+                    keyboardType="number-pad"
                 />
                 <Text
                     style={styles.hyperlinkStyle}

@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity, ScrollView
 import React from 'react'
 import profileIcon from '../../../../assets/icons/profileicon.png'
 import frontArrowIcon from '../../../../assets/icons/frontarrow.png'
+import ProfileButton from '../../../components/ProfileButton'
 
 const ProfileScreen = ({navigation}) => {
   return (
@@ -26,31 +27,9 @@ const ProfileScreen = ({navigation}) => {
         </Text>
       </View>
       <View style={styles.profileBody}>
-          <TouchableOpacity>
-              <View style={styles.bodyContainer}>
-                <Text style={styles.buttonText}>
-                  Personal
-                </Text>
-                <Image source={frontArrowIcon} resizeMode="contain" style={styles.frontArrow}/>
-              </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-              <View style={styles.bodyContainer}>
-                <Text style={styles.buttonText}>
-                  Past Orders
-                </Text>
-                <Image source={frontArrowIcon} resizeMode="contain" style={styles.frontArrow}/>
-              </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-              <View style={styles.bodyContainer}>
-                <Text style={styles.buttonText}>
-                  Payment Methods
-                </Text>
-                <Image source={frontArrowIcon} resizeMode="contain" style={styles.frontArrow}/>
-                
-              </View>
-          </TouchableOpacity>
+        <ProfileButton name="Personal" onPress={() => navigation.navigate('EditProfile')}/>
+        <ProfileButton name="Past Orders"/>
+        <ProfileButton name="Payment Methods"/>
       </View>
       <View style={styles.profileFooter}>
           <TouchableOpacity

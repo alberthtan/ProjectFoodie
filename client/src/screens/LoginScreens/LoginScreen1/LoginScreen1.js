@@ -38,7 +38,7 @@ const LoginScreen1 = ({navigation}) => {
                     value={phoneNumber} 
                     setValue={setPhoneNumber}
                     autoFocus={true}
-                    keyboardType="numeric"
+                    keyboardType="phone-pad"
                 />
                 <View style={{width:'100%', flex: 1, marginTop: '65%', alignItems: 'center'}}>
                     <CustomButton
@@ -47,10 +47,6 @@ const LoginScreen1 = ({navigation}) => {
                     />
                 </View>
             </View>
-            
-            
-            
-
         </View>
   )
 }
