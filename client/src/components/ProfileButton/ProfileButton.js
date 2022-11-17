@@ -6,10 +6,10 @@ const ProfileButton = ({name, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress}>
         <View style={styles.bodyContainer}>
-        <Text style={styles.buttonText}>
-            {name}
-        </Text>
-        <Image source={frontArrowIcon} resizeMode="contain" style={styles.frontArrow}/>
+          <Text style={styles.buttonText}>
+              {name}
+          </Text>
+          <Image source={frontArrowIcon} resizeMode="contain" style={styles.frontArrow}/>
         </View>
     </TouchableOpacity>
   )

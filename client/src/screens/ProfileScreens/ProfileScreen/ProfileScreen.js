@@ -28,7 +28,7 @@ const ProfileScreen = ({navigation}) => {
       </View>
       <View style={styles.profileBody}>
         <ProfileButton name="Personal" onPress={() => navigation.navigate('EditProfile')}/>
-        <ProfileButton name="Past Orders"/>
+        <ProfileButton name="Past Orders" onPress={() => navigation.navigate('PastOrders')}/>
         <ProfileButton name="Payment Methods"/>
       </View>
       <View style={styles.profileFooter}>

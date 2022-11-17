@@ -37,6 +37,7 @@ const Tabs = ({route}) => {
                     )
                 }}
                 initialParams={{ordered: false}}
+                screenOptions={{gestureEnabled: false}}
             />
             
             <Tab.Screen 

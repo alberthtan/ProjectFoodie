@@ -20,6 +20,7 @@ import RegisterScreen1 from './src/screens/LoginScreens/RegisterScreen1';
 import RegisterScreen2 from './src/screens/LoginScreens/RegisterScreen2';
 import RegisterScreen3 from './src/screens/LoginScreens/RegisterScreen3';
 import EditProfileScreen from './src/screens/ProfileScreens/EditProfileScreen';
+import PastOrdersScreen from './src/screens/ProfileScreens/PastOrdersScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -88,6 +89,10 @@ export default function App() {
           options={{headerShown: false}}
           name="EditProfile"
           component={EditProfileScreen}/>
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="PastOrders"
+          component={PastOrdersScreen}/>
       </Stack.Navigator>
       <StatusBar/>
     </NavigationContainer>
