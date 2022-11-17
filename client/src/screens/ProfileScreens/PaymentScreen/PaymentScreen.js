@@ -1,41 +1,44 @@
-import { Dimensions, Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity} from 'react-native'
+import { Dimensions, Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity, Touchable} from 'react-native'
 import React, {useState}  from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 
-import PastOrderItem from '../../../components/PastOrderItem'
+import PaymentMethodItem from '../../../components/PaymentMethodItem'
 import backIcon from '../../../../assets/icons/backicon.png'
+import CustomButton from '../../../components/CustomButton'
 
-const pastOrdersList = [
+const paymentMethodList = [
   {
     id: 1,
-    restaurantName: 'Ippudo',
-    transactionDate: '12/31/2020',
-    status: 'COMPLETED',
+    cardType: 'Debit',
+    cardEndDigits: '1234',
+    cardCompany: 'Visa',
+    bankCompany: 'Chase',
   },
   {
     id: 2,
-    restaurantName: 'Jack\'s Wife Freda',
-    transactionDate: '12/31/2020',
-    status: 'COMPLETED',
+    cardType: 'Debit',
+    cardEndDigits: '1234',
+    cardCompany: 'Visa',
+    bankCompany: 'Chase',
   },
   {
     id: 3,
-    restaurantName: 'Samwon Garden',
-    transactionDate: '12/31/2020',
-    status: 'COMPLETED',
+    cardType: 'Debit',
+    cardEndDigits: '1234',
+    cardCompany: 'Visa',
+    bankCompany: 'Chase',
   },
 ]
 
-const PastOrdersScreen = ({navigation}) => {
+const PaymentScreen = ({navigation}) => {
 
-  // const [tableid, setTableID] = useState('')
-
-const oneOrder = ({item}) => (
-  <PastOrderItem
+const onePaymentMethod = ({item}) => (
+  <PaymentMethodItem
       navigation = {navigation}
-      restaurantName = {item.restaurantName}
-      transactionDate= {item.transactionDate}
-      status = {item.status}
+      cardType = {item.cardType}
+      cardEndDigits= {item.cardEndDigits}
+      bankCompany = {item.bankCompany}
+      cardCompany = {item.cardCompany}
   />
 )
 
@@ -55,15 +58,22 @@ const oneOrder = ({item}) => (
                 }}/>
             </TouchableOpacity>
             <Text style = {styles.title}>
-                Past Orders
+                Payment Methods
             </Text>
         </View>
       <View style={{flex: 1}}>
         <FlatList
-          data={pastOrdersList}
-          renderItem={oneOrder}
+          data={paymentMethodList}
+          renderItem={onePaymentMethod}
           showsHorizontalScrollIndicator = {false}
         />
+        <View style={{alignItems: 'center', width: '100%', marginBottom: 20}}>
+          <CustomButton
+              text = "+ Add New Card"
+              onPress = {() => console.log("adding card")}
+              />
+        </View>
+        
       </View>
     </View>
   )
@@ -94,14 +104,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
       },
 
-//     title: {
-//       fontSize: 30,
-//       fontWeight:"bold",
-//       marginLeft: 20,
-//       marginBottom: 20,
-//       marginTop: Dimensions.get('window').height * 0.07,
-//   },
-
     filter: {
       height: 15,
       width: 15,
@@ -111,4 +113,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default PastOrdersScreen
+export default PaymentScreen

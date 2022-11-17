@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
 import React from 'react'
 import profileIcon from '../../../../assets/icons/profileicon.png'
-import frontArrowIcon from '../../../../assets/icons/frontarrow.png'
 import ProfileButton from '../../../components/ProfileButton'
 
 const ProfileScreen = ({navigation}) => {
@@ -29,7 +28,7 @@ const ProfileScreen = ({navigation}) => {
       <View style={styles.profileBody}>
         <ProfileButton name="Personal" onPress={() => navigation.navigate('EditProfile')}/>
         <ProfileButton name="Past Orders" onPress={() => navigation.navigate('PastOrders')}/>
-        <ProfileButton name="Payment Methods"/>
+        <ProfileButton name="Payment Methods" onPress={() => navigation.navigate('Payments')}/>
       </View>
       <View style={styles.profileFooter}>
           <TouchableOpacity

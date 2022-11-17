@@ -8,9 +8,9 @@ const PastOrderItem = ({navigation, restaurantName, transactionDate, status}) =>
         style = {styles.container}
         // onPress = {() => navigation.navigate('RestaurantScreen')}>
         onPress = {() => console.log('area pressed')}>
-        <View style={{flexDirection: 'row', width: '100%'}}>
+        <View style={{flexDirection: 'row', width: '100%', alignItems: 'center'}}>
             
-            <View style={{width: '20%', height: 60, borderRadius: 30, marginRight: 15}}>
+            <View style={{width: '20%', borderRadius: 30, marginRight: 15}}>
                 <Image style= {{width: 78, height: 60, borderRadius: 10}} source={{uri: 'https://www.kikkoman.eu/fileadmin/_processed_/0/0/csm_WEB_Traditional_Fukuoka_Ramen_646cd39e6b.jpg'}}/>
             </View>
             <View style = {{width: '50%'}}>
@@ -65,10 +65,11 @@ const styles = StyleSheet.create({
         // marginRight: 10
         // alignSelf: "flex-end",
         justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: '#3C6F37',
-        height: 30,
-        marginTop: 15,
-        // height: '60%'
+        // height: 30,
+        // marginTop: 15,
+        height: '60%'
         
     },
     text: {
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         padding: 10,
         textAlign: 'center',
-        justifyContent: 'center'
+        alignSelf: 'center'
     }
 })
 

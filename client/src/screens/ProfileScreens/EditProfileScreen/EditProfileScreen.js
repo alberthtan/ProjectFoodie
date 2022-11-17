@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
   profileName: {
     fontSize: 25,
     fontWeight: 'bold',
-    // marginTop: 10
   },
   
 

@@ -21,6 +21,7 @@ import RegisterScreen2 from './src/screens/LoginScreens/RegisterScreen2';
 import RegisterScreen3 from './src/screens/LoginScreens/RegisterScreen3';
 import EditProfileScreen from './src/screens/ProfileScreens/EditProfileScreen';
 import PastOrdersScreen from './src/screens/ProfileScreens/PastOrdersScreen';
+import PaymentScreen from './src/screens/ProfileScreens/PaymentScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -93,6 +94,10 @@ export default function App() {
           options={{headerShown: false}}
           name="PastOrders"
           component={PastOrdersScreen}/>
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Payments"
+          component={PaymentScreen}/>
       </Stack.Navigator>
       <StatusBar/>
     </NavigationContainer>
