@@ -70,7 +70,7 @@ const onePaymentMethod = ({item}) => (
         <View style={{alignItems: 'center', width: '100%', marginBottom: 20}}>
           <CustomButton
               text = "+ Add New Card"
-              onPress = {() => console.log("adding card")}
+              onPress = {() => navigation.navigate("AddPayment")}
               />
         </View>
         

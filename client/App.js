@@ -22,6 +22,7 @@ import RegisterScreen3 from './src/screens/LoginScreens/RegisterScreen3';
 import EditProfileScreen from './src/screens/ProfileScreens/EditProfileScreen';
 import PastOrdersScreen from './src/screens/ProfileScreens/PastOrdersScreen';
 import PaymentScreen from './src/screens/ProfileScreens/PaymentScreen';
+import AddPaymentScreen from './src/screens/ProfileScreens/AddPaymentScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -98,6 +99,10 @@ export default function App() {
           options={{headerShown: false}}
           name="Payments"
           component={PaymentScreen}/>
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="AddPayment"
+          component={AddPaymentScreen}/>
       </Stack.Navigator>
       <StatusBar/>
     </NavigationContainer>
