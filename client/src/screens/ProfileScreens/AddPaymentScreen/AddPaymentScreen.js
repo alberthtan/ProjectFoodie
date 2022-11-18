@@ -2,7 +2,7 @@ import { Dimensions, Text, View, StyleSheet, DatePickerIOSComponent, Image, Touc
 import React, {useState}  from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 
-import backIcon from '../../../../assets/icons/backicon.png'
+import xIcon from '../../../../assets/icons/xicon.png'
 import CustomButton from '../../../components/CustomButton'
 import CustomInput from '../../../components/CustomInput'
 
@@ -19,7 +19,7 @@ const AddPaymentScreen = ({navigation}) => {
             <TouchableOpacity
                 style={styles.backButton}
                 onPress={() => navigation.goBack()}>
-                <Image source={backIcon} resizeMode="contain" style={{
+                <Image source={xIcon} resizeMode="contain" style={{
                     width: 30,
                     height: 30,
                     alignSelf:'center',
@@ -37,7 +37,7 @@ const AddPaymentScreen = ({navigation}) => {
                 placeholder="Card number"
                 value={cardNumber} 
                 setValue={setCardNumber}
-                keyboardType="numeric"
+                keyboardType="number-pad"
                 autoFocus={true}
             />
 
@@ -47,7 +47,7 @@ const AddPaymentScreen = ({navigation}) => {
                     placeholder="Expiration Date"
                     value={expirationDate} 
                     setValue={setExpirationDate}
-                    keyboardType="numeric"
+                    keyboardType="number-pad"
                 />
                 </View>
 
@@ -56,7 +56,7 @@ const AddPaymentScreen = ({navigation}) => {
                         placeholder="CVC"
                         value={cvc} 
                         setValue={setCvc}
-                        keyboardType="numeric"
+                        keyboardType="number-pad"
                     />
                 </View>
 
@@ -66,7 +66,7 @@ const AddPaymentScreen = ({navigation}) => {
                 placeholder="Zipcode"
                 value={zipcode} 
                 setValue={setZipCode}
-                keyboardType="numeric"
+                keyboardType="number-pad"
             />
             <View style={{alignItems: 'center', width: '100%', marginTop: '30%'}}>
             <CustomButton

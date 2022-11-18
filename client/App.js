@@ -100,7 +100,7 @@ export default function App() {
           name="Payments"
           component={PaymentScreen}/>
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureDirection: 'vertical'}}
           name="AddPayment"
           component={AddPaymentScreen}/>
       </Stack.Navigator>
