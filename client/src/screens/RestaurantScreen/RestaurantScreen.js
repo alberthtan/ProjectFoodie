@@ -4,12 +4,11 @@ import { FlatList } from 'react-native-gesture-handler'
 
 import MenuCategoryButton from '../../components/MenuCategoryButton'
 import MenuItem from '../../components/MenuItem'
-import CustomButton from '../../components/CustomButton'
-import backIcon from '../../../assets/icons/backicon.png';
 
 import { firebase } from '../../firebase/config'
 import { getFirestore, doc, getDoc } from '@firebase/firestore'
 import { getSupportedCurrencies } from 'react-native-format-currency'
+import HeaderBar from '../../components/HeaderBar'
 
 const RestaurantScreen = ({navigation}) => {
     // const { name, description, subtotal } = route.params
@@ -50,29 +49,10 @@ const RestaurantScreen = ({navigation}) => {
                                             })
                                         })
                                     }
-                                // console.log(doc.data())
-                                // console.log(doc.id)
                             })
                             console.log("cat")
                             console.log("Categories array: " + MenuCategories)
-                            // setMenuCategories(categories)
-                            // setCurrentCategory(categories[0]['title'])
-                            // console.log("called")
                         })
-                        
-
-        // db.collection('Categories').get()
-        //                 .then(snap => {
-        //                     const categories = []
-        //                     snap.forEach(doc => {
-        //                         // console.log(doc.data())
-        //                         // console.log(doc.id)
-        //                         categories.push(doc.data())
-        //                     })
-        //                     setMenuCategories(categories)
-        //                     setCurrentCategory(categories[0]['title'])
-        //                     // console.log("called")
-        //                 })
     }, [])
 
     useEffect(() => {
@@ -87,25 +67,6 @@ const RestaurantScreen = ({navigation}) => {
                             })
                             setMenuItems(items)
                         })
-
-        // db.collection('Restaurants').get('DVYuyJMBoh5FnoUfpWXr')
-        //                 .then(snap => {
-        //                     const restaurants = []
-        //                     snap.forEach(doc => {
-        //                         console.log("restaurant id: " + doc.id)
-        //                         const category_id = doc.data()['Menus'][0].id
-        //                         console.log("Menu ID: " + doc.data()['Menus'][0].id)
-                                
-        //                         db.collection('Menus').get(doc.data()['Menus'][0].id)
-        //                         .then(snap => {
-        //                             snap.forEach(doc2 => 
-        //                                 console.log('Menu Name: ' + doc2.data()['name'])
-        //                             )
-        //                         })
-        //                         console.log("restauarant data: " + doc.data())
-
-        //                     })
-        //                 })
                     
     }, [currentCategory])
 
@@ -116,6 +77,17 @@ const RestaurantScreen = ({navigation}) => {
             currentCategory = {currentCategory}
             setCurrentCategory = {setCurrentCategory}
         />
+    )
+
+    const getCategories = () => (
+        <View style = {{height: 50, marginTop: 20}}>
+            <FlatList
+                horizontal= {true}
+                showsHorizontalScrollIndicator = {false}
+                data = { MenuCategories }
+                renderItem = { oneCategory }
+            />
+        </View>
     )
 
     
@@ -132,92 +104,21 @@ const RestaurantScreen = ({navigation}) => {
         />
     )
 
-    // let button
-    // if (count > 0) {
-    //     button = <View style = {{alignItems: 'center', justifyContent: 'center', borderTopWidth: 1, height: Dimensions.get('window').height * 0.15, borderColor: '#D9D9D9'}}>
-    //                 <CustomButton 
-    //                     text={"VIEW ORDER (" + count + ")"}
-    //                     style = {{bottom: 0, position: 'absolute'}}
-    //                     onPress = {() => {navigation.navigate('Checkout', {cart: cart, count: count, subtotal: subtotal}), console.log(cart)}}/>
-    //             </View>
-    // }
 
   return (
     <View style = {{flex: 1}}>
-        <TouchableOpacity
-                    style={styles.backButton}
-                    onPress={() => navigation.navigate('Home')}>
-                        <Image source={backIcon} resizeMode="contain" style={{
-                            width: 30,
-                            height: 30,
-                            alignSelf:'center',
-                            justifyContent: 'center',
-                            flex: 1,
-                            // marginBottom: 8,
-                            tintColor: '#000000',
-                        }}/>
-        </TouchableOpacity>
-
-        <Text style = {styles.restaurantName}>
-            Restaurant Name
-        </Text>
-
-        {/* {MenuCategories?.map(category => (
-            <MenuCategoryButton
-                navigation = {navigation}
-                key = {category.id}
-                name = {category.title}
-                color_id = {category.id}
-            />
-        ))} */}
+        <HeaderBar name="Restaurant Name" navigation={navigation}/>
 
         <View style = {{flex: 1}}>
-            <View style = {{height: 50}}>
-                <FlatList
-                    horizontal= {true}
-                    showsHorizontalScrollIndicator = {false}
-                    data = { MenuCategories }
-                    renderItem = { oneCategory }
-                />
-            </View>
             <FlatList
                 showsVerticalScrollIndicator = {false}
                 data = { MenuItems }
                 renderItem = { oneDish }
+                ListHeaderComponent={ getCategories }
             />
-        {/* {button} */}
         </View>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-    backButton: {
-        height: 30,
-        marginTop: Dimensions.get('window').height * 0.07,
-        marginLeft: 10,
-        alignSelf: 'flex-start'
-    },
-
-    restaurantName: {
-        fontSize: 30,
-        fontWeight:"bold",
-        marginLeft: 10,
-        marginBottom: 20,
-        marginTop: 20,
-        // textAlign: 'center'
-    },
-
-    rectangle: {
-        // width: 200,
-        // height: 30,
-        backgroundColor: '#D9D9D9',
-        alignSelf: "flex-start",
-        marginLeft: 140,
-        marginTop: 50,
-        padding: 10,
-        marginVertical: 30
-      },
-})
 
 export default RestaurantScreen

@@ -5,6 +5,7 @@ import { useRoute } from '@react-navigation/native';
 import CustomButton from '../../components/CustomButton';
 import NumberFormat from 'react-number-format';
 import backIcon from '../../../assets/icons/backicon.png';
+import BackButton from '../../components/BackButton';
 
 const ItemScreen = ({route, navigation}) => {
 
@@ -46,15 +47,7 @@ const ItemScreen = ({route, navigation}) => {
       <TouchableOpacity
               style={styles.backButton}
               onPress={() => navigation.goBack()}>
-                  <Image source={backIcon} resizeMode="contain" style={{
-                      width: 30,
-                      height: 30,
-                      alignSelf:'center',
-                      justifyContent: 'center',
-                      flex: 1,
-                      // marginBottom: 8,
-                      tintColor: '#000000',
-                  }}/>
+                  <BackButton/>
         </TouchableOpacity>
       <ScrollView style = {{height: Dimensions.get('window').height * 0.7}}>
         <View style = {styles.container}>

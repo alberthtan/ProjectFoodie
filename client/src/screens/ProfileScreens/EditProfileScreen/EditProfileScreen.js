@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Image, KeyboardAvoidingView, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import profileIcon from '../../../../assets/icons/profileicon.png'
-import backIcon from '../../../../assets/icons/backicon.png'
 import CustomInput from '../../../components/CustomInput'
+import HeaderBar from '../../../components/HeaderBar'
 
 const EditProfileScreen = ({navigation}) => {
   const [firstName, setFirstName] = useState('Roger')
@@ -12,24 +12,10 @@ const EditProfileScreen = ({navigation}) => {
   return (
     // <ScrollView style ={{height: '100%', flex:}}>
     <View style={{flex: 1}}>
-        <ScrollView style ={{height: '100%'}}>
-            <View style={styles.profileHeader}>
-                <TouchableOpacity
-                    style={styles.backButton}
-                    onPress={() => navigation.goBack()}>
-                    <Image source={backIcon} resizeMode="contain" style={{
-                        width: 30,
-                        height: 30,
-                        alignSelf:'center',
-                        justifyContent: 'center',
-                        flex: 1,
-                        tintColor: '#000000',
-                    }}/>
-                </TouchableOpacity>
-                <Text style = {styles.profileName}>
-                    Personal
-                </Text>
-            </View>
+      <HeaderBar name="Update Profile" navigation={navigation}/>
+      
+        <ScrollView style ={{height: '100%'}}>   
+        <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={80}>
             <View style={styles.profileImageContainer}>
                 <TouchableOpacity
                     style={styles.profilePicture}
@@ -45,26 +31,34 @@ const EditProfileScreen = ({navigation}) => {
                 </TouchableOpacity>
 
             </View>
-            <View style={styles.profileBody}>
-                <Text style={styles.text}>First Name</Text>
-                <CustomInput
-                    value={firstName} 
-                    setValue={setFirstName}/>
-                <Text style={styles.text}>Last Name</Text>
-                <CustomInput
-                    value={lastName} 
-                    setValue={setLastName}/>
-                <Text style={styles.text}>Email</Text>
-                <CustomInput
-                    value={email} 
-                    setValue={setEmail}/>
-                <Text style={styles.text}>Phone Number</Text>
-                <CustomInput
-                    value={phoneNumber} 
-                    setValue={setPhoneNumber}
-                    keyboardType='phone-pad'/>
-            </View>
+            
+              <View style={styles.profileBody}>
+                  <Text style={styles.text}>First Name</Text>
+                  <CustomInput
+                      value={firstName} 
+                      setValue={setFirstName}/>
+                  <Text style={styles.text}>Last Name</Text>
+                  <CustomInput
+                      value={lastName} 
+                      setValue={setLastName}/>
+                  <Text style={styles.text}>Email</Text>
+                  <CustomInput
+                      value={email} 
+                      setValue={setEmail}/>
+                      
+                  <Text style={styles.text}>Phone Number</Text>
+                  
+                  <CustomInput
+                      value={phoneNumber} 
+                      setValue={setPhoneNumber}
+                      keyboardType='phone-pad'/>
+                      
+              </View>
+              </KeyboardAvoidingView>
+            
+
         </ScrollView>
+        
       </View>
  
   )
@@ -72,21 +66,6 @@ const EditProfileScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   // HEADER
-  profileHeader: {
-    width: '100%',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    marginBottom: 20,
-  },
-  backButton: {
-    height: 30,
-    marginTop: Dimensions.get('window').height * 0.07,
-    marginLeft: 0,
-    alignSelf: 'flex-start'
-},
-
   profileName: {
     fontSize: 25,
     fontWeight: 'bold',
@@ -96,12 +75,10 @@ const styles = StyleSheet.create({
   // PROFILE IMAGE
   profileImageContainer: {
     flex: 2,
+    marginTop: 20
   },
   profilePicture: {
-    // height: '70%',
-    // marginTop: Dimensions.get('window').height * 0.07,
     alignSelf: 'center',
-    paddingBottom: 30
   },
   
 

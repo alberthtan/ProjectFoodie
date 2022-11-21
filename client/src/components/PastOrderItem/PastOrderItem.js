@@ -33,7 +33,7 @@ const PastOrderItem = ({navigation, restaurantName, transactionDate, status}) =>
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 10,
+        marginVertical: 15,
         marginLeft: 10,
         width: '100%',
         justifyContent: 'center',
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 
     restaurantName: {
         fontWeight: 'bold',
-        fontSize: 18,
+        fontSize: 15,
         // width: '95%'
     },
 
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     },
 
     status: {
-        fontSize: 14,
+        fontSize: 12,
         color: 'green',
     },
 

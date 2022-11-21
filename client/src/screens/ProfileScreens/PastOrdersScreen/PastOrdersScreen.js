@@ -1,9 +1,9 @@
-import { Dimensions, Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity} from 'react-native'
-import React, {useState}  from 'react'
+import { Dimensions, View, StyleSheet} from 'react-native'
+import React  from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 
 import PastOrderItem from '../../../components/PastOrderItem'
-import backIcon from '../../../../assets/icons/backicon.png'
+import HeaderBar from '../../../components/HeaderBar'
 
 const pastOrdersList = [
   {
@@ -41,25 +41,10 @@ const oneOrder = ({item}) => (
 
   return (
     <View style = {styles.container}>
-        <View style={styles.header}>
-            <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => navigation.goBack()}>
-                <Image source={backIcon} resizeMode="contain" style={{
-                    width: 30,
-                    height: 30,
-                    alignSelf:'center',
-                    justifyContent: 'center',
-                    flex: 1,
-                    tintColor: '#000000',
-                }}/>
-            </TouchableOpacity>
-            <Text style = {styles.title}>
-                Past Orders
-            </Text>
-        </View>
+      <HeaderBar name="Past Orders" navigation={navigation}/>
       <View style={{flex: 1}}>
         <FlatList
+          style={{paddingTop: 10}}
           data={pastOrdersList}
           renderItem={oneOrder}
           showsHorizontalScrollIndicator = {false}
@@ -72,16 +57,8 @@ const oneOrder = ({item}) => (
 const styles = StyleSheet.create({
     container: {
         flex: 1, 
-        // flexDirection: 'column',
-        // justifyContent: 'center'
     },
 
-    header: {
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
-      },
     backButton: {
         height: 30,
         marginTop: Dimensions.get('window').height * 0.07,

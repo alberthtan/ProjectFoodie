@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity} from 'react-native'
 import React from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 
@@ -8,6 +8,7 @@ import AddItemsButton from '../../components/AddItemsButton'
 import CheckoutSubtotal from '../../components/CheckoutSubtotal'
 import CheckoutTaxes from '../../components/CheckoutTaxes'
 import CheckoutTotal from '../../components/CheckoutTotal/CheckoutTotal'
+import HeaderBar from '../../components/HeaderBar'
 
 const CheckoutScreen = ({route, navigation}) => {
   const {cart, count, subtotal, restaurant_id} = route.params
@@ -15,11 +16,7 @@ const CheckoutScreen = ({route, navigation}) => {
 
   return (
     <View style = {{flex: 1}}>
-        <View style = {styles.container}>
-            <Text style = {styles.checkout}>
-                Checkout
-            </Text>
-        </View>
+      <HeaderBar name='Checkout' navigation= {navigation}/>
         
         <ScrollView showsVerticalScrollIndicator = {false}>
 
@@ -46,7 +43,7 @@ const CheckoutScreen = ({route, navigation}) => {
                 onPress = {() => navigation.navigate('Menu', {cart: cart, count: count, subtotal: subtotal, restaurant_id: restaurant_id})}
             />
 
-            <View style = {{borderTopWidth: 1, marginTop: 20, borderTopColor: "#D9D9D9"}}>
+            <View style = {{marginTop: 20}}>
                 <CheckoutSubtotal
                     subtotal = {subtotal}/>
 
@@ -75,22 +72,6 @@ const CheckoutScreen = ({route, navigation}) => {
 export default CheckoutScreen
 
 const styles = StyleSheet.create({
-    container: {
-        height: Dimensions.get('window').height * 0.11,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: '#D9D9D9',
-    },
-
-    checkout: {
-        bottom: 0, 
-        position: 'absolute', 
-        marginVertical: 20,
-        fontWeight: 'bold',
-        fontSize: 18,
-    },
-
     orderButton:{
         height: Dimensions.get('window').height * 0.15,
         justifyContent: 'center',

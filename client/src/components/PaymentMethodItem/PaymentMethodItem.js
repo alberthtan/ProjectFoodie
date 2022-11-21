@@ -10,8 +10,8 @@ const PaymentMethodItem = ({navigation, cardEndDigits, cardType, cardCompany, ba
             <View style={{width: '20%', borderRadius: 30,}}>
                 <Image style= {{width: 65, height: 50, borderRadius: 10}} source={{uri: 'https://1000logos.net/wp-content/uploads/2017/06/VISA-Logo-1992.png'}}/>
             </View>
-            <View style = {{width: '60%'}}>
-                <Text style = {styles.bank}>{bankCompany}</Text>
+            <View style = {{width: '63%'}}>
+                <Text style = {{fontWeight: 'bold'}}>{bankCompany}</Text>
                 <Text style = {styles.cardType}>
                     {cardType} ....{cardEndDigits}
                 </Text>

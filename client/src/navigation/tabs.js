@@ -6,6 +6,7 @@ import ProfileScreen from '../screens/ProfileScreens/ProfileScreen';
 import { StatusBar } from 'react-native-web';
 import homeIcon from '../../assets/icons/home.png';
 import accountIcon from '../../assets/icons/account.png';
+import profile from '../../assets/icons/profile.png';
 import qrIcon from '../../assets/icons/qr.png';
 
 const Tab = createBottomTabNavigator();
@@ -30,9 +31,9 @@ const Tabs = ({route}) => {
                                     tintColor: focused ? '#24891A' : '#808080',
                                 }}
                             />
-                            <Text style={{color: focused ? '#24891A': '#808080', fontSize: 12}}>
+                            {/* <Text style={{color: focused ? '#24891A': '#808080', fontSize: 12}}>
                                 Home
-                            </Text>
+                            </Text> */}
                         </View>
                     )
                 }}
@@ -80,7 +81,7 @@ const Tabs = ({route}) => {
                     tabBarIcon: ({focused}) => (
                         <View style = {{alignItems:'center', justifyContent: 'center', top: 10}}>
                             <Image
-                                source={accountIcon}
+                                source={profile}
                                 resizeMode="contain"
                                 style={{
                                     width: 25,
@@ -88,9 +89,9 @@ const Tabs = ({route}) => {
                                     tintColor: focused ? '#24891A' : '#808080',
                                 }}
                             />
-                            <Text style={{color: focused ? '#24891A': '#808080', fontSize: 12}}>
+                            {/* <Text style={{color: focused ? '#24891A': '#808080', fontSize: 12}}>
                                 Account
-                            </Text>
+                            </Text> */}
                         </View>
                     ),
                 }}

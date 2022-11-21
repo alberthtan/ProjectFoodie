@@ -1,10 +1,10 @@
-import { Dimensions, Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity, Touchable} from 'react-native'
-import React, {useState}  from 'react'
+import { Dimensions, View, StyleSheet} from 'react-native'
+import React  from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 
 import PaymentMethodItem from '../../../components/PaymentMethodItem'
-import backIcon from '../../../../assets/icons/backicon.png'
 import CustomButton from '../../../components/CustomButton'
+import HeaderBar from '../../../components/HeaderBar'
 
 const paymentMethodList = [
   {
@@ -44,25 +44,10 @@ const onePaymentMethod = ({item}) => (
 
   return (
     <View style = {styles.container}>
-        <View style={styles.header}>
-            <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => navigation.goBack()}>
-                <Image source={backIcon} resizeMode="contain" style={{
-                    width: 30,
-                    height: 30,
-                    alignSelf:'center',
-                    justifyContent: 'center',
-                    flex: 1,
-                    tintColor: '#000000',
-                }}/>
-            </TouchableOpacity>
-            <Text style = {styles.title}>
-                Payment Methods
-            </Text>
-        </View>
+        <HeaderBar name="Payment Methods" navigation={navigation}/>
       <View style={{flex: 1}}>
         <FlatList
+          style={{paddingTop: 10}}
           data={paymentMethodList}
           renderItem={onePaymentMethod}
           showsHorizontalScrollIndicator = {false}
