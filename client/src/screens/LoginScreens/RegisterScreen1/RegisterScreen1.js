@@ -1,14 +1,32 @@
 import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity} from 'react-native'
-import React, {useState} from 'react'
+import React, { useState, useRef} from 'react'
 import CustomInput from '../../../components/CustomInput'
 import CustomButton from '../../../components/CustomButton'
 import backIcon from '../../../../assets/icons/backicon.png';
 
+// import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
+// import { firebaseConfig } from '../../../config';
+// import firebase from 'firebase/compat/app'
+
 const RegisterScreen1 = ({navigation}) => {
     const [phoneNumber, setPhoneNumber] = useState('')
+    // const [verificationId, setVerificationId] = useState(null)
+    // const recaptchaVerifier = useRef(null);
+
+    // const sendVerification = () => {
+    //     const phoneProvider = new firebase.auth.PhoneAuthProvider();
+    //     console.log(phoneNumber)
+    //     phoneProvider.verifyPhoneNumber(phoneNumber, recaptchaVerifier.current).then(setVerificationId);
+    //     console.log(verificationId)
+    //     setPhoneNumber('');
+    // }
 
     return (
         <View style= {styles.root}>
+            {/* <FirebaseRecaptchaVerifierModal
+                ref={recaptchaVerifier}
+                firebaseConfig={firebaseConfig}
+            /> */}
             
             <TouchableOpacity
                 style={styles.backButton}
@@ -41,7 +59,12 @@ const RegisterScreen1 = ({navigation}) => {
             <View style={{width:'100%', flex: 1, marginTop: '65%', alignItems: 'center'}}>
                 <CustomButton
                     text="Continue"
-                    onPress={() => navigation.navigate('Register2', {phoneNumber: phoneNumber}) }
+                    onPress={() => {
+                        // sendVerification();
+                        // console.log(verificationId)
+                        navigation.navigate('Register2', {phoneNumber: phoneNumber});
+                        // sendVerification(); 
+                    }}
                 />
             </View>
         </View>

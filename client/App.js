@@ -36,7 +36,7 @@ export default function App() {
           name="SignIn"
           component={SignInScreen} /> */}
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
           name="HomeTabs"
           component={Tabs}/>
         {/* <Stack.Screen

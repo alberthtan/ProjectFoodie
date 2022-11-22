@@ -1,15 +1,59 @@
-import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity} from 'react-native'
-import React, {useState} from 'react'
+import { View, StyleSheet, Text, Alert, Dimensions, Image, TouchableOpacity} from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import CustomInput from '../../../components/CustomInput'
 import CustomButton from '../../../components/CustomButton'
 import backIcon from '../../../../assets/icons/backicon.png';
 
+import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
+import { firebaseConfig } from '../../../config';
+import firebase from 'firebase/compat/app'
+// import { firebase } from '../../../config'
+
+// const firebase = require('firebase');
+ 
+
 const RegisterScreen2 = ({navigation, route}) => {
-    const [verificationCode, setVerificationCode] = useState('')
-    const { phoneNumber } = route.params
+    const { phoneNumber } = route.params;
+    const [mobileNumber, setMobileNumber] = useState(phoneNumber)
+    const [code, setCode] = useState('');
+    const [verificationId, setVerificationId] = useState(null)
+    const recaptchaVerifier = useRef(null);
+
+
+    const sendVerification = () => {
+        const phoneProvider = new firebase.auth.PhoneAuthProvider();
+        console.log(mobileNumber)
+        phoneProvider.verifyPhoneNumber(mobileNumber, recaptchaVerifier.current).then(() => {
+            setVerificationId;
+            console.log(verificationId)
+        });
+        // co?nsole.log(verificationId)
+        setMobileNumber('');
+    }
+
+    const confirmCode = () => {
+        
+        const credential = firebase.auth.PhoneAuthProvider.credential(verificationId, code);
+
+        firebase.auth().signInWithCredential(credential).then(() => {
+            setCode('');
+            navigation.navigate('Register3');
+        }).catch((error) => {
+            alert("Wrong code!");
+        })
+        // Alert.alert('Login Successful');
+    }
+
+    // useEffect(() => {
+    //     sendVerification();
+    // })
 
     return (
         <View style= {styles.root}>
+             <FirebaseRecaptchaVerifierModal
+                ref={recaptchaVerifier}
+                firebaseConfig={firebaseConfig}
+            />
             
             <TouchableOpacity
                 style={styles.backButton}
@@ -35,22 +79,25 @@ const RegisterScreen2 = ({navigation, route}) => {
                 </View>
                 
                 <CustomInput 
-                    value={verificationCode} 
-                    setValue={setVerificationCode}
+                    value={code} 
+                    setValue={setCode}
                     autoFocus={true}
                     keyboardType="number-pad"
                 />
                 <Text
                     style={styles.hyperlinkStyle}
                     onPress={() => {
-                        console.log('resending code')
+                        sendVerification();
+                        console.log('resending code');
                     }}>
                     Resend
                 </Text>
                 <View style={{width:'100%', flex: 1, marginTop: '60%', alignItems: 'center'}}>
                     <CustomButton
                         text="Continue"
-                        onPress={() => navigation.navigate('Register3')}
+                        onPress={() => {
+                            confirmCode()
+                        }}
                     />
                 </View>
             </View>

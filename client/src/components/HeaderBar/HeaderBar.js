@@ -38,6 +38,8 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         position: 'absolute',
         zIndex: 999,
+        width: 50,
+        height: 50,
     },
 
     checkout: {
