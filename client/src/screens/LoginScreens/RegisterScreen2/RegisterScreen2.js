@@ -39,7 +39,7 @@ const RegisterScreen2 = ({navigation, route}) => {
             setCode('');
             navigation.navigate('Register3');
         }).catch((error) => {
-            alert("Wrong code!");
+            alert(error);
         })
         // Alert.alert('Login Successful');
     }
