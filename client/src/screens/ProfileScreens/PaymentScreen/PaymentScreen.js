@@ -14,20 +14,20 @@ const paymentMethodList = [
     cardCompany: 'Visa',
     bankCompany: 'Chase',
   },
-  {
-    id: 2,
-    cardType: 'Debit',
-    cardEndDigits: '1234',
-    cardCompany: 'Visa',
-    bankCompany: 'Chase',
-  },
-  {
-    id: 3,
-    cardType: 'Debit',
-    cardEndDigits: '1234',
-    cardCompany: 'Visa',
-    bankCompany: 'Chase',
-  },
+  // {
+  //   id: 2,
+  //   cardType: 'Debit',
+  //   cardEndDigits: '1234',
+  //   cardCompany: 'Visa',
+  //   bankCompany: 'Chase',
+  // },
+  // {
+  //   id: 3,
+  //   cardType: 'Debit',
+  //   cardEndDigits: '1234',
+  //   cardCompany: 'Visa',
+  //   bankCompany: 'Chase',
+  // },
 ]
 
 const PaymentScreen = ({navigation}) => {

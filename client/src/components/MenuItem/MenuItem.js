@@ -32,7 +32,7 @@ const MenuItem = ({navigation, name, price, description, count, cart, subtotal, 
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 10,
+        marginVertical: 15,
         marginLeft: 10
     },
 

@@ -11,18 +11,21 @@ const pastOrdersList = [
     restaurantName: 'Ippudo',
     transactionDate: '12/31/2020',
     status: 'COMPLETED',
+    restaurantImage: 'https://www.kikkoman.eu/fileadmin/_processed_/0/0/csm_WEB_Traditional_Fukuoka_Ramen_646cd39e6b.jpg'
   },
   {
     id: 2,
     restaurantName: 'Jack\'s Wife Freda',
     transactionDate: '12/31/2020',
     status: 'COMPLETED',
+    restaurantImage: 'https://cdn.vox-cdn.com/thumbor/dIpTdNGyJdUgxa8KCdkEtXcVXi4=/0x0:960x628/1200x800/filters:focal(404x238:556x390)/cdn.vox-cdn.com/uploads/chorus_image/image/57106681/17021915_1328439217202661_4461976011855380041_n.0.jpg'
   },
   {
     id: 3,
     restaurantName: 'Samwon Garden',
     transactionDate: '12/31/2020',
     status: 'COMPLETED',
+    restaurantImage: 'https://stardiamondaward.com/wp-content/uploads/2019/05/samwongarden-korean-bbq-inside.png'
   },
 ]
 
@@ -36,6 +39,7 @@ const oneOrder = ({item}) => (
       restaurantName = {item.restaurantName}
       transactionDate= {item.transactionDate}
       status = {item.status}
+      restaurantImage={item.restaurantImage}
   />
 )
 

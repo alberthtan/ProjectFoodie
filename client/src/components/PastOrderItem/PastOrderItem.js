@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Pressable, TouchableOpacity, Image} from 'react
 import React from 'react'
 import NumberFormat from 'react-number-format'
 
-const PastOrderItem = ({navigation, restaurantName, transactionDate, status}) => {
+const PastOrderItem = ({navigation, restaurantName, transactionDate, status, restaurantImage}) => {
   return (
     <TouchableOpacity
         style = {styles.container}
@@ -11,7 +11,7 @@ const PastOrderItem = ({navigation, restaurantName, transactionDate, status}) =>
         <View style={{flexDirection: 'row', width: '100%', alignItems: 'center'}}>
             
             <View style={{width: '20%', borderRadius: 30, marginRight: 15}}>
-                <Image style= {{width: 78, height: 60, borderRadius: 10}} source={{uri: 'https://www.kikkoman.eu/fileadmin/_processed_/0/0/csm_WEB_Traditional_Fukuoka_Ramen_646cd39e6b.jpg'}}/>
+                <Image style= {{width: 78, height: 60, borderRadius: 10}} source={{uri: restaurantImage}}/>
             </View>
             <View style = {{width: '50%'}}>
                 <Text style = {styles.restaurantName}>{restaurantName}</Text>

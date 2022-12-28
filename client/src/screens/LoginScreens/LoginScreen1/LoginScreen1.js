@@ -1,11 +1,34 @@
 import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity} from 'react-native'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import CustomInput from '../../../components/CustomInput'
 import CustomButton from '../../../components/CustomButton'
-import backIcon from '../../../../assets/icons/backicon.png';
+import BackButton from '../../../components/BackButton';
+
+import { auth } from '../../../config'
 
 const LoginScreen1 = ({navigation}) => {
-    const [phoneNumber, setPhoneNumber] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            if (user) {
+                 navigation.navigate('HomeTabs')
+            }
+        })
+
+        return unsubscribe
+    }, [])
+
+    const handleLogin = () => {
+         auth
+            .signInWithEmailAndPassword(email, password)
+            .then(userCredentials => {
+                const user = userCredentials.user
+                console.log('Logged in with:', user.email)
+            })
+            .catch(error => alert(error.message))
+    }
 
     return (
         <View style= {styles.root}>
@@ -13,14 +36,7 @@ const LoginScreen1 = ({navigation}) => {
             <TouchableOpacity
                 style={styles.backButton}
                 onPress={() => navigation.goBack()}>
-                    <Image source={backIcon} resizeMode="contain" style={{
-                        width: 30,
-                        height: 30,
-                        alignSelf:'center',
-                        justifyContent: 'center',
-                        flex: 1,
-                        tintColor: '#000000',
-                    }}/>
+                    <BackButton/>
             </TouchableOpacity>
 
 
@@ -30,20 +46,27 @@ const LoginScreen1 = ({navigation}) => {
                         Welcome back
                     </Text>
                     <Text style = {styles.subtitle}>
-                        Enter your number for a one-time login code
+                        Login with your email
                     </Text>
                 </View>
                 <CustomInput 
-                    placeholder="(615) 975-4270"
-                    value={phoneNumber} 
-                    setValue={setPhoneNumber}
+                    placeholder="Email"
+                    value={email}
+                    setValue={setEmail}
                     autoFocus={true}
-                    keyboardType="phone-pad"
+                    keyboardType="email-address"
                 />
-                <View style={{width:'100%', flex: 1, marginTop: '65%', alignItems: 'center'}}>
+                <CustomInput 
+                    placeholder="Password"
+                    value={password} 
+                    secureTextEntry
+                    setValue={setPassword}
+                    keyboardType="default"
+                />
+                <View style={{width:'100%', flex: 1, marginTop: '45%', alignItems: 'center'}}>
                     <CustomButton
                         text="Continue"
-                        onPress={() => navigation.navigate('Login2', {phoneNumber: phoneNumber}) }
+                        onPress={handleLogin}
                     />
                 </View>
             </View>

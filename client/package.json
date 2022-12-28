@@ -13,6 +13,7 @@
     "@firebase/auth": "^0.20.7",
     "@firebase/firestore": "^3.5.0",
     "@react-native-firebase/app": "^15.4.0",
+    "@react-native-masked-view/masked-view": "0.2.6",
     "@react-navigation/bottom-tabs": "^6.4.0",
     "@react-navigation/native": "^6.0.11",
     "@react-navigation/native-stack": "^6.7.0",

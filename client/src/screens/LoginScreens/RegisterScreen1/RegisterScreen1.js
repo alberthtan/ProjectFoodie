@@ -1,25 +1,43 @@
 import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity} from 'react-native'
-import React, { useState, useRef} from 'react'
+import React, { useState, useEffect} from 'react'
 import CustomInput from '../../../components/CustomInput'
 import CustomButton from '../../../components/CustomButton'
-import backIcon from '../../../../assets/icons/backicon.png';
+import BackButton from '../../../components/BackButton';
 
 // import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
 // import { firebaseConfig } from '../../../config';
 // import firebase from 'firebase/compat/app'
 
+import { auth } from '../.././../config'
+
+
 const RegisterScreen1 = ({navigation}) => {
-    const [phoneNumber, setPhoneNumber] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     // const [verificationId, setVerificationId] = useState(null)
     // const recaptchaVerifier = useRef(null);
 
-    // const sendVerification = () => {
-    //     const phoneProvider = new firebase.auth.PhoneAuthProvider();
-    //     console.log(phoneNumber)
-    //     phoneProvider.verifyPhoneNumber(phoneNumber, recaptchaVerifier.current).then(setVerificationId);
-    //     console.log(verificationId)
-    //     setPhoneNumber('');
-    // }
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            if (user) {
+                 navigation.navigate('HomeTabs')
+            }
+        })
+
+        return unsubscribe
+    }, [])
+
+    const handleSignUp = () => {
+        auth
+            .createUserWithEmailAndPassword(email, password)
+            .then(userCredentials => {
+                const user = userCredentials.user
+                console.log('Registered in with:', user.email)
+            })
+            .catch(error => alert(error.message))
+    }
 
     return (
         <View style= {styles.root}>
@@ -31,14 +49,7 @@ const RegisterScreen1 = ({navigation}) => {
             <TouchableOpacity
                 style={styles.backButton}
                 onPress={() => navigation.goBack()}>
-                    <Image source={backIcon} resizeMode="contain" style={{
-                        width: 30,
-                        height: 30,
-                        alignSelf:'center',
-                        justifyContent: 'center',
-                        flex: 1,
-                        tintColor: '#000000',
-                    }}/>
+                    <BackButton/>
             </TouchableOpacity>
 
             <View style={styles.titleContainer}>
@@ -50,21 +61,35 @@ const RegisterScreen1 = ({navigation}) => {
                 </Text>
             </View>
             <CustomInput 
-                placeholder="(615) 975-4270"
-                value={phoneNumber} 
-                setValue={setPhoneNumber}
+                placeholder="First Name"
+                value={firstName} 
+                setValue={setFirstName}
                 autoFocus={true}
-                keyboardType="phone-pad"
+                keyboardType="default"
             />
-            <View style={{width:'100%', flex: 1, marginTop: '65%', alignItems: 'center'}}>
+            <CustomInput
+                placeholder="Last Name"
+                value={lastName}
+                setValue={setLastName}
+                keyboardType="default"
+            />
+            <CustomInput 
+                placeholder="Email"
+                value={email} 
+                setValue={setEmail}
+                keyboardType="email-address"
+            />
+            <CustomInput 
+                placeholder="Password"
+                value={password} 
+                setValue={setPassword}
+                secureTextEntry
+                keyboardType="default"
+            />
+            <View style={{width:'100%', flex: 1, alignItems: 'center'}}>
                 <CustomButton
                     text="Continue"
-                    onPress={() => {
-                        // sendVerification();
-                        // console.log(verificationId)
-                        navigation.navigate('Register2', {phoneNumber: phoneNumber});
-                        // sendVerification(); 
-                    }}
+                    onPress={handleSignUp}
                 />
             </View>
         </View>
@@ -73,7 +98,7 @@ const RegisterScreen1 = ({navigation}) => {
 
 const styles = StyleSheet.create({
     root: {
-        alignItems: 'center',
+        // alignItems: 'center',
         flex:1,
         padding: 20,
         backgroundColor: '#F9FBFC',

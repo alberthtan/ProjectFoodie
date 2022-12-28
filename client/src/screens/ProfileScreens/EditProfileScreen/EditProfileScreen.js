@@ -5,9 +5,9 @@ import CustomInput from '../../../components/CustomInput'
 import HeaderBar from '../../../components/HeaderBar'
 
 const EditProfileScreen = ({navigation}) => {
-  const [firstName, setFirstName] = useState('Roger')
-  const [lastName, setLastName] = useState('Federer')
-  const [email, setEmail] = useState('thegoat@gmail.com')
+  const [firstName, setFirstName] = useState('Allen')
+  const [lastName, setLastName] = useState('Chun')
+  const [email, setEmail] = useState('allen.chun@yale.edu')
   const [phoneNumber, setPhoneNumber] = useState('200-2020-2020')
   return (
     // <ScrollView style ={{height: '100%', flex:}}>

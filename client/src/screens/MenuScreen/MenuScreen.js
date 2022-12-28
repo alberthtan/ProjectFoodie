@@ -107,7 +107,7 @@ const MenuScreen = ({route, navigation}) => {
     if (count > 0) {
         button = <View style = {{alignItems: 'center', justifyContent: 'center', borderTopWidth: 1, height: Dimensions.get('window').height * 0.15, borderColor: '#D9D9D9'}}>
                     <CustomButton 
-                        text={"VIEW ORDER (" + count + ")"}
+                        text={"View Order (" + count + ")"}
                         style = {{bottom: 0, position: 'absolute'}}
                         onPress = {() => {navigation.navigate('Checkout', {cart: cart, count: count, subtotal: subtotal}), console.log(cart)}}/>
                 </View>
@@ -115,11 +115,11 @@ const MenuScreen = ({route, navigation}) => {
 
   return (
     <View style = {{flex: 1}}>
-        <HeaderBar name='Restaurant Name' navigation={navigation} destination="HomeTabs"/>
+        <HeaderBar name='Ippudo' navigation={navigation} destination="HomeTabs"/>
 
         <View style = {{flex: 1}}>
                 <FlatList
-                    showsVerticalScrollIndicator = {false}
+                    showsVerticalScrollIndicator = {true}
                     data = { MenuItems }
                     renderItem = { oneDish }
                     ListHeaderComponent={ getCategories }

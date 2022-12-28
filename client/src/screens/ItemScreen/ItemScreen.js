@@ -16,7 +16,7 @@ const ItemScreen = ({route, navigation}) => {
   if (isOrdering === true) {
     addToOrderButton = <View style = {styles.addToCart}>
         <CustomButton
-          text = "ADD TO ORDER"
+          text = "Add to Order"
           onPress = {() => {cart.push({name: name, price: price}), navigation.navigate('Menu', {cart: cart, count: count + 1, subtotal: subtotal + price, restaurant_id: restaurant_id})}}
         />
     </View>
@@ -50,9 +50,11 @@ const ItemScreen = ({route, navigation}) => {
                   <BackButton/>
         </TouchableOpacity>
       <ScrollView style = {{height: Dimensions.get('window').height * 0.7}}>
-        <View style = {styles.container}>
+        {/* <View style = {styles.container}>
           <Text>Picture of Food</Text>
-        </View>
+          <Image style= {styles.container} source={{uri: 'https://1000logos.net/wp-content/uploads/2017/06/VISA-Logo-1992.png'}}/>
+        </View> */}
+        <Image style= {styles.container} source={{uri: 'https://www.elmundoeats.com/wp-content/uploads/2021/02/FP-Quick-30-minutes-chicken-ramen.jpg'}}/>
         
         <Text style = {styles.itemName}>
           {name}

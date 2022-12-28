@@ -5,12 +5,22 @@ import ProfileButton from '../../../components/ProfileButton'
 import profileIcon2 from '../../../../assets/icons/profile.png'
 import pastorders from '../../../../assets/icons/pastorders.png'
 import payment from '../../../../assets/icons/payment.png'
+import { auth } from '../../../config'
 
 const ProfileScreen = ({navigation}) => {
+
+  const handleSignOut = () => {
+    auth
+      .signOut()
+      .then(() => {
+        navigation.navigate('LoginHome')
+      })
+      .catch(error => alert(error.message))
+  }
+
   return (
     <>
-      <ScrollView style ={{height: '100%'}}>
-        <View style={styles.profileHeader}>
+      <View style={styles.profileHeader}>
           <TouchableOpacity
               style={styles.profilePicture}
               onPress={() => console.log("profile pic")}>
@@ -27,6 +37,7 @@ const ProfileScreen = ({navigation}) => {
                 Profile Name
           </Text>
         </View>
+      <ScrollView style ={{height: '100%', flex: 1}} showsVerticalScrollIndicator = {true}>
         <View style={styles.profileBody}>
           <ProfileButton name="Update Profile" onPress={() => navigation.navigate('EditProfile')} imageSource={profileIcon2}/>
           <ProfileButton name="Past Orders" onPress={() => navigation.navigate('PastOrders')} imageSource={pastorders}/>
@@ -34,7 +45,7 @@ const ProfileScreen = ({navigation}) => {
         </View>
         <View style={styles.profileFooter}>
           <TouchableOpacity
-              onPress={() => navigation.navigate("LoginHome")}>
+              onPress={handleSignOut}>
             <Text style={styles.signOut}>Sign Out</Text>
           </TouchableOpacity>
         </View>
@@ -48,12 +59,11 @@ const styles = StyleSheet.create({
   // HEADER
   profileHeader: {
     width: '100%',
-    flex: 2,
+    flex: 0.5,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
     marginTop: 20,
-    marginBottom: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#D9D9D9',
   },

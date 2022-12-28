@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
     bodyContainer: {
         flexDirection: 'row',
         // paddingTop: 20,
-        marginBottom: 40,
+        marginBottom: 20,
+        marginTop: 20,
         // padding: 20,
         width: '100%',
       },

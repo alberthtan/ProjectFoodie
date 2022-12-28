@@ -107,7 +107,7 @@ const RestaurantScreen = ({navigation}) => {
 
   return (
     <View style = {{flex: 1}}>
-        <HeaderBar name="Restaurant Name" navigation={navigation}/>
+        <HeaderBar name="Ippudo" navigation={navigation}/>
 
         <View style = {{flex: 1}}>
             <FlatList

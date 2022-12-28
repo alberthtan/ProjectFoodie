@@ -13,7 +13,7 @@ const CustomButton = ({onPress, text, type = "PRIMARY"}) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: '90%',
+        width: '95%',
         padding: 12,
         marginVertical: 10,
         alignItems: 'center',

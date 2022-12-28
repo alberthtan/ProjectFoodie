@@ -28,7 +28,7 @@ const Tabs = ({route}) => {
                                 style={{
                                     width: 25,
                                     height: 25,
-                                    tintColor: focused ? '#24891A' : '#808080',
+                                    tintColor: focused ? 'black' : '#808080',
                                 }}
                             />
                             {/* <Text style={{color: focused ? '#24891A': '#808080', fontSize: 12}}>
@@ -86,7 +86,7 @@ const Tabs = ({route}) => {
                                 style={{
                                     width: 25,
                                     height: 25,
-                                    tintColor: focused ? '#24891A' : '#808080',
+                                    tintColor: focused ? 'black' : '#808080',
                                 }}
                             />
                             {/* <Text style={{color: focused ? '#24891A': '#808080', fontSize: 12}}>
