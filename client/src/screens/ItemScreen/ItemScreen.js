@@ -79,7 +79,6 @@ const ItemScreen = ({route, navigation}) => {
 const styles = StyleSheet.create({
   container: {
       height: Dimensions.get('window').height * 0.3,
-      backgroundColor: '#3C6F37',
       alignItems: 'center',
       justifyContent: 'center'
   },

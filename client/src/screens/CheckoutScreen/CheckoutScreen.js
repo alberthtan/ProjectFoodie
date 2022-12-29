@@ -9,6 +9,7 @@ import CheckoutSubtotal from '../../components/CheckoutSubtotal'
 import CheckoutTaxes from '../../components/CheckoutTaxes'
 import CheckoutTotal from '../../components/CheckoutTotal/CheckoutTotal'
 import HeaderBar from '../../components/HeaderBar'
+import SharedItem from '../../components/SharedItem'
 
 const CheckoutScreen = ({route, navigation}) => {
   const {cart, count, subtotal, restaurant_id} = route.params
@@ -42,6 +43,17 @@ const CheckoutScreen = ({route, navigation}) => {
             <AddItemsButton
                 onPress = {() => navigation.navigate('Menu', {cart: cart, count: count, subtotal: subtotal, restaurant_id: restaurant_id})}
             />
+
+            <SharedItem
+                name="Chicken Sandwich"
+                price={10}
+            />
+
+            <SharedItem
+                name="Prime Rib Steak"
+                price={50}
+            />
+
 
             <View style = {{marginTop: 20}}>
                 <CheckoutSubtotal
