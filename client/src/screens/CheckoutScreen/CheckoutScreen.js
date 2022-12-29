@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, Text, View, TouchableOpacity} from 'react-native'
-import React from 'react'
+import React, {useState}  from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 
 import CustomButton from '../../components/CustomButton'
@@ -13,7 +13,12 @@ import SharedItem from '../../components/SharedItem'
 
 const CheckoutScreen = ({route, navigation}) => {
   const {cart, count, subtotal, restaurant_id} = route.params
+  const [subtotalValue, setSubtotalValue] = useState(subtotal)
   console.log(cart)
+
+  handleCallback = (childData) => {
+    setSubtotalValue(subtotalValue + childData)
+  }
 
   return (
     <View style = {{flex: 1}}>
@@ -41,30 +46,32 @@ const CheckoutScreen = ({route, navigation}) => {
             ))}
 
             <AddItemsButton
-                onPress = {() => navigation.navigate('Menu', {cart: cart, count: count, subtotal: subtotal, restaurant_id: restaurant_id})}
+                onPress = {() => navigation.navigate('Menu', {cart: cart, count: count, subtotal: subtotalValue, restaurant_id: restaurant_id})}
             />
 
             <SharedItem
                 name="Chicken Sandwich"
                 price={10}
+                parentCallback = {handleCallback}
             />
 
             <SharedItem
                 name="Prime Rib Steak"
                 price={50}
+                parentCallback = {handleCallback}
             />
 
 
             <View style = {{marginTop: 20}}>
                 <CheckoutSubtotal
-                    subtotal = {subtotal}/>
+                    subtotal = {subtotalValue}/>
 
                 <CheckoutTaxes
-                    subtotal = {subtotal}
+                    subtotal = {subtotalValue}
                     taxRate = {0.08}/>
                 
                 <CheckoutTotal
-                    subtotal={subtotal}
+                    subtotal={subtotalValue}
                     taxRate={0.08}/>
             </View>
 

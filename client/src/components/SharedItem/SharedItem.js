@@ -3,7 +3,7 @@ import React , { useState } from 'react'
 import NumberFormat from 'react-number-format'
 import checkIcon from '../../../assets/icons/checkmark.png';
 
-const SharedItem = ({navigation, name, price}) => {
+const SharedItem = ({navigation, name, price, parentCallback}) => {
     const [checked, setChecked] = useState(false)
 
 
@@ -12,6 +12,11 @@ const SharedItem = ({navigation, name, price}) => {
     onPress={() => {
         console.log(checked)
         setChecked(!checked)
+        if(!checked) { 
+            parentCallback(price/2) 
+        } else { 
+            parentCallback(-1 * price/2) 
+        }
       }}>
         <View
             style={{
