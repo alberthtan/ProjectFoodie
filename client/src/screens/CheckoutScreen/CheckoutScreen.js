@@ -50,14 +50,14 @@ const CheckoutScreen = ({route, navigation}) => {
             />
 
             <SharedItem
-                name="Chicken Sandwich"
+                name="Shoyu Ramen"
                 price={10}
                 parentCallback = {handleCallback}
             />
 
             <SharedItem
-                name="Prime Rib Steak"
-                price={50}
+                name="Wasabi Shock Salad"
+                price={7}
                 parentCallback = {handleCallback}
             />
 

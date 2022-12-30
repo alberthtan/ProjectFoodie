@@ -17,13 +17,18 @@ const popuplist = [
   },
   {
     id: 2,
-    name: 'Spicy Miso',
-    price: '$15.00',
+    name: 'Sauteed Edamame',
+    price: '$6.00',
   },
   {
     id: 3,
-    name: 'Oshinko',
-    price: '$3.00',
+    name: 'Shoyu Ramen',
+    price: '$5.00',
+  },
+  {
+    id: 4,
+    name: 'Wasabi Shock Salad',
+    price: '$3.50',
   },
 ]
 

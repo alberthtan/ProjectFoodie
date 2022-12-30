@@ -10,6 +10,16 @@ import BackButton from '../../components/BackButton';
 const ItemScreen = ({route, navigation}) => {
 
   const { name, price, description, count, cart, subtotal, restaurant_id, isOrdering } = route.params;
+
+  var imageUrl;
+
+  if (name == 'Original Ramen') {
+    imageUrl = 'https://www.elmundoeats.com/wp-content/uploads/2021/02/FP-Quick-30-minutes-chicken-ramen.jpg'
+  } 
+  else if (name == 'Sauteed Edamame'){
+    imageUrl = 'https://media.istockphoto.com/id/945129060/photo/edamame.jpg?s=612x612&w=0&k=20&c=vGZXT_2KQnICyS8T883Pe-wRKDq1I9d3_Gb0CgUm6-s='
+  }
+
   console.log(cart)
 
   let addToOrderButton
@@ -52,9 +62,9 @@ const ItemScreen = ({route, navigation}) => {
       <ScrollView style = {{height: Dimensions.get('window').height * 0.7}}>
         {/* <View style = {styles.container}>
           <Text>Picture of Food</Text>
-          <Image style= {styles.container} source={{uri: 'https://1000logos.net/wp-content/uploads/2017/06/VISA-Logo-1992.png'}}/>
+          <Image style= {styles.container} source={{uri: newUrl}}/>
         </View> */}
-        <Image style= {styles.container} source={{uri: 'https://www.elmundoeats.com/wp-content/uploads/2021/02/FP-Quick-30-minutes-chicken-ramen.jpg'}}/>
+        <Image style= {styles.container} source={{uri: imageUrl}}/>
         
         <Text style = {styles.itemName}>
           {name}
