@@ -23,7 +23,7 @@ const SharedItem = ({navigation, name, price, parentCallback}) => {
                 width: 30,
                 height: 30, 
                 marginRight: 5,
-                marginLeft: 10,
+                marginLeft: 15,
                 borderRadius: 30,
                 borderWidth: 0.5,
                 borderColor: '#7C7878',
@@ -45,7 +45,7 @@ const SharedItem = ({navigation, name, price, parentCallback}) => {
 
                 
         </View>
-        <View>
+        <View style={{marginLeft: 10}}>
             <Text style={[checked ? styles.black: styles.faded]}>{name}</Text>
             {checked ? 
                 <Text style = {[styles.description, styles.faded]}>
