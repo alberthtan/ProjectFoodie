@@ -13,7 +13,31 @@ const CameraScreen = ({navigation}) => {
 
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
-    const db = firebase.firestore()
+    const [tableList, setTableList] = useState([])
+    const [restaurantList, setRestaurantList] = useState([])
+    // const db = firebase.firestore()
+
+    const getRestaurantsFromApi = () => {
+        return fetch('https://dutch-pay-test.herokuapp.com/restaurants/?format=json')
+          .then(response => response.json())
+          .then(json => {
+            setRestaurantList(json)
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      };
+
+      const getTablesFromApi = () => {
+        return fetch('https://dutch-pay-test.herokuapp.com/tables/?format=json')
+          .then(response => response.json())
+          .then(json => {
+            setTableList(json)
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      };
 
     useEffect(()=> {
         (async()=> {
@@ -22,21 +46,22 @@ const CameraScreen = ({navigation}) => {
         })();
     }, [])
 
+    useEffect(()=> {
+        getTablesFromApi()
+        getRestaurantsFromApi()
+    })
+
     const handleBarCodeScanned = (result) => {
         const id = JSON.stringify(result.data).replace(/['"]+/g, '')
-        db.collection('Restaurants').get()
-            .then(snap => {
-                snap.forEach(doc => {
-                    if(id == doc.id) {
-                        console.log("Restaurant found!")
-                        setScanned(true)
-                        navigation.navigate('Menu', {cart: [], count: 0, subtotal: 0, restaurant_id : id})
-                    }
-                })
-            })
 
-        // console.log('Bar Code with Type ' + {result.type} + ' and data ' + {result.data} + ' has been scanned')
-       
+        const filtered_tables = tableList.filter(table => table["id"] == id)
+
+        if(filtered_tables.length != 0) {
+            const restaurant_id = filtered_tables[0].restaurant
+            console.log(restaurant_id)
+            setScanned(true)
+            navigation.navigate('Menu', {cart: [], count: 0, subtotal: 0, restaurant_id : restaurant_id})
+        }
     }
 
     if(hasPermission === null || hasPermission === false)
