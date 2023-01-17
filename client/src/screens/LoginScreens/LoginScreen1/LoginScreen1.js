@@ -11,13 +11,14 @@ const LoginScreen1 = ({navigation}) => {
     const [password, setPassword] = useState('')
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
-            if (user) {
-                 navigation.navigate('HomeTabs')
-            }
-        })
+        navigation.navigate('HomeTabs') // TESTING!!!
+        // const unsubscribe = auth.onAuthStateChanged(user => {
+        //     if (user) {
+        //          navigation.navigate('HomeTabs')
+        //     }
+        // })
 
-        return unsubscribe
+        // return unsubscribe
     }, [])
 
     const handleLogin = () => {

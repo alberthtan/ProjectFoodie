@@ -51,7 +51,7 @@ const HomeScreen = ({route, navigation}) => {
   };
 
   useEffect(() => {
-    getRestaurantsFromApi();
+    console.log(getRestaurantsFromApi());
   }, [])
 
   let popupRef = React.createRef()

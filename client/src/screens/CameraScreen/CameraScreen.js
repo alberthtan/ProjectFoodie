@@ -40,28 +40,37 @@ const CameraScreen = ({navigation}) => {
       };
 
     useEffect(()=> {
-        (async()=> {
-            const {status} = await BarCodeScanner.requestPermissionsAsync();
-            setHasPermission(status === 'granted');
-        })();
+        if(!hasPermission) {
+            (async()=> {
+                const {status} = await BarCodeScanner.requestPermissionsAsync();
+                setHasPermission(status === 'granted');
+            })();
+        }  
     }, [])
 
-    useEffect(()=> {
-        getTablesFromApi()
-        getRestaurantsFromApi()
-    })
-
     const handleBarCodeScanned = (result) => {
-        const id = JSON.stringify(result.data).replace(/['"]+/g, '')
+        (async()=> {
+            await getTablesFromApi()
+            await getRestaurantsFromApi()
 
-        const filtered_tables = tableList.filter(table => table["id"] == id)
+            const id = JSON.stringify(result.data).replace(/['"]+/g, '')
 
-        if(filtered_tables.length != 0) {
-            const restaurant_id = filtered_tables[0].restaurant
-            console.log(restaurant_id)
-            setScanned(true)
-            navigation.navigate('Menu', {cart: [], count: 0, subtotal: 0, restaurant_id : restaurant_id})
-        }
+            const filtered_tables = tableList.filter(table => table["id"] == id)
+
+            if(filtered_tables.length != 0) {
+                setScanned(true)
+                const restaurant_id = filtered_tables[0]["restaurant"]
+                var restaurant_name = "dummy"
+                for(let i=0; i < restaurantList.length; i++) {
+                    if(restaurantList[i]["id"] == restaurant_id) {
+                        restaurant_name = restaurantList[i]["name"]
+                    }
+                }
+                navigation.navigate('Menu', {cart: [], count: 0, subtotal: 0, id : restaurant_id, name: restaurant_name})
+            } 
+        })();
+
+        
     }
 
     if(hasPermission === null || hasPermission === false)
@@ -71,18 +80,8 @@ const CameraScreen = ({navigation}) => {
 
     return (
         <View style = {styles.container}>
-            {/* <TouchableOpacity 
-                style = {styles.button}
-                onPress = {() => navigation.navigate('Menu')}
-            >
-            </TouchableOpacity> */}
-
-            {/* <View style = {{position: 'absolute', borderColor: 'white', borderWidth: 2}}>
-
-            </View> */}
 
             <BarCodeScanner
-                // onBarCodeScanned={() => navigation.navigate('Menu', {cart: [], count: 0, subtotal: 0})}
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style = {[StyleSheet.absoluteFillObject]}
             > 
@@ -95,7 +94,6 @@ const CameraScreen = ({navigation}) => {
                             alignSelf:'center',
                             justifyContent: 'center',
                             flex: 1,
-                            // marginBottom: 8,
                             tintColor: '#FFFFFF',
                         }}/>
                 </TouchableOpacity>
