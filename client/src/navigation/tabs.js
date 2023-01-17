@@ -3,6 +3,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/HomeScreen';
 import CameraScreen from '../screens/CameraScreen';
 import ProfileScreen from '../screens/ProfileScreens/ProfileScreen';
+
+// import TestScreen from '../screens/TestScreen';
+
 import { StatusBar } from 'react-native-web';
 import homeIcon from '../../assets/icons/home.png';
 import accountIcon from '../../assets/icons/account.png';

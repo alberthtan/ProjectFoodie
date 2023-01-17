@@ -2,13 +2,13 @@ import { View, StyleSheet, Text, Pressable, TouchableOpacity} from 'react-native
 import React from 'react'
 
 
-const MenuCategoryButton = ({navigation, name, currentCategory, setCurrentCategory}) => {
+const MenuCategoryButton = ({navigation, id, name, currentCategory, setCurrentCategory}) => {
   // console.log(currentCategory)
   // console.log(color_id)
-  const compareId = (currentCategory == name)
+  const compareId = (currentCategory == id)
   return (
     <TouchableOpacity
-      onPress = {() => {setCurrentCategory(name)}}
+      onPress = {() => {setCurrentCategory(id)}}
       style={[styles.container, compareId ? styles.green: styles.gray]}
       >
         <Text style={[{fontWeight: 'bold'}, compareId ? {color: 'white'}: {color: 'black'}]}>{name}</Text>

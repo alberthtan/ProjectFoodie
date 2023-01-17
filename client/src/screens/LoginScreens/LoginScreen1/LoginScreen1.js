@@ -55,14 +55,14 @@ const LoginScreen1 = ({navigation}) => {
                     setValue={setEmail}
                     autoFocus={true}
                     keyboardType="email-address"
-                />
-                <CustomInput 
+                    returnKeyType="next"/>
+                <CustomInput
                     placeholder="Password"
                     value={password} 
                     secureTextEntry
                     setValue={setPassword}
                     keyboardType="default"
-                />
+                    returnKeyType="go"/>
                 <View style={{width:'100%', flex: 1, marginTop: '45%', alignItems: 'center'}}>
                     <CustomButton
                         text="Continue"

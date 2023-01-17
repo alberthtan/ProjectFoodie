@@ -65,7 +65,7 @@ const MenuScreen = ({route, navigation}) => {
                                 }
                             })
                             setMenuItems(items)
-                        })
+                        })     
     }, [currentCategory])
 
     const oneCategory = ({item}) => (

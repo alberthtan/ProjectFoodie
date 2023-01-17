@@ -10,70 +10,74 @@ import { getFirestore, doc, getDoc } from '@firebase/firestore'
 import { getSupportedCurrencies } from 'react-native-format-currency'
 import HeaderBar from '../../components/HeaderBar'
 
-const RestaurantScreen = ({navigation}) => {
-    // const { name, description, subtotal } = route.params
-    // const items = []
+const RestaurantScreen = ({navigation, route}) => {
+    const { id, name } = route.params
+    const [Menus, setMenus] = useState([])
     const [MenuCategories, setMenuCategories] = useState([])
     const [MenuItems, setMenuItems] = useState([])
     const [currentCategory, setCurrentCategory] = useState('')
-    // const [count, setCount] = useState(0)
     const db = firebase.firestore()
 
-    const restaurant_id = "DVYuyJMBoh5FnoUfpWXr"
+    // const restaurant_id = "DVYuyJMBoh5FnoUfpWXr"
+
+    const getMenusFromApi = (id) => {
+        return fetch('https://dutch-pay-test.herokuapp.com/menus/?format=json')
+          .then(response => response.json())
+          .then(json => {
+            const result = json.filter(menu => menu["restaurant"] == id)
+            setMenus(result)
+
+            getCategoriesFromApi(result[0].id)
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      };
+
+    const getCategoriesFromApi = (id) => {
+        return fetch('https://dutch-pay-test.herokuapp.com/categories/?format=json')
+          .then(response => response.json())
+          .then(json => {
+            const result = json.filter(category => category["menu"] == id)
+            setCurrentCategory(result[0].id)
+            setMenuCategories(result)
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      };
+
+      const getMenuItemsFromApi = () => {
+        return fetch('https://dutch-pay-test.herokuapp.com/menu-items/?format=json')
+          .then(response => response.json())
+          .then(json => {
+            const result = json.filter(item => item["category"] == currentCategory)
+            setMenuItems(result)
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      };
     
     useEffect(() => {
 
-        db.collection('Restaurants').get()
-                        .then(
-                            snap => {
-                            const categories = []
-                            snap.forEach(
-                                doc => {
-                                    if(doc.id == restaurant_id) {
-                                        db.collection('Menus').get()
-                                        .then(snap => {
-                                            snap.forEach(doc2 => {
-                                                if(doc2.id == doc.data()['Menus'][0].id) {
-                                                    // getDoc()
-                                                    db.collection('Categories').get()
-                                                    .then(snap => {
-                                                        snap.forEach(doc3 => {
-                                                            console.log("category: " + doc3.id)
-                                                            categories.push(doc3.data())
-                                                            console.log("categories: " + categories)
-                                                        })
-                                                        setMenuCategories(categories)
-                                                        setCurrentCategory(categories[0]['title'])
-                                                    })
-                                                }
-                                            })
-                                        })
-                                    }
-                            })
-                            console.log("cat")
-                            console.log("Categories array: " + MenuCategories)
-                        })
+        getMenusFromApi(id)
+
+        setCurrentCategory(MenuCategories[0])
+
     }, [])
 
     useEffect(() => {
 
-        db.collection('Items').get()
-                        .then(snap => {
-                            const items = []
-                            snap.forEach(doc => {
-                                if(doc.data()["category_name"] == currentCategory) {
-                                    items.push(doc.data())
-                                }
-                            })
-                            setMenuItems(items)
-                        })
+        getMenuItemsFromApi()
                     
     }, [currentCategory])
 
     const oneCategory = ({item}) => (
         <MenuCategoryButton
             navigation = {navigation}
-            name = {item.title}
+            name = {item.name}
+            id = {item.id}
             currentCategory = {currentCategory}
             setCurrentCategory = {setCurrentCategory}
         />
@@ -96,10 +100,10 @@ const RestaurantScreen = ({navigation}) => {
             navigation = {navigation}
             name = {item.name}
             price = {item.price}
-            description = {item.short_description}
+            description = {item.description}
             cart = {[]}
             subtotal = {0}
-            restaurant_id = {restaurant_id}
+            restaurant_id = {id}
             isOrdering = {false}
         />
     )
@@ -107,7 +111,7 @@ const RestaurantScreen = ({navigation}) => {
 
   return (
     <View style = {{flex: 1}}>
-        <HeaderBar name="Ippudo" navigation={navigation}/>
+        <HeaderBar name={name} navigation={navigation}/>
 
         <View style = {{flex: 1}}>
             <FlatList

@@ -2,7 +2,7 @@ import { Alert, View, TextInput, StyleSheet} from 'react-native'
 import React from 'react'
 
 
-const CustomInput = ({value, setValue, placeholder, autoFocus, keyboardType, secureTextEntry}) => {
+const CustomInput = ({value, setValue, placeholder, autoFocus, keyboardType, secureTextEntry, returnKeyType}) => {
   return (
     <View style={styles.container}>
         <TextInput
@@ -12,7 +12,8 @@ const CustomInput = ({value, setValue, placeholder, autoFocus, keyboardType, sec
             keyboardType={keyboardType}
             placeholder = {placeholder}
             onChangeText= {setValue}
-            secureTextEntry = {secureTextEntry} />
+            secureTextEntry = {secureTextEntry}
+            returnKeyType={returnKeyType}/>
    </View>
   )
 }

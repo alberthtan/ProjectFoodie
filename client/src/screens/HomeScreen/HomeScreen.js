@@ -1,5 +1,5 @@
 import { Dimensions, Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity} from 'react-native'
-import React, {useState}  from 'react'
+import React, {useState, useEffect}  from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 
 import StatusBar from '../../components/StatusBar'
@@ -32,72 +32,28 @@ const popuplist = [
   },
 ]
 
-const restaurantList = [
-  {
-    id: 1,
-    name: 'Ippudo',
-    description: 'Japanese • Ramen • Vegetarian • Asian',
-    restaurantImage: 'https://www.kikkoman.eu/fileadmin/_processed_/0/0/csm_WEB_Traditional_Fukuoka_Ramen_646cd39e6b.jpg'
-  },
-  {
-    id: 2,
-    name: 'Jack\'s Wife Freda',
-    description: 'American • Brunch • Group Friendly',
-    restaurantImage: 'https://cdn.vox-cdn.com/thumbor/dIpTdNGyJdUgxa8KCdkEtXcVXi4=/0x0:960x628/1200x800/filters:focal(404x238:556x390)/cdn.vox-cdn.com/uploads/chorus_image/image/57106681/17021915_1328439217202661_4461976011855380041_n.0.jpg'
-  },
-  {
-    id: 3,
-    name: 'Samwon Garden',
-    description: 'Korean • Meat • Group Friendly • Asian',
-    restaurantImage: 'https://stardiamondaward.com/wp-content/uploads/2019/05/samwongarden-korean-bbq-inside.png'
-  },
-  {
-    id: 4,
-    name: 'Sherkaan',
-    description: 'Indian • Vegetarian • Group Friendly • Asian',
-    restaurantImage: 'https://images.squarespace-cdn.com/content/v1/5c5c3833840b161566b02a76/1554140515685-SA6JFOU3IJRJI6ZR9L71/social+share-01.jpg'
-  },
-  {
-    id: 5,
-    name: 'September in Bangkok',
-    description: 'Thai • Vegetarian • Group Friendly • Asian',
-    restaurantImage: 'https://duyt4h9nfnj50.cloudfront.net/resized/1536342980795-w2880-9e.jpg'
-  },
-  {
-    id: 6,
-    name: 'Lazeez',
-    description: 'Indian • Vegetarian • Group Friendly • Asian',
-    restaurantImage: 'https://d1ralsognjng37.cloudfront.net/91121715-5959-44aa-9663-755f3b458eff.jpeg'
-  },
-  {
-    id: 7,
-    name: 'Sitar',
-    description: 'Indian • Vegetarian • Group Friendly • Asian',
-    restaurantImage: 'https://duyt4h9nfnj50.cloudfront.net/resized/3f7c199ea5126d4b1fba9767274bb77e-w2880-47.jpg'
-  },
-  {
-    id: 8,
-    name: 'Jack\'s Bar and Steakhouse',
-    description: 'American • Meat • Group Friendly • Burger',
-    restaurantImage: 'https://d1ralsognjng37.cloudfront.net/37c08e20-315a-4f41-8c67-ed5f16ac846f.jpeg'
-  },
-  {
-    id: 9,
-    name: 'Kuro Shiro',
-    description: 'Japanese • Ramen • Vegetarian • Asian',
-    restaurantImage: 'https://d1ralsognjng37.cloudfront.net/9712875e-0784-4676-8cbb-4c9e791748b9'
-  },
-  {
-    id: 10,
-    name: 'House of Naan',
-    description: 'Indian • Vegetarian • Group Friendly • Asian',
-    restaurantImage: 'https://houseofnaan.com/wp-content/uploads/2019/06/tikka-fries-twitter.png'
-  },
-]
 
 const HomeScreen = ({route, navigation}) => {
   const [search, setSearch] = useState('')
   const { ordered } = route.params
+  const [restaurantList, setRestaurantList] = useState([])
+
+  // Fetch Call
+  const getRestaurantsFromApi = () => {
+    return fetch('https://dutch-pay-test.herokuapp.com/restaurants/?format=json')
+      .then(response => response.json())
+      .then(json => {
+        setRestaurantList(json)
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    getRestaurantsFromApi();
+  }, [])
+
   let popupRef = React.createRef()
   let filterpopupRef = React.createRef()
 
@@ -139,6 +95,7 @@ if (ordered) {
 const oneRestaurant = ({item}) => (
   <RestaurantItem
       navigation = {navigation}
+      id = {item.id}
       name = {item.name}
       description = {item.description}
       restaurantImage={item.restaurantImage}

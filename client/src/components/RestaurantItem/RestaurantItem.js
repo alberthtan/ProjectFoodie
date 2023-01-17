@@ -2,11 +2,11 @@ import { StyleSheet, Text, View, Pressable, TouchableOpacity, Image} from 'react
 import React from 'react'
 import NumberFormat from 'react-number-format'
 
-const RestaurantItem = ({navigation, name, description, restaurantImage}) => {
+const RestaurantItem = ({navigation, id, name, description, restaurantImage}) => {
   return (
     <TouchableOpacity
         style = {styles.container}
-        onPress = {() => navigation.navigate('RestaurantScreen')}>
+        onPress = {() => navigation.navigate('RestaurantScreen', {id: id, name: name})}>
         <View style={{flexDirection: 'row'}}>
             <View style={{width: 70, height: 50, borderRadius: 30, marginRight: 15}}>
               <Image style= {{width: 70, height: 50, borderRadius: 10}} source={{uri: restaurantImage}}/>
