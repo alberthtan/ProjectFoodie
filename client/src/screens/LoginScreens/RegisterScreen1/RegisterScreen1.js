@@ -15,36 +15,57 @@ const RegisterScreen1 = ({navigation}) => {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    // const [verificationId, setVerificationId] = useState(null)
-    // const recaptchaVerifier = useRef(null);
+    // const [password, setPassword] = useState('')
 
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
-            if (user) {
-                 navigation.navigate('HomeTabs')
-            }
-        })
+    const validate = (text) => {
+        console.log(text);
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+        if (reg.test(text) === false) {
+          console.log("Email is Not Correct");
+        //   this.setState({ email: text })
+          return false;
+        }
+        else {
+          return true
+        //   console.log("Email is Correct");
+        }
+      }
 
-        return unsubscribe
-    }, [])
+    const sendEmailCode = () => {
+        // console.log(emailParam)
+
+        if(validate(email)) {
+            return fetch('https://dutch-pay-test.herokuapp.com/send-email-code/', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                }),
+                })
+                .then(console.log("success"))
+                .then(navigation.navigate('Register2', {emailParam: email, firstName: firstName, lastName: lastName}))
+                .catch(error => {
+                    console.error(error);
+            });
+        } else {
+            console.log("invalid email")
+        }
+        
+      }
 
     const handleSignUp = () => {
-        auth
-            .createUserWithEmailAndPassword(email, password)
-            .then(userCredentials => {
-                const user = userCredentials.user
-                console.log('Registered in with:', user.email)
-            })
-            .catch(error => alert(error.message))
+        navigation.navigate('Register2', {emailParam: 'allenchun360@gmail.com', firstName: 'Allen', lastName: 'Chun'})
+
+        // sendEmailCode()
     }
+
+
 
     return (
         <View style= {styles.root}>
-            {/* <FirebaseRecaptchaVerifierModal
-                ref={recaptchaVerifier}
-                firebaseConfig={firebaseConfig}
-            /> */}
             
             <TouchableOpacity
                 style={styles.backButton}
@@ -79,13 +100,13 @@ const RegisterScreen1 = ({navigation}) => {
                 setValue={setEmail}
                 keyboardType="email-address"
             />
-            <CustomInput 
+            {/* <CustomInput 
                 placeholder="Password"
                 value={password} 
                 setValue={setPassword}
                 secureTextEntry
                 keyboardType="default"
-            />
+            /> */}
             <View style={{width:'100%', flex: 1, alignItems: 'center'}}>
                 <CustomButton
                     text="Continue"
@@ -98,7 +119,6 @@ const RegisterScreen1 = ({navigation}) => {
 
 const styles = StyleSheet.create({
     root: {
-        // alignItems: 'center',
         flex:1,
         padding: 20,
         backgroundColor: '#F9FBFC',

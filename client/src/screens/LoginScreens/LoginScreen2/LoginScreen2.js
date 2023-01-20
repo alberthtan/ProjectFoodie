@@ -1,12 +1,86 @@
 import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity} from 'react-native'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+// import { Context } from "../../globalContext/globalContext.js"
 import CustomInput from '../../../components/CustomInput'
 import CustomButton from '../../../components/CustomButton'
 import backIcon from '../../../../assets/icons/backicon.png';
+import BackButton from '../../../components/BackButton';
 
 const LoginScreen2 = ({navigation, route}) => {
-    const [verificationCode, setVerificationCode] = useState('')
-    const { phoneNumber } = route.params
+    // const globalContext = useContext(Context)
+
+    const { emailParam } = route.params
+    // const { isLoggedIn, appSettings } = globalContext
+
+    const [code, setCode] = useState('')
+
+    // function initAppSettings() {
+    //     fetch(`${domain}/app/settings`, {
+    //         method: 'GET'
+    //     })
+    //     .then(res => {
+    //         if (res.ok) {
+    //             return res.json()
+    //         } else {
+    //             throw res.json()
+    //         }
+    //     })
+    //     .then(json => {
+    //         console.log(json)
+    //         setAppSettings(json)
+    //     })
+    //     .catch(error => {
+    //         console.log(error)
+    //     })
+    // }
+    
+    const sendEmailCode = () => {
+        return fetch('https://dutch-pay-test.herokuapp.com/send-email-code/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+            }),
+            })
+            .then(console.log("success"))
+            .then(navigation.navigate('HomeTabs'))
+            .catch(error => {
+                console.error(error);
+        });
+    }
+
+    const verifyEmailCode = () => {
+        return fetch('https://dutch-pay-test.herokuapp.com/verify-email-code/', {
+          method: 'PATCH',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: emailParam,
+            code: code,
+          }),
+        })
+        .then(response => response.json())
+        .then(json => {
+            console.log('success')
+            console.log(json)
+            // if (json['code'] === code) {
+            //     navigation.navigate('HomeTabs')
+            // }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+      }
+
+      const handleLogin = () => {
+        // navigation.navigate('HomeTabs')
+        verifyEmailCode()
+    }
 
     return (
         <View style= {styles.root}>
@@ -14,14 +88,7 @@ const LoginScreen2 = ({navigation, route}) => {
             <TouchableOpacity
                 style={styles.backButton}
                 onPress={() => navigation.goBack()}>
-                    <Image source={backIcon} resizeMode="contain" style={{
-                        width: 30,
-                        height: 30,
-                        alignSelf:'center',
-                        justifyContent: 'center',
-                        flex: 1,
-                        tintColor: '#000000',
-                    }}/>
+                    <BackButton/>
             </TouchableOpacity>
 
             <View style={styles.container}>
@@ -30,19 +97,20 @@ const LoginScreen2 = ({navigation, route}) => {
                         Enter your 6 digit code
                     </Text>
                     <Text style = {styles.subtitle}>
-                        Sent to {phoneNumber}
+                        Sent to {emailParam}
                     </Text>
                 </View>
                 
                 <CustomInput 
-                    value={verificationCode} 
-                    setValue={setVerificationCode}
+                    value={code} 
+                    setValue={setCode}
                     autoFocus={true}
                     keyboardType="number-pad"
                 />
                 <Text
                     style={styles.hyperlinkStyle}
                     onPress={() => {
+                        sendEmailCode()
                         console.log('resending code')
                     }}>
                     Resend
@@ -50,7 +118,7 @@ const LoginScreen2 = ({navigation, route}) => {
                 <View style={{width:'100%', flex: 1, marginTop: '60%', alignItems: 'center'}}>
                     <CustomButton
                         text="Continue"
-                        onPress={() => navigation.navigate('HomeTabs')}
+                        onPress={handleLogin}
                     />
                 </View>
             </View>

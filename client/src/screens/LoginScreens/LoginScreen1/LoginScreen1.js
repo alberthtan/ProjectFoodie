@@ -4,31 +4,53 @@ import CustomInput from '../../../components/CustomInput'
 import CustomButton from '../../../components/CustomButton'
 import BackButton from '../../../components/BackButton';
 
-import { auth } from '../../../config'
-
 const LoginScreen1 = ({navigation}) => {
     const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
 
-    useEffect(() => {
-        navigation.navigate('HomeTabs') // TESTING!!!
-        // const unsubscribe = auth.onAuthStateChanged(user => {
-        //     if (user) {
-        //          navigation.navigate('HomeTabs')
-        //     }
-        // })
+    // const isValidEmail = () => {
+    //     return fetch('https://dutch-pay-test.herokuapp.com/users/')
+    //     .then(response => response.json())
+    //     .then(json => {
+    //         console.log(json)
+    //         // const users = json.filter(user => user["email"] === email)
+    //         // console.log(users)
+    //         // if(users.length != 0) {
+    //         //     sendEmailCode()
+    //         // } else {
+    //         //     console.log("No existing user with username " + email)
+    //         // }
+    //     })
+    //     .catch(error => {
+    //         console.error(error);
+    //     });
+    // }
 
-        // return unsubscribe
-    }, [])
+    const sendEmailCode = () => {
+        return fetch('https://dutch-pay-test.herokuapp.com/send-email-code/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+            }),
+            })
+            .then(response => {
+                console.log(response.status)
+                if (response.status == 201) {
+                    navigation.navigate('Login2', {emailParam: email})
+                } else if (response.status == 404){
+                    console.log('invalid')
+                }
+            })
+            .catch(error => {
+                console.error(error);
+        });
+      }
 
     const handleLogin = () => {
-         auth
-            .signInWithEmailAndPassword(email, password)
-            .then(userCredentials => {
-                const user = userCredentials.user
-                console.log('Logged in with:', user.email)
-            })
-            .catch(error => alert(error.message))
+        sendEmailCode()
     }
 
     return (
@@ -47,7 +69,7 @@ const LoginScreen1 = ({navigation}) => {
                         Welcome back
                     </Text>
                     <Text style = {styles.subtitle}>
-                        Login with your email
+                        Login with a code sent to your email
                     </Text>
                 </View>
                 <CustomInput 
@@ -57,13 +79,13 @@ const LoginScreen1 = ({navigation}) => {
                     autoFocus={true}
                     keyboardType="email-address"
                     returnKeyType="next"/>
-                <CustomInput
+                {/* <CustomInput
                     placeholder="Password"
                     value={password} 
                     secureTextEntry
                     setValue={setPassword}
                     keyboardType="default"
-                    returnKeyType="go"/>
+                    returnKeyType="go"/> */}
                 <View style={{width:'100%', flex: 1, marginTop: '45%', alignItems: 'center'}}>
                     <CustomButton
                         text="Continue"

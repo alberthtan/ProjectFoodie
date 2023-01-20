@@ -18,18 +18,34 @@ const TestScreen = () => {
   };
 
   const addRestaurant = () => {
-    return fetch('https://dutch-pay-test.herokuapp.com/restaurants/4/', {
-      method: 'DELETE',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     name: 'testRestaurant',
-    //     table_count: 10,
-    //     address: "new address",
-    //     phone_number: "+13103438777"
-    //   }),
+    return fetch('https://dutch-pay-test.herokuapp.com/restaurants/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: 'testRestaurant',
+        table_count: 10,
+        address: "new address",
+        phone_number: "+13103438777"
+      }),
+    });
+  }
+
+  const addUser = () => {
+    return fetch('https://dutch-pay-test.herokuapp.com/users/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        first_name: 'testRestaurant',
+        last_name: 'Doe',
+        email: "random@gmail.com",
+        password: "testpassword"
+      }),
     });
   }
 
@@ -44,8 +60,14 @@ const TestScreen = () => {
       <Text>TestScreen</Text>
       <TouchableOpacity
         onPress = {() => addRestaurant()}
-        style={{width: 100, height: 40, backgroundColor: '#000000'}}>
+        style={{width: 100, height: 40, margin: 10, backgroundColor: '#000000'}}>
         <Text>Add Restaurant</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress = {() => addUser()}
+        style={{width: 100, height: 40, margin: 10, backgroundColor: '#000000'}}>
+        <Text>Add User</Text>
       </TouchableOpacity>
 
       <FlatList

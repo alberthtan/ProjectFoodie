@@ -47,7 +47,7 @@ const RestaurantScreen = ({navigation, route}) => {
           });
       };
 
-      const getMenuItemsFromApi = () => {
+    const getMenuItemsFromApi = () => {
         return fetch('https://dutch-pay-test.herokuapp.com/menu-items/?format=json')
           .then(response => response.json())
           .then(json => {

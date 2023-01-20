@@ -2,12 +2,35 @@ import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity} from 'reac
 import React, {useState} from 'react'
 import CustomInput from '../../../components/CustomInput'
 import CustomButton from '../../../components/CustomButton'
-import backIcon from '../../../../assets/icons/backicon.png';
+import BackButton from '../../../components/BackButton';
 
-const RegisterScreen3 = ({navigation}) => {
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [username, setUsername] = useState('')
+const RegisterScreen3 = ({navigation, route}) => {
+    const { emailParam, firstName, lastName } = route.params;
+    const [phoneNumber, setPhoneNumber] = useState('')
+
+    const sendCode = () => {
+        return fetch('https://dutch-pay-test.herokuapp.com/send-phone-code/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                phone_number: '+1' + phoneNumber,
+            }),
+            })
+            .then(console.log("success"))
+            .then(navigation.navigate('Register4', {phoneParam: phoneNumber, emailParam: emailParam, firstName: firstName, lastName: lastName}))
+            .catch(error => {
+                console.error(error);
+        });
+        
+      }
+
+      const handleSignUp = () => {
+        // sendCode()
+        navigation.navigate('Register4', {phoneParam: phoneNumber, emailParam: emailParam, firstName: firstName, lastName: lastName})
+    }
 
     return (
         <View style= {styles.root}>
@@ -15,43 +38,39 @@ const RegisterScreen3 = ({navigation}) => {
             <TouchableOpacity
                 style={styles.backButton}
                 onPress={() => navigation.goBack()}>
-                    <Image source={backIcon} resizeMode="contain" style={{
-                        width: 30,
-                        height: 30,
-                        alignSelf:'center',
-                        justifyContent: 'center',
-                        flex: 1,
-                        tintColor: '#000000',
-                    }}/>
+                    <BackButton/>
             </TouchableOpacity>
 
             <View style={styles.container}>
                 <View style={styles.titleContainer}>
                     <Text style = {styles.title}>
-                        Create your profile
+                        Enter your phone number
+                    </Text>
+                    <Text style = {styles.subtitle}>
+                        You'll login with a code instead of a password
                     </Text>
                 </View>
                 
-                <CustomInput 
-                    placeholder="First name"
-                    value={firstName} 
-                    setValue={setFirstName}
-                    autoFocus={true}
-                />
-                <CustomInput 
-                    placeholder="Last name"
-                    value={lastName} 
-                    setValue={setLastName}
-                />
-                <CustomInput 
-                    placeholder="Username"
-                    value={username} 
-                    setValue={setUsername}
-                />
-                <View style={{width:'100%', flex: 1, marginTop: '20%', alignItems: 'center'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{flex: 1}}>
+                        <Text style={{fontSize: 16}}>+1</Text>
+                    </View>
+                    <View style={{flex: 12}}>
+                        <CustomInput 
+                            placeholder="Phone Number"
+                            value={phoneNumber} 
+                            setValue={setPhoneNumber}
+                            autoFocus={true}
+                            keyboardType="number-pad"
+                        />
+                    </View>
+                    
+                </View>
+
+                <View style={{width:'100%', flex: 1, marginTop: '50%', alignItems: 'center'}}>
                     <CustomButton
-                        text="Start"
-                        onPress={() => navigation.navigate('HomeTabs')}
+                        text="Continue"
+                        onPress={handleSignUp}
                     />
                 </View>
             </View>
@@ -85,7 +104,13 @@ const styles = StyleSheet.create({
       color: '#3C6F37',
       fontWeight: 'bold',
       marginTop: 10,
-      marginBottom: 20,
+    },
+
+    subtitle: {
+        fontSize: 15,
+        color: 'black',
+        marginBottom: 10,
+        marginTop: 10
     },
 })
 

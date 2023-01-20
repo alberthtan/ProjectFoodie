@@ -19,16 +19,19 @@ import LoginScreen2 from './src/screens/LoginScreens/LoginScreen2';
 import RegisterScreen1 from './src/screens/LoginScreens/RegisterScreen1';
 import RegisterScreen2 from './src/screens/LoginScreens/RegisterScreen2';
 import RegisterScreen3 from './src/screens/LoginScreens/RegisterScreen3';
+import RegisterScreen4 from './src/screens/LoginScreens/RegisterScreen4';
 import EditProfileScreen from './src/screens/ProfileScreens/EditProfileScreen';
 import PastOrdersScreen from './src/screens/ProfileScreens/PastOrdersScreen';
 import PaymentScreen from './src/screens/ProfileScreens/PaymentScreen';
 import AddPaymentScreen from './src/screens/ProfileScreens/AddPaymentScreen';
+import { Context, Provider } from "./src/globalContext/globalContext.js";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   console.log("App Executed")
   return (
+    <Provider>
     <NavigationContainer style={styles.container}>
       <Stack.Navigator initialRouteName='LoginHome'>
         {/* <Stack.Screen
@@ -89,6 +92,10 @@ export default function App() {
           component={RegisterScreen3}/>
         <Stack.Screen
           options={{headerShown: false}}
+          name="Register4"
+          component={RegisterScreen4}/>
+        <Stack.Screen
+          options={{headerShown: false}}
           name="EditProfile"
           component={EditProfileScreen}/>
         <Stack.Screen
@@ -106,6 +113,7 @@ export default function App() {
       </Stack.Navigator>
       <StatusBar/>
     </NavigationContainer>
+    </Provider>
   );
 }
 

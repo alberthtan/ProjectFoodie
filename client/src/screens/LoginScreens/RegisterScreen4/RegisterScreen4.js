@@ -1,16 +1,16 @@
-import { View, StyleSheet, Text, Alert, Dimensions, Image, TouchableOpacity, RecyclerViewBackedScrollView} from 'react-native'
+import { View, StyleSheet, Text, Alert, Dimensions, Image, TouchableOpacity} from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import CustomInput from '../../../components/CustomInput'
 import CustomButton from '../../../components/CustomButton'
+// import backIcon from '../../../../assets/icons/backicon.png';
 import BackButton from '../../../components/BackButton';
 
-
-const RegisterScreen2 = ({navigation, route}) => {
-    const { emailParam, firstName, lastName } = route.params;
+const RegisterScreen4 = ({navigation, route}) => {
+    const { emailParam, firstName, lastName, phoneParam } = route.params;
     const [code, setCode] = useState('');
 
-    const sendEmailCode = () => {
-        return fetch('https://dutch-pay-test.herokuapp.com/send-email-code/', {
+    const createUser = () => {
+        return fetch('https://dutch-pay-test.herokuapp.com/users/', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -18,32 +18,66 @@ const RegisterScreen2 = ({navigation, route}) => {
           },
           body: JSON.stringify({
             email: emailParam,
+            first_name: firstName,
+            last_name: lastName,
+            username: emailParam,
+            phone_number: phoneParam
+          }),
+        }).then(console.log('created user'))
+        .then(response => response.json())
+        .then(json => {
+            console.log('success')
+            console.log(json["username"])
+            if (json["username"] === emailParam) {
+                navigation.navigate('HomeTabs')
+            }
+
+        })
+          .catch(error => {
+            console.error(error);
+          });
+      }
+
+    const sendPhoneCode = () => {
+        return fetch('https://dutch-pay-test.herokuapp.com/send-phone-code/', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            phone_number: phoneParam,
           }),
         })
         .then(console.log("success"))
         .then(res => console.log(res.json()))
-        .catch(error => {
-          console.error(error);
-        });
+        .then(json => {
+            setData(json)
+            console.log(data)
+          })
+          .catch(error => {
+            console.error(error);
+          });
       }
 
-      const verifyEmailCode = () => {
-        return fetch('https://dutch-pay-test.herokuapp.com/verify-email-code/', {
+      const verifyPhoneCode = () => {
+        return fetch('https://dutch-pay-test.herokuapp.com/verify-phone-code/', {
           method: 'PATCH',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            email: emailParam,
+            phone_number: phoneParam,
             code: code,
+            is_registration: true,
           }),
         })
         .then(response => response.json())
         .then(json => {
             console.log('success')
             if (json['code'] === code) {
-                navigation.navigate('Register3', {emailParam: emailParam, firstName: firstName, lastName, lastName})
+                createUser()
             }
             console.log(json['code'])
         })
@@ -52,12 +86,6 @@ const RegisterScreen2 = ({navigation, route}) => {
         });
       }
 
-      const handleSignUp = () => {
-        navigation.navigate('Register3', {emailParam: emailParam, firstName: firstName, lastName: lastName})
-
-        // verifyEmailCode()
-    }
-
 
     return (
         <View style= {styles.root}>
@@ -65,7 +93,7 @@ const RegisterScreen2 = ({navigation, route}) => {
             <TouchableOpacity
                 style={styles.backButton}
                 onPress={() => navigation.goBack()}>
-                    <BackButton/>
+                <BackButton/>
             </TouchableOpacity>
 
             <View style={styles.container}>
@@ -74,7 +102,7 @@ const RegisterScreen2 = ({navigation, route}) => {
                         Enter your 6 digit
                     </Text>
                     <Text style = {styles.subtitle}>
-                        Sent to {emailParam}
+                        Sent to {phoneParam}
                     </Text>
                 </View>
                 
@@ -87,7 +115,7 @@ const RegisterScreen2 = ({navigation, route}) => {
                 <Text
                     style={styles.hyperlinkStyle}
                     onPress={() => {
-                        sendEmailCode();
+                        sendPhoneCode();
                         console.log('resending code');
                     }}>
                     Resend
@@ -95,7 +123,9 @@ const RegisterScreen2 = ({navigation, route}) => {
                 <View style={{width:'100%', flex: 1, marginTop: '50%', alignItems: 'center'}}>
                     <CustomButton
                         text="Continue"
-                        onPress={handleSignUp}
+                        onPress={() => {
+                            console.log(verifyPhoneCode())
+                        }}
                     />
                 </View>
             </View>
@@ -145,4 +175,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default RegisterScreen2
+export default RegisterScreen4
