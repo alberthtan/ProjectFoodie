@@ -38,9 +38,9 @@ const LoginScreen1 = ({navigation}) => {
             })
             .then(response => {
                 console.log(response.status)
-                if (response.status == 201) {
+                if (response.status === 201) {
                     navigation.navigate('Login2', {emailParam: email})
-                } else if (response.status == 404){
+                } else if (response.status === 400){
                     console.log('invalid')
                 }
             })

@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity} from 'react-native'
-import React, { useState } from 'react'
-// import { Context } from "../../globalContext/globalContext.js"
+import React, { useState, useContext } from 'react'
+import { Context } from "../../../globalContext/globalContext.js"
 import CustomInput from '../../../components/CustomInput'
 import CustomButton from '../../../components/CustomButton'
 import backIcon from '../../../../assets/icons/backicon.png';
@@ -10,7 +10,7 @@ const LoginScreen2 = ({navigation, route}) => {
     // const globalContext = useContext(Context)
 
     const { emailParam } = route.params
-    // const { isLoggedIn, appSettings } = globalContext
+    const { setIsLoggedIn, userObj, setUserObj, setToken } = globalContext
 
     const [code, setCode] = useState('')
 
@@ -64,14 +64,19 @@ const LoginScreen2 = ({navigation, route}) => {
             code: code,
           }),
         })
-        .then(response => response.json())
-        .then(json => {
-            console.log('success')
-            console.log(json)
-            // if (json['code'] === code) {
-            //     navigation.navigate('HomeTabs')
-            // }
-        })
+        .then(response => {
+            // console.log(response.json())
+            if (response.status === 200) {
+                response.json().then(data => {
+                    console.log(data)
+                    setUserObj(data)
+                    setIsLoggedIn(true)
+                    setToken(data.token.refresh, data.token.access)
+                })
+                navigation.navigate('HomeTabs')                
+            } else if (response.status === 400) {
+                console.log('invalid code')
+            }})
         .catch(error => {
             console.error(error);
         });
