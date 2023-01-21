@@ -31,8 +31,8 @@ const Navigator = () => {
 
   return (
     <Stack.Navigator initialRouteName='LoginHome'>
-      {(!isLoggedIn)?
-      <>
+      {/* {(!isLoggedIn)?
+      <> */}
         <Stack.Screen
           options={{headerShown: false}}
           name="LoginHome"
@@ -61,10 +61,10 @@ const Navigator = () => {
           options={{headerShown: false}}
           name="Register4"
           component={RegisterScreen4}/>
-        </>
+        {/* </>
         :
 
-        <>
+        <> */}
         <Stack.Screen
           options={{headerShown: false, gestureEnabled: false}}
           name="HomeTabs"
@@ -106,8 +106,8 @@ const Navigator = () => {
           name="AddPayment"
           component={AddPaymentScreen}/>
 
-         </>
-         }
+         {/* </>
+         } */}
       </Stack.Navigator>
   )
 }

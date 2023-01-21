@@ -7,7 +7,7 @@ import backIcon from '../../../../assets/icons/backicon.png';
 import BackButton from '../../../components/BackButton';
 
 const LoginScreen2 = ({navigation, route}) => {
-    // const globalContext = useContext(Context)
+    const globalContext = useContext(Context)
 
     const { emailParam } = route.params
     const { setIsLoggedIn, userObj, setUserObj, setToken } = globalContext
