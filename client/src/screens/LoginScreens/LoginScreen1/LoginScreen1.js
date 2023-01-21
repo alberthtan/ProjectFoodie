@@ -33,13 +33,14 @@ const LoginScreen1 = ({navigation}) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                email: email,
+                email: email.toLowerCase(),
+                is_register: false
             }),
             })
             .then(response => {
                 console.log(response.status)
                 if (response.status === 201) {
-                    navigation.navigate('Login2', {emailParam: email})
+                    navigation.navigate('Login2', {emailParam: email.toLowerCase()})
                 } else if (response.status === 400){
                     console.log('invalid')
                 }

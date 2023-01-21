@@ -43,10 +43,18 @@ const RegisterScreen1 = ({navigation}) => {
                 },
                 body: JSON.stringify({
                     email: email,
+                    is_register: true,
                 }),
                 })
-                .then(console.log("success"))
-                .then(navigation.navigate('Register2', {emailParam: email, firstName: firstName, lastName: lastName}))
+                .then(response => {
+                    console.log("needs 201 or 400 code")
+                    console.log(response.status)
+                    if (response.status === 201) {
+                        navigation.navigate('Register2', {emailParam: email, firstName: firstName, lastName: lastName})
+                    } else if (response.status === 400){
+                        console.log('invalid')
+                    }
+                })
                 .catch(error => {
                     console.error(error);
             });
@@ -57,9 +65,9 @@ const RegisterScreen1 = ({navigation}) => {
       }
 
     const handleSignUp = () => {
-        navigation.navigate('Register2', {emailParam: 'allenchun360@gmail.com', firstName: 'Allen', lastName: 'Chun'})
+        // navigation.navigate('Register2', {emailParam: 'allenchun360@gmail.com', firstName: 'Allen', lastName: 'Chun'})
 
-        // sendEmailCode()
+        sendEmailCode()
     }
 
 

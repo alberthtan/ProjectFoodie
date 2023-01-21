@@ -37,6 +37,7 @@ const RegisterScreen2 = ({navigation, route}) => {
           body: JSON.stringify({
             email: emailParam,
             code: code,
+            is_register: true
           }),
         })
         .then(response => response.json())
@@ -53,9 +54,9 @@ const RegisterScreen2 = ({navigation, route}) => {
       }
 
       const handleSignUp = () => {
-        navigation.navigate('Register3', {emailParam: emailParam, firstName: firstName, lastName: lastName})
+        // navigation.navigate('Register3', {emailParam: emailParam, firstName: firstName, lastName: lastName})
 
-        // verifyEmailCode()
+        verifyEmailCode()
     }
 
 

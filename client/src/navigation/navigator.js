@@ -20,6 +20,7 @@ import EditProfileScreen from '../screens/ProfileScreens/EditProfileScreen';
 import PastOrdersScreen from '../screens/ProfileScreens/PastOrdersScreen';
 import PaymentScreen from '../screens/ProfileScreens/PaymentScreen';
 import AddPaymentScreen from '../screens/ProfileScreens/AddPaymentScreen';
+import ProfileScreen from '../screens/ProfileScreens/ProfileScreen';
 
 import {Context} from "../globalContext/globalContext.js";
 
@@ -105,6 +106,10 @@ const Navigator = () => {
           options={{headerShown: false, gestureDirection: 'vertical'}}
           name="AddPayment"
           component={AddPaymentScreen}/>
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Profile"
+          component={ProfileScreen}/>
 
          {/* </>
          } */}

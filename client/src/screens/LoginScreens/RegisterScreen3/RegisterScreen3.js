@@ -28,8 +28,8 @@ const RegisterScreen3 = ({navigation, route}) => {
       }
 
       const handleSignUp = () => {
-        // sendCode()
-        navigation.navigate('Register4', {phoneParam: phoneNumber, emailParam: emailParam, firstName: firstName, lastName: lastName})
+        sendCode()
+        // navigation.navigate('Register4', {phoneParam: phoneNumber, emailParam: emailParam, firstName: firstName, lastName: lastName})
     }
 
     return (

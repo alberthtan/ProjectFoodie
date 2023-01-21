@@ -1,27 +1,18 @@
 import { View, Text, StyleSheet, Dimensions } from 'react-native'
-import React, {useState} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import CustomInput from '../../../components/CustomInput'
 import CustomButton from '../../../components/CustomButton'
+import { Context } from "../../../globalContext/globalContext.js"
 
 const LoginHomeScreen = ({navigation}) => {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
 
-    const onLoginInPressed = () => {
-        console.warn("Sign in")
-    }
+    const globalContext = useContext(Context)
+    const { getToken } = globalContext
 
-    const onForgotPasswordPressed = () => {
-      console.warn("onForgotPasswordPressed")
-    }
-
-    const onSignInFacebook = () => {
-      console.warn("facebook")
-    }
-
-    const onSignInGoogle = () => {
-      console.warn("google")
-    }
+    useEffect(() => {
+        const token = getToken("access")
+        console.log(token)
+    })
 
   return (
     <>

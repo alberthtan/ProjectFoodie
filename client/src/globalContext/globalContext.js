@@ -15,6 +15,30 @@ const Provider = ( { children } ) => {
         await SecureStore.setItemAsync('access', access)
     }
 
+    const getToken = async (key) => {
+        let result = await SecureStore.getItemAsync(key);
+        if (result) {
+            alert("🔐 Here's your value 🔐 \n" + result);
+        } else {
+            alert('No values stored under that key.');
+        }
+    }
+
+    const deleteToken = async (key) => {
+        // let result = await SecureStore.deleteItemAsync(key);
+        // console.log(result)
+        // if (result) {
+        //     alert("🔐 Here's your deleted value 🔐 \n" + result);
+        // } else {
+        //     alert('No values stored under that key.');
+        // }
+        try {
+            await SecureStore.deleteItemAsync(key);
+        } catch (error) {
+            alert(`Unable to delete data key = ${key} from secure storage.`);
+        }
+    }
+
     // function initAppSettings() {
     //     fetch(`${domain}/app/settings`, {
     //         method: 'GET'
@@ -47,7 +71,9 @@ const Provider = ( { children } ) => {
         // setAppSettings,
         userObj,
         setUserObj,
-        setToken 
+        setToken,
+        getToken,
+        deleteToken,
     }
 
     return <Context.Provider value={globalContext}>{children}</Context.Provider>

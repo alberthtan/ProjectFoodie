@@ -1,18 +1,27 @@
 import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
-import React from 'react'
+import React, {useContext} from 'react'
 import profileIcon from '../../../../assets/icons/profileicon.png'
 import ProfileButton from '../../../components/ProfileButton'
 import profileIcon2 from '../../../../assets/icons/profile.png'
 import pastorders from '../../../../assets/icons/pastorders.png'
 import payment from '../../../../assets/icons/payment.png'
 import { auth } from '../../../config'
+import { Context } from '../../../globalContext/globalContext'
 
 const ProfileScreen = ({navigation}) => {
+  const globalContext = useContext(Context)
+
+  const { userObj, setIsLoggedIn, deleteToken } = globalContext
+
+  console.log(userObj)
 
   const handleSignOut = () => {
     auth
       .signOut()
       .then(() => {
+        deleteToken("access")
+        deleteToken("refresh")
+        setIsLoggedIn(false)
         navigation.navigate('LoginHome')
       })
       .catch(error => alert(error.message))
@@ -34,7 +43,7 @@ const ProfileScreen = ({navigation}) => {
                   }}/>
           </TouchableOpacity>
           <Text style = {styles.profileName}>
-                Profile Name
+                {userObj["first_name"] + ' ' + userObj["last_name"]}
           </Text>
         </View>
       <ScrollView style ={{height: '100%', flex: 1}} showsVerticalScrollIndicator = {true}>

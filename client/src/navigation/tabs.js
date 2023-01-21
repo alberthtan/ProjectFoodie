@@ -14,7 +14,7 @@ import qrIcon from '../../assets/icons/qr.png';
 
 const Tab = createBottomTabNavigator();
 
-const Tabs = ({route}) => {
+const Tabs = () => {
     // const { count } = route.params
     return(
         <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false}}

@@ -51,7 +51,9 @@ const MenuScreen = ({route, navigation}) => {
         return fetch('https://dutch-pay-test.herokuapp.com/menu-items/?format=json')
           .then(response => response.json())
           .then(json => {
+            console.log(currentCategory)
             const result = json.filter(item => item["category"] == currentCategory)
+            console.log(result)
             setMenuItems(result)
           })
           .catch(error => {

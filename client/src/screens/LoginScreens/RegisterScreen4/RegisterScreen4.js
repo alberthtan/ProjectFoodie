@@ -1,15 +1,20 @@
 import { View, StyleSheet, Text, Alert, Dimensions, Image, TouchableOpacity} from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useContext } from 'react'
 import CustomInput from '../../../components/CustomInput'
 import CustomButton from '../../../components/CustomButton'
 // import backIcon from '../../../../assets/icons/backicon.png';
 import BackButton from '../../../components/BackButton';
+import { Context } from '../../../globalContext/globalContext';
 
 const RegisterScreen4 = ({navigation, route}) => {
     const { emailParam, firstName, lastName, phoneParam } = route.params;
     const [code, setCode] = useState('');
 
+    const globalContext = useContext(Context)
+    const { setIsLoggedIn, userObj, setUserObj, setToken, getToken } = globalContext
+
     const createUser = () => {
+        console.log(emailParam + firstName + lastName + phoneParam)
         return fetch('https://dutch-pay-test.herokuapp.com/users/', {
           method: 'POST',
           headers: {
@@ -21,14 +26,21 @@ const RegisterScreen4 = ({navigation, route}) => {
             first_name: firstName,
             last_name: lastName,
             username: emailParam,
-            phone_number: phoneParam
+            phone_number: '+1' + phoneParam
           }),
         }).then(console.log('created user'))
         .then(response => response.json())
         .then(json => {
-            console.log('success')
-            console.log(json["username"])
+          console.log(json)
             if (json["username"] === emailParam) {
+              (async () => {
+                await setToken(json.token.refresh, json.token.access)
+                // console.log("REFRESH TOKEN")
+                console.log(getToken("refresh"))
+                console.log(getToken("access"))
+                setUserObj(json)
+                setIsLoggedIn(true)
+              })
                 navigation.navigate('HomeTabs')
             }
 
@@ -68,7 +80,7 @@ const RegisterScreen4 = ({navigation, route}) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            phone_number: phoneParam,
+            phone_number: '+1' + phoneParam,
             code: code,
             is_registration: true,
           }),
@@ -76,6 +88,8 @@ const RegisterScreen4 = ({navigation, route}) => {
         .then(response => response.json())
         .then(json => {
             console.log('success')
+            console.log(phoneParam)
+            console.log(json)
             if (json['code'] === code) {
                 createUser()
             }

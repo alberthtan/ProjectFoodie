@@ -1,14 +1,41 @@
 import { StyleSheet, Text, View, Image, KeyboardAvoidingView, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import profileIcon from '../../../../assets/icons/profileicon.png'
 import CustomInput from '../../../components/CustomInput'
 import HeaderBar from '../../../components/HeaderBar'
+import { Context } from '../../../globalContext/globalContext'
 
 const EditProfileScreen = ({navigation}) => {
-  const [firstName, setFirstName] = useState('Allen')
-  const [lastName, setLastName] = useState('Chun')
-  const [email, setEmail] = useState('allen.chun@yale.edu')
-  const [phoneNumber, setPhoneNumber] = useState('200-2020-2020')
+  const globalContext = useContext(Context)
+
+  const { userObj } = globalContext
+
+  const [firstName, setFirstName] = useState(userObj['first_name'])
+  const [lastName, setLastName] = useState(userObj['last_name'])
+  const [email, setEmail] = useState(userObj['email'])
+  const [phoneNumber, setPhoneNumber] = useState(userObj['phone_number'])
+
+
+  // const handleUpdateProfile = async () => {
+  //   return fetch('https://dutch-pay-test.herokuapp.com/update-profile/', {
+  //         method: 'PATCH',
+  //         headers: {
+  //           Accept: 'application/json',
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({
+  //           email: emailParam,
+  //         }),
+  //       })
+  //       .then(console.log("success"))
+  //       .then(res => console.log(res.json()))
+  //       .catch(error => {
+  //         console.error(error);
+  //       });
+  // }
+
+
+
   return (
     // <ScrollView style ={{height: '100%', flex:}}>
     <View style={{flex: 1}}>
