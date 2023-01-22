@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useState, useEffect, useMemo} from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Tabs from '../navigation/tabs'
 
@@ -28,12 +28,44 @@ const Stack = createNativeStackNavigator();
 
 const Navigator = () => {
     const globalContext = useContext(Context)
-    const { isLoggedIn, setIsLoggedIn, userObj, setUserObj, setToken } = globalContext
+    const { isLoggedIn, setIsLoggedIn, userObj, setUserObj, setToken, getToken } = globalContext
+    const [initialRoute, setInitialRoute] = useState('LoginHome')
+
+    const getUser = async () => {
+      let token = await getToken('access')
+      authorization = "Bearer".concat(" ", token)
+      return fetch('https://dutch-pay-test.herokuapp.com/get-user', {
+        method: 'GET',
+        headers: {
+          Accept: '*/*',
+          'Accept-Encoding': 'gzip,deflate,br',
+          Connection: 'keep-alive',
+          'Content-Type': 'application/json',
+          Authorization: authorization
+        },
+      })
+      .then(response => response.json())
+      .then(json => {
+        setUserObj(json)
+      })
+      .catch(error => {
+          console.error(error);
+      });
+    }
+
+  useEffect(() => {
+      if (getToken('access')) {
+        setIsLoggedIn(true)
+        getUser()
+      }
+      // console.log(isLoggedIn)
+  }, [])
 
   return (
-    <Stack.Navigator initialRouteName='LoginHome'>
-      {/* {(!isLoggedIn)?
-      <> */}
+    <Stack.Navigator initialRouteName={getToken('access') ? 'HomeTabs' : 'LoginHome'}>
+      {(!getToken('access'))?
+      <>
+      {console.log(isLoggedIn)}
         <Stack.Screen
           options={{headerShown: false}}
           name="LoginHome"
@@ -62,10 +94,9 @@ const Navigator = () => {
           options={{headerShown: false}}
           name="Register4"
           component={RegisterScreen4}/>
-        {/* </>
+        </>
         :
-
-        <> */}
+        <>
         <Stack.Screen
           options={{headerShown: false, gestureEnabled: false}}
           name="HomeTabs"
@@ -110,9 +141,8 @@ const Navigator = () => {
           options={{headerShown: false}}
           name="Profile"
           component={ProfileScreen}/>
-
-         {/* </>
-         } */}
+         </>
+         }
       </Stack.Navigator>
   )
 }

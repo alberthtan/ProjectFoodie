@@ -11,9 +11,10 @@ import { Context } from '../../../globalContext/globalContext'
 const ProfileScreen = ({navigation}) => {
   const globalContext = useContext(Context)
 
-  const { userObj, setIsLoggedIn, deleteToken } = globalContext
+  const { userObj, setIsLoggedIn, deleteToken, getToken } = globalContext
 
   console.log(userObj)
+  console.log(getToken('refresh'))
 
   const handleSignOut = () => {
     auth

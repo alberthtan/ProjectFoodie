@@ -70,11 +70,12 @@ const LoginScreen2 = ({navigation, route}) => {
             if (json.hasOwnProperty('code')) {
                 console.log("invalid code")
             } else if (json['username'] === emailParam){
-                console.log(json)
+
+                setToken(json.token.refresh, json.token.access)
                 setUserObj(json)
                 setIsLoggedIn(true)
-                setToken(json.token.refresh, json.token.access)
                 navigation.navigate('HomeTabs')  
+                
             } else {
                 console.log("invalid")
             }

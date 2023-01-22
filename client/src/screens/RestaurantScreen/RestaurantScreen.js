@@ -5,11 +5,7 @@ import { FlatList } from 'react-native-gesture-handler'
 import MenuCategoryButton from '../../components/MenuCategoryButton'
 import MenuItem from '../../components/MenuItem'
 
-import { firebase } from '../../firebase/config'
-import { getFirestore, doc, getDoc } from '@firebase/firestore'
-import { getSupportedCurrencies } from 'react-native-format-currency'
 import HeaderBar from '../../components/HeaderBar'
-import CurrencyFormat from 'react-currency-format'
 
 const RestaurantScreen = ({navigation, route}) => {
     const { id, name } = route.params
@@ -17,9 +13,6 @@ const RestaurantScreen = ({navigation, route}) => {
     const [MenuCategories, setMenuCategories] = useState([])
     const [MenuItems, setMenuItems] = useState([])
     const [currentCategory, setCurrentCategory] = useState(null)
-    const db = firebase.firestore()
-
-    // const restaurant_id = "DVYuyJMBoh5FnoUfpWXr"
 
     const getMenusFromApi = (id) => {
         return fetch('https://dutch-pay-test.herokuapp.com/menus/?format=json')
@@ -27,7 +20,6 @@ const RestaurantScreen = ({navigation, route}) => {
           .then(json => {
             const result = json.filter(menu => menu["restaurant"] == id)
             setMenus(result)
-
             getCategoriesFromApi(result[0].id)
           })
           .catch(error => {
@@ -52,9 +44,7 @@ const RestaurantScreen = ({navigation, route}) => {
         return fetch('https://dutch-pay-test.herokuapp.com/menu-items/?format=json')
           .then(response => response.json())
           .then(json => {
-            console.log(json)
             const result = json.filter(item => item["category"] == currentCategory)
-            // console.log(result)
             setMenuItems(result)
           })
           .catch(error => {
@@ -63,20 +53,11 @@ const RestaurantScreen = ({navigation, route}) => {
       }
     
     useEffect(() => {
-
       getMenusFromApi(id)
-
-      setCurrentCategory(MenuCategories[0])
-        // console.log('here')
-        // console.log(currentCategory)
-        // console.log(MenuItems)
-
     }, [])
 
     useEffect(() => {
-
-        getMenuItemsFromApi()
-                    
+        getMenuItemsFromApi()            
     }, [currentCategory])
 
     const oneCategory = ({item}) => (

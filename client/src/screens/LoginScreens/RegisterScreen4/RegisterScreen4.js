@@ -13,9 +13,8 @@ const RegisterScreen4 = ({navigation, route}) => {
     const globalContext = useContext(Context)
     const { setIsLoggedIn, userObj, setUserObj, setToken, getToken } = globalContext
 
-    const createUser = () => {
-        console.log(emailParam + firstName + lastName + phoneParam)
-        return fetch('https://dutch-pay-test.herokuapp.com/users/', {
+    const createUser = async () => {
+        return await fetch('https://dutch-pay-test.herokuapp.com/users/', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -28,19 +27,14 @@ const RegisterScreen4 = ({navigation, route}) => {
             username: emailParam,
             phone_number: '+1' + phoneParam
           }),
-        }).then(console.log('created user'))
+        })
         .then(response => response.json())
         .then(json => {
           console.log(json)
             if (json["username"] === emailParam) {
-              (async () => {
-                await setToken(json.token.refresh, json.token.access)
-                // console.log("REFRESH TOKEN")
-                console.log(getToken("refresh"))
-                console.log(getToken("access"))
+                setToken(json.token.refresh, json.token.access)
                 setUserObj(json)
                 setIsLoggedIn(true)
-              })
                 navigation.navigate('HomeTabs')
             }
 

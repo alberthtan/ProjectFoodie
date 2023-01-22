@@ -7,26 +7,19 @@ import MenuItem from '../../components/MenuItem'
 import CustomButton from '../../components/CustomButton'
 import HeaderBar from '../../components/HeaderBar'
 
-import { firebase } from '../../firebase/config'
-import { getFirestore, doc, getDoc } from '@firebase/firestore'
-import { getSupportedCurrencies } from 'react-native-format-currency'
-
 const MenuScreen = ({route, navigation}) => {
     const { id, name, cart, count, subtotal } = route.params
     const [Menus, setMenus] = useState([])
     const [MenuCategories, setMenuCategories] = useState([])
     const [MenuItems, setMenuItems] = useState([])
     const [currentCategory, setCurrentCategory] = useState('')
-    // const [count, setCount] = useState(0)
-    const db = firebase.firestore()
 
-    const getMenusFromApi = (id) => {
-        return fetch('https://dutch-pay-test.herokuapp.com/menus/?format=json')
+    const getMenusFromApi = async (id) => {
+        return await fetch('https://dutch-pay-test.herokuapp.com/menus/?format=json')
           .then(response => response.json())
           .then(json => {
             const result = json.filter(menu => menu["restaurant"] == id)
             setMenus(result)
-
             getCategoriesFromApi(result[0].id)
           })
           .catch(error => {
@@ -34,8 +27,8 @@ const MenuScreen = ({route, navigation}) => {
           });
       };
 
-    const getCategoriesFromApi = (id) => {
-        return fetch('https://dutch-pay-test.herokuapp.com/categories/?format=json')
+    const getCategoriesFromApi = async (id) => {
+        return await fetch('https://dutch-pay-test.herokuapp.com/categories/?format=json')
           .then(response => response.json())
           .then(json => {
             const result = json.filter(category => category["menu"] == id)
@@ -51,9 +44,7 @@ const MenuScreen = ({route, navigation}) => {
         return fetch('https://dutch-pay-test.herokuapp.com/menu-items/?format=json')
           .then(response => response.json())
           .then(json => {
-            console.log(currentCategory)
             const result = json.filter(item => item["category"] == currentCategory)
-            console.log(result)
             setMenuItems(result)
           })
           .catch(error => {
@@ -62,17 +53,11 @@ const MenuScreen = ({route, navigation}) => {
       };
     
     useEffect(() => {
-
         getMenusFromApi(id)
-
-        setCurrentCategory(MenuCategories[0])
-
     }, [])
 
     useEffect(() => {
-
-        getMenuItemsFromApi()
-                    
+        getMenuItemsFromApi()               
     }, [currentCategory])
 
     const oneCategory = ({item}) => (

@@ -9,10 +9,10 @@ const LoginHomeScreen = ({navigation}) => {
     const globalContext = useContext(Context)
     const { getToken } = globalContext
 
-    useEffect(() => {
-        const token = getToken("access")
-        console.log(token)
-    })
+    // useEffect(() => {
+    //     const token = getToken("access")
+    //     console.log(token)
+    // })
 
   return (
     <>
