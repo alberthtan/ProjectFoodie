@@ -5,6 +5,57 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 const TestScreen = () => {
     const [data, setData] = useState([])
 
+    const [serverState, setServerState] = useState('Loading...');
+  const [messageText, setMessageText] = useState('hello');
+  const [disableButton, setDisableButton] = useState(true);
+  const [inputFieldEmpty, setInputFieldEmpty] = useState(true);
+  const [serverMessages, setServerMessages] = useState([]);
+  var ws = new WebSocket('ws://localhost:8000');
+
+
+  useEffect(() => {
+    const serverMessagesList = [];
+    console.log(serverState)
+    ws.onopen = () => {
+      setServerState('Connected to the server')
+      // console.log(serverState)
+      setDisableButton(false);
+    };
+    ws.onclose = (e) => {
+      console.log(e)
+      setServerState('Disconnected. Check internet or server.')
+      setDisableButton(true);
+    };
+    ws.onerror = (e) => {
+      console.log('got here')
+      setServerState(e.message);
+    };
+    ws.onmessage = (e) => {
+      serverMessagesList.push(e.data);
+      setServerMessages([...serverMessagesList])
+    };
+  }, [])
+
+  const submitMessage = async () => {
+    console.log('here')
+    setMessageText('hello')
+    console.log(messageText)
+    ws.send(messageText);
+    console.log(messageText)
+    // try {
+    //   console.log(ws)
+    //   setMessageText('hello')
+    //   ws.send(messageText);
+    //   console.log(messageText)
+
+    // }
+    // catch (e) {
+    //   console.log(e)
+    // }
+    // setMessageText('')
+    setInputFieldEmpty(true)
+  }
+
   // Fetch Call
   const getRestaurantsFromApi = () => {
     return fetch('https://dutch-pay-test.herokuapp.com/restaurants/?format=json')
@@ -49,9 +100,9 @@ const TestScreen = () => {
     });
   }
 
-  useEffect(() => {
-    getRestaurantsFromApi();
-  }, [])
+  // useEffect(() => {
+  //   getRestaurantsFromApi();
+  // }, [])
 
   return (
     <View>
@@ -65,7 +116,7 @@ const TestScreen = () => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress = {() => addUser()}
+        onPress = {() => submitMessage()}
         style={{width: 100, height: 40, margin: 10, backgroundColor: '#000000'}}>
         <Text>Add User</Text>
       </TouchableOpacity>

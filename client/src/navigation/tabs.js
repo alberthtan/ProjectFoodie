@@ -4,7 +4,7 @@ import HomeScreen from '../screens/HomeScreen';
 import CameraScreen from '../screens/CameraScreen';
 import ProfileScreen from '../screens/ProfileScreens/ProfileScreen';
 
-// import TestScreen from '../screens/TestScreen';
+import TestScreen from '../screens/TestScreen';
 
 import { StatusBar } from 'react-native-web';
 import homeIcon from '../../assets/icons/home.png';
@@ -79,7 +79,7 @@ const Tabs = () => {
             />
             <Tab.Screen
                 name="Account"
-                component={ProfileScreen}
+                component={TestScreen}
                 options={{
                     tabBarIcon: ({focused}) => (
                         <View style = {{alignItems:'center', justifyContent: 'center', top: 10}}>

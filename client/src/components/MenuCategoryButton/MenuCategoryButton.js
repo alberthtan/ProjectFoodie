@@ -3,8 +3,6 @@ import React from 'react'
 
 
 const MenuCategoryButton = ({navigation, id, name, currentCategory, setCurrentCategory}) => {
-  // console.log(currentCategory)
-  // console.log(color_id)
   const compareId = (currentCategory == id)
   return (
     <TouchableOpacity

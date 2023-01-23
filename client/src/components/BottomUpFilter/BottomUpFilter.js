@@ -123,8 +123,6 @@ class BottomUpFilter extends React.Component {
 
     renderPriceRange = () => {
         const {navigation} = this.props
-        // let {pressed} = this.isPressed
-        // console.log(pressed)
 
         return (
             <>

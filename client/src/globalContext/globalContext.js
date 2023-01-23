@@ -17,12 +17,12 @@ const Provider = ( { children } ) => {
 
     const getToken = async (key) => {
         let result = await SecureStore.getItemAsync(key);
-        console.log(typeof(result))
+        // console.log(typeof(result))
         if (result) {
-            console.log(" Here's your value  \n" + result);
+            // console.log(" Here's your value  \n" + result);
             return result
         }
-        console.log('No values stored under that key.');
+        // console.log('No values stored under that key.');
         return ""
     }
 

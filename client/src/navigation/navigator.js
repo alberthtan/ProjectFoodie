@@ -65,7 +65,7 @@ const Navigator = () => {
     <Stack.Navigator initialRouteName={getToken('access') ? 'HomeTabs' : 'LoginHome'}>
       {(!getToken('access'))?
       <>
-      {console.log(isLoggedIn)}
+      {/* {console.log(isLoggedIn)} */}
         <Stack.Screen
           options={{headerShown: false}}
           name="LoginHome"
