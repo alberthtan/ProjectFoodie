@@ -35,13 +35,6 @@ const MenuScreen = ({route, navigation}) => {
   let controller = new WebsocketController();
   var ws = controller.ws;
 
-  // var ws = new WebSocket('ws://10.0.0.26:8000');
-
-  // ws.addEventListener('message', (event) => {
-  //   console.log('Message from server ', event.data);
-  // });
-
-
   useEffect(() => {
     // DO NOT DELETE
     getMenusFromApi(id)
@@ -62,8 +55,9 @@ const MenuScreen = ({route, navigation}) => {
       setServerState(e.message);
     };
     ws.onmessage = ({data}) => {
+      console.log(JSON.parse(data))
       // console.log({data})
-      serverMessagesList.push({data});
+      serverMessagesList.push(data);
       // console.log(serverMessagesList)
       setServerMessages(serverMessagesList)
       // console.log(serverMessages)
@@ -73,7 +67,7 @@ const MenuScreen = ({route, navigation}) => {
   const submitMessage = async (cart) => {
     const cartList = []
     for(let i=0; i < cart.length; i++) {
-      let cartItem = {"name": cart[i]['name'], "orderedBy": userObj['first_name'], "sharedBy": []}
+      let cartItem = {name: cart[i], orderedBy: userObj['first_name'], sharedBy: []}
       // console.log(cartItem)
       cartList.push(cartItem)
     }
