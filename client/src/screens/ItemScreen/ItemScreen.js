@@ -1,17 +1,21 @@
 import { Dimensions, ScrollView, View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import { Overlay } from 'react-native-elements'
-import React from 'react'
+import React, {useContext} from 'react'
 import { useRoute } from '@react-navigation/native';
 import CustomButton from '../../components/CustomButton';
 import NumberFormat from 'react-number-format';
 import backIcon from '../../../assets/icons/backicon.png';
 import BackButton from '../../components/BackButton';
+import { Context } from '../../globalContext/globalContext'
 
 const ItemScreen = ({route, navigation}) => {
 
-  const { name, price, description, count, cart, subtotal, restaurant_id, isOrdering } = route.params;
+  const { item, name, price, description, count, cart, subtotal, restaurant_id, isOrdering } = route.params;
 
   var imageUrl;
+  
+  const globalContext = useContext(Context)
+  const { userObj } = globalContext
 
   if (name == 'Original Ramen') {
     imageUrl = 'https://www.elmundoeats.com/wp-content/uploads/2021/02/FP-Quick-30-minutes-chicken-ramen.jpg'
@@ -27,8 +31,12 @@ const ItemScreen = ({route, navigation}) => {
     addToOrderButton = <View style = {styles.addToCart}>
         <CustomButton
           text = "Add to Order"
-          onPress = {() => {cart.push({name: name, price: price}), navigation.navigate('Menu', {cart: cart, count: count + 1, subtotal: subtotal + price, restaurant_id: restaurant_id})}}
-        />
+          onPress = {() => {
+            // cart.push({name: name, price: price})
+            cart.push({item: item, orderedBy: userObj['first_name'], sharedBy: []})
+            navigation.navigate('Menu', {cart: cart, count: count + 1, subtotal: subtotal + price, restaurant_id: restaurant_id})
+          }}
+        /> 
     </View>
   }
 

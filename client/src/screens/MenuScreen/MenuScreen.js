@@ -65,15 +65,16 @@ const MenuScreen = ({route, navigation}) => {
   }, [])
 
   const submitMessage = async (cart) => {
-    const cartList = []
-    for(let i=0; i < cart.length; i++) {
-      let cartItem = {name: cart[i], orderedBy: userObj['first_name'], sharedBy: []}
-      // console.log(cartItem)
-      cartList.push(cartItem)
-    }
+    // const cartList = []
+    // for(let i=0; i < cart.length; i++) {
+    //   let cartItem = {name: cart[i], orderedBy: userObj['first_name'], sharedBy: []}
+    //   // console.log(cartItem)
+    //   cartList.push(cartItem)
+    // }
     
     // console.log(cartList)
-    ws.send(JSON.stringify(cartList))
+    ws.send(JSON.stringify(cart))
+    // ws.send(JSON.stringify(cartList))
     // console.log('here')
     // setMessageText(data)
     // ws.send(data);
@@ -149,6 +150,7 @@ const MenuScreen = ({route, navigation}) => {
     const oneDish = ({item}) => (
         <MenuItem
             navigation = {navigation}
+            item = {item}
             name = {item.name}
             price = {item.price}
             description = {item.description}

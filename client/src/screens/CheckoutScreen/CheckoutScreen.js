@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, Text, View, TouchableOpacity} from 'react-native'
-import React, {useState, useEffect}  from 'react'
+import React, {useState, useEffect, useContext}  from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 
 import CustomButton from '../../components/CustomButton'
@@ -11,10 +11,15 @@ import CheckoutTotal from '../../components/CheckoutTotal/CheckoutTotal'
 import HeaderBar from '../../components/HeaderBar'
 import SharedItem from '../../components/SharedItem'
 import WebsocketController from '../../websocket/websocket'
+import { Context } from '../../globalContext/globalContext'
 
 const CheckoutScreen = ({route, navigation}) => {
   const {cart, count, subtotal, restaurant_id} = route.params
   const [subtotalValue, setSubtotalValue] = useState(subtotal)
+
+  const globalContext = useContext(Context)
+
+  const { userObj } = globalContext
 //   console.log(cart)
 
 const serverMessagesList = [];
@@ -42,11 +47,12 @@ useEffect(() => {
       setServerState(e.message);
     };
     ws.onmessage = ({data}) => {
-    //   console.log({data})
-      serverMessagesList.push({data});
-    //   console.log(serverMessagesList)
-      setServerMessages(serverMessagesList)
-      console.log(serverMessages)
+        console.log(JSON.parse(data))
+        // console.log({data})
+        serverMessagesList.push(data);
+        // console.log(serverMessagesList)
+        setServerMessages(serverMessagesList)
+        // console.log(serverMessages)
     };
   }, [])
 
@@ -76,17 +82,30 @@ useEffect(() => {
             </Text>
 
             {cart.map(item => (
+                (userObj['first_name'] == item.orderedBy) ?
                 <CheckoutItem
                     key = {cart.indexOf(item)}
                     navigation = {navigation}
-                    name = {item.name}
-                    price = {item.price}
-                />
+                    name = {item.item.name}
+                    price = {item.item.price}
+                /> :
+                <></>
             ))}
 
             <AddItemsButton
                 onPress = {() => navigation.navigate('Menu', {cart: cart, count: count, subtotal: subtotalValue, restaurant_id: restaurant_id})}
             />
+
+            {cart.map(item => (
+                (userObj['first_name'] != item.orderedBy) ?
+                <SharedItem
+                    key = {cart.indexOf(item)}
+                    name = {item.item.name}
+                    price = {item.item.price}
+                    parentCallback = {handleCallback}
+                /> :
+                <></>
+            ))}
 
             <SharedItem
                 name="Shoyu Ramen"
