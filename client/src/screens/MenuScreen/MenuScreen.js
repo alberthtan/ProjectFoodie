@@ -1,11 +1,14 @@
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, ScrollView} from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 
 import MenuCategoryButton from '../../components/MenuCategoryButton'
 import MenuItem from '../../components/MenuItem'
 import CustomButton from '../../components/CustomButton'
 import HeaderBar from '../../components/HeaderBar'
+import { Context } from '../../globalContext/globalContext'
+
+import WebsocketController from '../../websocket/websocket'
 
 const MenuScreen = ({route, navigation}) => {
     const { id, name, cart, count, subtotal } = route.params
@@ -13,6 +16,75 @@ const MenuScreen = ({route, navigation}) => {
     const [MenuCategories, setMenuCategories] = useState([])
     const [MenuItems, setMenuItems] = useState([])
     const [currentCategory, setCurrentCategory] = useState('')
+
+    const globalContext = useContext(Context)
+
+    const { userObj } = globalContext
+
+    
+
+    const serverMessagesList = [];
+
+  
+    const [serverState, setServerState] = useState('Loading...');
+    const [messageText, setMessageText] = useState('hello');
+    const [disableButton, setDisableButton] = useState(true);
+    const [inputFieldEmpty, setInputFieldEmpty] = useState(true);
+    const [serverMessages, setServerMessages] = useState(serverMessagesList);
+
+  let controller = new WebsocketController();
+  var ws = controller.ws;
+
+  // var ws = new WebSocket('ws://10.0.0.26:8000');
+
+  // ws.addEventListener('message', (event) => {
+  //   console.log('Message from server ', event.data);
+  // });
+
+
+  useEffect(() => {
+    // DO NOT DELETE
+    getMenusFromApi(id)
+
+    console.log(serverState)
+    ws.onopen = () => {
+      setServerState('Connected to the server')
+      // console.log(serverState)
+      setDisableButton(false);
+    };
+    ws.onclose = (e) => {
+      console.log(e)
+      setServerState('Disconnected. Check internet or server.')
+      setDisableButton(true);
+    };
+    ws.onerror = (e) => {
+      console.log('got here')
+      setServerState(e.message);
+    };
+    ws.onmessage = ({data}) => {
+      // console.log({data})
+      serverMessagesList.push({data});
+      // console.log(serverMessagesList)
+      setServerMessages(serverMessagesList)
+      // console.log(serverMessages)
+    };
+  }, [])
+
+  const submitMessage = async (cart) => {
+    const cartList = []
+    for(let i=0; i < cart.length; i++) {
+      let cartItem = {"name": cart[i]['name'], "orderedBy": userObj['first_name'], "sharedBy": []}
+      // console.log(cartItem)
+      cartList.push(cartItem)
+    }
+    
+    // console.log(cartList)
+    ws.send(JSON.stringify(cartList))
+    // console.log('here')
+    // setMessageText(data)
+    // ws.send(data);
+    // setInputFieldEmpty(true)
+  }
 
     const getMenusFromApi = async (id) => {
         return await fetch('https://dutch-pay-test.herokuapp.com/menus/?format=json')
@@ -52,9 +124,7 @@ const MenuScreen = ({route, navigation}) => {
           });
       };
     
-    useEffect(() => {
-        getMenusFromApi(id)
-    }, [])
+
 
     useEffect(() => {
         getMenuItemsFromApi()               
@@ -102,7 +172,7 @@ const MenuScreen = ({route, navigation}) => {
                     <CustomButton 
                         text={"View Order (" + count + ")"}
                         style = {{bottom: 0, position: 'absolute'}}
-                        onPress = {() => {navigation.navigate('Checkout', {cart: cart, count: count, subtotal: subtotal}), console.log(cart)}}/>
+                        onPress = {() => {navigation.navigate('Checkout', {cart: cart, count: count, subtotal: subtotal}), submitMessage(cart)}}/>
                 </View>
     }
 

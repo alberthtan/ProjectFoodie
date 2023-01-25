@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, Text, View, TouchableOpacity} from 'react-native'
-import React, {useState}  from 'react'
+import React, {useState, useEffect}  from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 
 import CustomButton from '../../components/CustomButton'
@@ -10,13 +10,52 @@ import CheckoutTaxes from '../../components/CheckoutTaxes'
 import CheckoutTotal from '../../components/CheckoutTotal/CheckoutTotal'
 import HeaderBar from '../../components/HeaderBar'
 import SharedItem from '../../components/SharedItem'
+import WebsocketController from '../../websocket/websocket'
 
 const CheckoutScreen = ({route, navigation}) => {
   const {cart, count, subtotal, restaurant_id} = route.params
   const [subtotalValue, setSubtotalValue] = useState(subtotal)
-  console.log(cart)
+//   console.log(cart)
 
-  handleCallback = (childData) => {
+const serverMessagesList = [];
+
+const [serverState, setServerState] = useState('Loading...');
+const [serverMessages, setServerMessages] = useState(serverMessagesList);
+
+let controller = new WebsocketController();
+var ws = controller.ws;
+
+useEffect(() => {
+    console.log(serverState)
+    ws.onopen = () => {
+      setServerState('Connected to the server')
+      // console.log(serverState)
+      setDisableButton(false);
+    };
+    ws.onclose = (e) => {
+      console.log(e)
+      setServerState('Disconnected. Check internet or server.')
+      setDisableButton(true);
+    };
+    ws.onerror = (e) => {
+      console.log('got here')
+      setServerState(e.message);
+    };
+    ws.onmessage = ({data}) => {
+    //   console.log({data})
+      serverMessagesList.push({data});
+    //   console.log(serverMessagesList)
+      setServerMessages(serverMessagesList)
+      console.log(serverMessages)
+    };
+  }, [])
+
+  const submitMessage = async () => {
+    ws.send('hello');
+  }
+
+
+  const handleCallback = (childData) => {
     setSubtotalValue(subtotalValue + childData)
   }
 
@@ -81,7 +120,8 @@ const CheckoutScreen = ({route, navigation}) => {
         <View style = {[styles.orderButton]}>
             <CustomButton
                 text = "Order"
-                onPress = {() => navigation.navigate('Home', {ordered: true})}
+                onPress = {() => submitMessage()}
+                // onPress = {() => navigation.navigate('Home', {ordered: true})}
             />
         </View>
     </View>

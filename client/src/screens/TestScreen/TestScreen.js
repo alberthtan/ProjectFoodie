@@ -4,21 +4,21 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const TestScreen = () => {
     const [data, setData] = useState([])
+    const serverMessagesList = [];
 
     const [serverState, setServerState] = useState('Loading...');
   const [messageText, setMessageText] = useState('hello');
   const [disableButton, setDisableButton] = useState(true);
   const [inputFieldEmpty, setInputFieldEmpty] = useState(true);
-  const [serverMessages, setServerMessages] = useState([]);
-  var ws = new WebSocket('ws://10.74.67.122:8000');
+  const [serverMessages, setServerMessages] = useState(serverMessagesList);
+  var ws = new WebSocket('ws://10.0.0.26:8000');
 
-  ws.addEventListener('message', (event) => {
-    console.log('Message from server ', event.data);
-  });
+  // ws.addEventListener('message', (event) => {
+  //   console.log('Message from server ', event.data);
+  // });
 
 
   useEffect(() => {
-    const serverMessagesList = [];
     console.log(serverState)
     ws.onopen = () => {
       setServerState('Connected to the server')
@@ -34,11 +34,13 @@ const TestScreen = () => {
       console.log('got here')
       setServerState(e.message);
     };
-    // ws.onmessage = ({data}) => {
-    //   console.log({data})
-    //   serverMessagesList.push({data});
-    //   setServerMessages([...serverMessagesList])
-    // };
+    ws.onmessage = ({data}) => {
+      console.log({data})
+      serverMessagesList.push({data});
+      console.log(serverMessagesList)
+      setServerMessages(serverMessagesList)
+      console.log(serverMessages)
+    };
   }, [])
 
   const submitMessage = async () => {
@@ -70,16 +72,16 @@ const TestScreen = () => {
   // }
 
   // Fetch Call
-  const getRestaurantsFromApi = () => {
-    return fetch('https://dutch-pay-test.herokuapp.com/restaurants/?format=json')
-      .then(response => response.json())
-      .then(json => {
-        setData(json)
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  };
+  // const getRestaurantsFromApi = () => {
+  //   return fetch('https://dutch-pay-test.herokuapp.com/restaurants/?format=json')
+  //     .then(response => response.json())
+  //     .then(json => {
+  //       setData(json)
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //     });
+  // };
 
   const addRestaurant = () => {
     return fetch('https://dutch-pay-test.herokuapp.com/restaurants/', {

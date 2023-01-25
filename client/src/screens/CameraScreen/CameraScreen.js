@@ -1,12 +1,8 @@
 import { View, Text, Dimensions, TouchableOpacity, StyleSheet, Image} from 'react-native'
 import React, {useEffect, useState}  from 'react'
-// import tw from 'tailwind-react-native-classnames'
 import { BarCodeScanner } from 'expo-barcode-scanner'
-import { YellowBox } from 'react-native-web';
-// import QRCodeScanner from 'react-native-qrcode-scanner';
 import xicon from '../../../assets/icons/xicon.png';
 
-import { firebase } from '../../firebase/config'
 
 
 const CameraScreen = ({navigation}) => {
