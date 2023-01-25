@@ -74,7 +74,7 @@ const LoginScreen2 = ({navigation, route}) => {
                 setToken(json.token.refresh, json.token.access)
                 setUserObj(json)
                 setIsLoggedIn(true)
-                navigation.navigate('HomeTabs')  
+                // navigation.navigate('HomeTabs')  
                 
             } else {
                 console.log("invalid")

@@ -7,6 +7,7 @@ import pastorders from '../../../../assets/icons/pastorders.png'
 import payment from '../../../../assets/icons/payment.png'
 import { auth } from '../../../config'
 import { Context } from '../../../globalContext/globalContext'
+// import LoginHomeScreen from '../../LoginScreens/LoginHomeScreen'
 
 const ProfileScreen = ({navigation}) => {
   const globalContext = useContext(Context)
@@ -19,12 +20,17 @@ const ProfileScreen = ({navigation}) => {
   const handleSignOut = () => {
     auth
       .signOut()
-      .then(() => {
-        deleteToken("access")
-        deleteToken("refresh")
+      .then(async () => {
+        await deleteToken("access")
+        await deleteToken("refresh")
+        let token = await getToken('access')
         setIsLoggedIn(false)
-        navigation.navigate('LoginHome')
+        console.log(token)
+
+        
+        // navigation.goBack('LoginHome')
       })
+      // .then(navigation.navigate("LoginHome"))
       .catch(error => alert(error.message))
   }
 

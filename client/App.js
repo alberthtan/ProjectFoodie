@@ -7,31 +7,31 @@ import { io } from "socket.io-client"
 
 import Navigator from './src/navigation/navigator.js'
 
-export default class App extends Component {
-  constructor() {
-    super();
+export default function App () {
+//   constructor() {
+//     super();
 
-    this.state = {
-        echo: ''
-    };
-}
+//     this.state = {
+//         echo: ''
+//     };
+// }
 
-componentDidMount() {
-    var socket = new WebSocket('ws://172.26.116.191:8000/');
+// componentDidMount() {
+//     var socket = new WebSocket('ws://172.26.116.191:8000/');
 
-    socket.onopen = () => socket.send('hello');
+//     socket.onopen = () => socket.send('hello');
 
-    socket.onmessage = ({data}) => {
-        console.log(data);
+//     socket.onmessage = ({data}) => {
+//         console.log(data);
 
-        this.setState({echo: data});
+//         // this.setState({echo: data});
 
-        setTimeout(() => {
-            socket.send(new Date().toGMTString());
-        }, 3000);
-    }
-}
-  render (){
+//         // setTimeout(() => {
+//         //     socket.send(new Date().toGMTString());
+//         // }, 3000);
+//     }
+// }
+  // render (){
     return(
     <Provider>
     <NavigationContainer style={styles.container}>
@@ -39,7 +39,8 @@ componentDidMount() {
       <StatusBar/>
     </NavigationContainer>
       </Provider>
-    )};
+    );
+    // )};
 }
 
 const styles = StyleSheet.create({

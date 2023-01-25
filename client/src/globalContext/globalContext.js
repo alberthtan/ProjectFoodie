@@ -5,11 +5,8 @@ const Context = createContext()
 
 const Provider = ( { children } ) => {
 
-    // const [domain, setDomain] = useState("https://dutch-pay-test.herokuapp.com")
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    // const [token, setToken] = useState()
-    const [userObj, setUserObj] = useState()
-    // const [appSettings, setAppSettings] = useState({})
+    const [userObj, setUserObj] = useState(false)
     const setToken = async (refresh, access) => {
         await SecureStore.setItemAsync('refresh', refresh)
         await SecureStore.setItemAsync('access', access)
@@ -17,23 +14,13 @@ const Provider = ( { children } ) => {
 
     const getToken = async (key) => {
         let result = await SecureStore.getItemAsync(key);
-        // console.log(typeof(result))
         if (result) {
-            // console.log(" Here's your value  \n" + result);
             return result
         }
-        // console.log('No values stored under that key.');
         return ""
     }
 
     const deleteToken = async (key) => {
-        // let result = await SecureStore.deleteItemAsync(key);
-        // console.log(result)
-        // if (result) {
-        //     alert("🔐 Here's your deleted value 🔐 \n" + result);
-        // } else {
-        //     alert('No values stored under that key.');
-        // }
         try {
             await SecureStore.deleteItemAsync(key);
         } catch (error) {

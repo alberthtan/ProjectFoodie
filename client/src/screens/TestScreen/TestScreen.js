@@ -10,7 +10,11 @@ const TestScreen = () => {
   const [disableButton, setDisableButton] = useState(true);
   const [inputFieldEmpty, setInputFieldEmpty] = useState(true);
   const [serverMessages, setServerMessages] = useState([]);
-  var ws = new WebSocket('ws://localhost:8000');
+  var ws = new WebSocket('ws://10.74.67.122:8000');
+
+  ws.addEventListener('message', (event) => {
+    console.log('Message from server ', event.data);
+  });
 
 
   useEffect(() => {
@@ -30,18 +34,19 @@ const TestScreen = () => {
       console.log('got here')
       setServerState(e.message);
     };
-    ws.onmessage = (e) => {
-      serverMessagesList.push(e.data);
-      setServerMessages([...serverMessagesList])
-    };
+    // ws.onmessage = ({data}) => {
+    //   console.log({data})
+    //   serverMessagesList.push({data});
+    //   setServerMessages([...serverMessagesList])
+    // };
   }, [])
 
   const submitMessage = async () => {
     console.log('here')
     setMessageText('hello')
-    console.log(messageText)
+    // console.log(messageText)
     ws.send(messageText);
-    console.log(messageText)
+    // console.log(messageText)
     // try {
     //   console.log(ws)
     //   setMessageText('hello')
@@ -55,6 +60,14 @@ const TestScreen = () => {
     // setMessageText('')
     setInputFieldEmpty(true)
   }
+
+  // const receiveMessage = async () => {
+  //   ws.onmessage = ({data}) => {
+  //     console.log({data})
+  //     // serverMessagesList.push({data});
+  //     // setServerMessages([...serverMessagesList])
+  //   };
+  // }
 
   // Fetch Call
   const getRestaurantsFromApi = () => {
@@ -116,7 +129,7 @@ const TestScreen = () => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress = {() => submitMessage()}
+        onPress = {() => {submitMessage()}}
         style={{width: 100, height: 40, margin: 10, backgroundColor: '#000000'}}>
         <Text>Add User</Text>
       </TouchableOpacity>
