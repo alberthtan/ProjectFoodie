@@ -8,7 +8,7 @@ const CheckoutItem = ({navigation, sharedBy, name, price}) => {
     <View style = {styles.container}>
         <Text style = {styles.name}>{name}</Text>
         <NumberFormat
-            value = {price}
+            value = {price / (sharedBy.length + 1)}
             displayType = "text"
             thousandSeparator={true}
             prefix = "$"

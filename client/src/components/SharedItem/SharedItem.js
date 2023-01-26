@@ -24,9 +24,21 @@ const SharedItem = ({ cart, order, orderedBy, sharedBy, parentCallback}) => {
         console.log("cart index")
         console.log(index)
         console.log(cart[index])
-        cart[index].push(userObj['first_name'])
-        console.log(cart[index]['sharedBy'])
-        ws.send(JSON.stringify(cart))
+        let index_of_name = cart[index]['sharedBy'].indexOf(userObj['first_name'])
+
+        // If user wants to share item and they are not in shared list, add user
+        if(!checked && index_of_name == -1) {
+            cart[index]['sharedBy'].push(userObj['first_name'])
+            console.log('sharedBy')
+            console.log(cart[index]['sharedBy'])
+            ws.send(JSON.stringify(cart))
+        } 
+        // If user wants to remove from shared list and name is in list, remove user
+        else if(checked && index_of_name != -1) {
+            cart[index]['sharedBy'].splice(index_of_name, 1)
+            ws.send(JSON.stringify(cart))
+        }
+        
 
      
         console.log(checked)
@@ -68,7 +80,7 @@ const SharedItem = ({ cart, order, orderedBy, sharedBy, parentCallback}) => {
             <Text style={[checked ? styles.black: styles.faded]}>{order.item.name}</Text>
             {checked ? 
                 <Text style = {[styles.description, styles.faded]}>
-                    {"Ordered By: " + orderedBy + "\nShared By: " + userObj.first_name + " " + sharedBy}
+                    {"Ordered By: " + orderedBy + "\nShared By: " + sharedBy}
                 </Text> : 
                 <Text style = {[styles.description, styles.faded]}>
                     {"Ordered By: " + orderedBy + "\nShared By: " + sharedBy}
