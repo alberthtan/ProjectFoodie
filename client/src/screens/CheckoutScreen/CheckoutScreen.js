@@ -29,10 +29,11 @@ const CheckoutScreen = ({route, navigation}) => {
 let controller = new WebsocketController();
 var ws = controller.ws;
 
-ws.onopen = () => {
-    setServerState('Connected to the server')
-    setDisableButton(false);
-};
+// ws.onopen = () => {
+//     console.log('ANDREW TATE')
+//     setServerState('Connected to the server')
+//     setDisableButton(false);
+// };
 ws.onclose = (e) => {
     setServerState('Disconnected. Check internet or server.')
     setDisableButton(true);
@@ -58,7 +59,10 @@ useEffect(() => {
             temp.push(Cart[i])
         }
     }
-    console.log(temp)
+    // console.log("SHARED \n")
+    // console.log(temp)
+    // console.log("CART \n")
+    // console.log(Cart)
     setSharedCart(temp)
 }, [Cart])
 
@@ -77,12 +81,6 @@ useEffect(() => {
       <HeaderBar name='Checkout' navigation= {navigation}/>
         
         <ScrollView showsVerticalScrollIndicator = {false}>
-
-            {/* <View style = {styles.rectangle}>
-                <Text style = {{fontWeight: 'bold'}}>
-                    Table Number: 123456
-                </Text>
-            </View> */}
 
             <Text style = {[styles.totals, {fontWeight: 'bold', fontSize: 18}]}>
                 Your Items
@@ -104,9 +102,10 @@ useEffect(() => {
             />
 
             {sharedCart.map(item => (
+                console.log(sharedCart.indexOf(item)),
                 (userObj['first_name'] != item.orderedBy) ?
                 <SharedItem
-                    key = {Cart.indexOf(item)}
+                    key = {sharedCart.indexOf(item)}
                     name = {item.item.name}
                     price = {item.item.price}
                     orderedBy = {item.orderedBy}
