@@ -1,6 +1,7 @@
 import { Dimensions, StyleSheet, Text, View, TouchableOpacity} from 'react-native'
 import React, {useState, useEffect, useContext}  from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
+import { LogBox } from 'react-native';
 
 import CustomButton from '../../components/CustomButton'
 import CheckoutItem from '../../components/CheckoutItem'
@@ -12,13 +13,15 @@ import HeaderBar from '../../components/HeaderBar'
 import SharedItem from '../../components/SharedItem'
 import WebsocketController from '../../websocket/websocket'
 import { Context } from '../../globalContext/globalContext'
+
 import 'react-native-get-random-values'
 import { v4 } from 'uuid'
 import key from 'weak-key'
 
+LogBox.ignoreLogs(['Warning: Each child in a list should have a unique "key" prop.'])
+
 const CheckoutScreen = ({route, navigation}) => {
   const {cart, subtotal, restaurant_id} = route.params
-  const [sharedCart, setSharedCart] = useState([])
 
   const [subtotalValue, setSubtotalValue] = useState(subtotal)
   const [Cart, setCart] = useState(cart)
@@ -51,25 +54,14 @@ ws.onmessage = ({data}) => {
       temp.push(message[i])
     }
     setCart(temp)
+    console.log("Message received!!!")
+    console.log(temp)
 };
 
-useEffect(() => {
-    console.log("shared cart is updating...")
-    let temp = []
-    for(let i=0; i < Cart.length; i++) {
-        if (Cart[i].orderedBy != userObj['first_name']) {
-            temp.push(Cart[i])
-            // temp[i].id = v4()
-            console.log(Cart[i].id)
-            // console.log(temp[i].id)
-        }
-    }
-    // console.log("SHARED \n")
-    // console.log(temp)
-    // console.log("CART \n")
-    // console.log(Cart)
-    setSharedCart(temp)
-}, [Cart])
+// useEffect(() => {
+ 
+//     }
+// }, [Cart])
 
 
   const submitMessage = async () => {
@@ -91,13 +83,14 @@ useEffect(() => {
                 Your Items
             </Text>
 
-            {Cart.map(item => (
-                (userObj['first_name'] == item.orderedBy) ?
+            {Cart.map(order => (
+                (userObj['first_name'] == order.orderedBy) ?
                 <CheckoutItem
-                    key = {item.id}
+                    key = {order.id}
                     navigation = {navigation}
-                    name = {item.item.name}
-                    price = {item.item.price}
+                    name = {order.item.name}
+                    price = {order.item.price}
+                    sharedBy = {order.sharedBy}
                 /> :
                 <></>
             ))}
@@ -106,19 +99,35 @@ useEffect(() => {
                 onPress = {() => navigation.navigate('Menu', {cart: Cart, subtotal: subtotalValue, restaurant_id: restaurant_id})}
             />
 
-            {Cart.map(item => (
-                // console.log(item.id),
+            {/* {sharedCart.map(item => (
                 (userObj['first_name'] != item.orderedBy) ?
-                <SharedItem
+                <CheckoutItem
                     key = {item.id}
+                    navigation = {navigation}
                     name = {item.item.name}
                     price = {item.item.price}
-                    orderedBy = {item.orderedBy}
-                    sharedBy = {item.sharedBy}
+                /> 
+                :
+                <></>
+            ))} */}
+
+            {Cart.map(order => 
+            (
+                (userObj['first_name'] != order.orderedBy) ?
+                <SharedItem
+                    key = {order.id}
+                    item={order.item}
+                    cart = {Cart}
+                    orderedBy = {order.orderedBy}
+                    sharedBy = {order.sharedBy}
                     parentCallback = {handleCallback}
                 /> :
                 <></>
             ))}
+
+            {/* <SharedItemsList
+            sharedCart={sharedCart}
+            handleCallback={handleCallback}/> */}
 
 
             <View style = {{marginTop: 20}}>

@@ -49,7 +49,7 @@ const ItemScreen = ({route, navigation}) => {
     for (let i = 0; i < Cart.length; i++) {
       temp.push(Cart[i])
     }
-    temp.push({id: key(item), item: item, orderedBy: userObj['first_name'], sharedBy: []})
+    temp.push({id: v4(), item: item, orderedBy: userObj['first_name'], sharedBy: []})
     setCart(temp)
     ws.send(JSON.stringify(temp))
     navigation.navigate('Menu', {cart: Cart, subtotal: subtotal + price, restaurant_id: restaurant_id})

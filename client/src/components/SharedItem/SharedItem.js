@@ -3,17 +3,29 @@ import React , { useState, useContext } from 'react'
 import NumberFormat from 'react-number-format'
 import checkIcon from '../../../assets/icons/checkmark.png';
 import { Context } from '../../globalContext/globalContext';
+import WebsocketController from '../../websocket/websocket';
 
-const SharedItem = ({navigation, orderedBy, sharedBy, name, price, parentCallback}) => {
+const SharedItem = ({ cart, orderedBy, sharedBy, item, parentCallback}) => {
     const [checked, setChecked] = useState(false)
+    const [Cart, setCart] = useState(cart)
     
     const globalContext = useContext(Context)
 
     const { userObj } = globalContext
 
+    let controller = new WebsocketController();
+    var ws = controller.ws;
+
   return (
     <Pressable style = {styles.container}
     onPress={() => {
+
+        let index = cart.indexOf(item)
+        cart[index].sharedBy.push(userObj['first_name'])
+        console.log(cart[index].sharedBy)
+        ws.send(JSON.stringify(cart))
+
+     
         console.log(checked)
         setChecked(!checked)
         if(!checked) { 
@@ -50,7 +62,7 @@ const SharedItem = ({navigation, orderedBy, sharedBy, name, price, parentCallbac
                 
         </View>
         <View style={{marginLeft: 10}}>
-            <Text style={[checked ? styles.black: styles.faded]}>{name}</Text>
+            <Text style={[checked ? styles.black: styles.faded]}>{item.name}</Text>
             {checked ? 
                 <Text style = {[styles.description, styles.faded]}>
                     {"Ordered By: " + orderedBy + "\nShared By: " + userObj.first_name + " " + sharedBy}
@@ -65,7 +77,7 @@ const SharedItem = ({navigation, orderedBy, sharedBy, name, price, parentCallbac
         {checked ? 
         <View style={styles.price}>
             <NumberFormat
-                value = {price}
+                value = {item.price}
                 displayType = "text"
                 thousandSeparator={true}
                 prefix = "$"
@@ -76,7 +88,7 @@ const SharedItem = ({navigation, orderedBy, sharedBy, name, price, parentCallbac
                 }>
             </NumberFormat>
             <NumberFormat
-                value = {price/2}
+                value = {item.price/2}
                 displayType = "text"
                 thousandSeparator={true}
                 prefix = "$"
@@ -89,7 +101,7 @@ const SharedItem = ({navigation, orderedBy, sharedBy, name, price, parentCallbac
         </View>
         :
         <NumberFormat
-            value = {price}
+            value = {item.price}
             displayType = "text"
             thousandSeparator={true}
             prefix = "$"

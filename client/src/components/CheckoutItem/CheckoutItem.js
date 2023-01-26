@@ -2,8 +2,9 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import NumberFormat from 'react-number-format'
 
-const CheckoutItem = ({navigation, name, price}) => {
+const CheckoutItem = ({navigation, sharedBy, name, price}) => {
   return (
+    <View>
     <View style = {styles.container}>
         <Text style = {styles.name}>{name}</Text>
         <NumberFormat
@@ -15,6 +16,10 @@ const CheckoutItem = ({navigation, name, price}) => {
             fixedDecimalScale = {true}
             renderText={(value) => <Text style = {styles.price}>{value}</Text>}>
         </NumberFormat>
+    </View>
+    {sharedBy.length != 0 ? 
+    <Text>{sharedBy}</Text> : <></>
+    }
     </View>
   )
 }
