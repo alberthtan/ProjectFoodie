@@ -14,6 +14,8 @@ const RestaurantScreen = ({navigation, route}) => {
     const [MenuItems, setMenuItems] = useState([])
     const [currentCategory, setCurrentCategory] = useState(null)
 
+    const [isFirstTime, setIsFirstTime] = useState(true)
+
     const getMenusFromApi = (id) => {
         return fetch('https://dutch-pay-test.herokuapp.com/menus/?format=json')
           .then(response => response.json())
@@ -57,7 +59,11 @@ const RestaurantScreen = ({navigation, route}) => {
     }, [])
 
     useEffect(() => {
-        getMenuItemsFromApi()            
+      if(!isFirstTime) {
+        getMenuItemsFromApi()  
+      } else {
+        setIsFirstTime(false)
+      }         
     }, [currentCategory])
 
     const oneCategory = ({item}) => (

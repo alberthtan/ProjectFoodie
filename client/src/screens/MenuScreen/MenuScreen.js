@@ -17,6 +17,7 @@ const MenuScreen = ({route, navigation}) => {
     const [MenuCategories, setMenuCategories] = useState([])
     const [MenuItems, setMenuItems] = useState([])
     const [currentCategory, setCurrentCategory] = useState('')
+    const [isFirstTime, setIsFirstTime] = useState(true)
 
     const globalContext = useContext(Context)
 
@@ -52,10 +53,6 @@ const MenuScreen = ({route, navigation}) => {
     setCart(temp)
   };
 
-  useEffect(() => {
-    getMenusFromApi(id)
-  }, [])
-
     const getMenusFromApi = async (id) => {
         return await fetch('https://dutch-pay-test.herokuapp.com/menus/?format=json')
           .then(response => response.json())
@@ -87,17 +84,27 @@ const MenuScreen = ({route, navigation}) => {
           .then(response => response.json())
           .then(json => {
             const result = json.filter(item => item["category"] == currentCategory)
+            console.log(result)
             setMenuItems(result)
           })
           .catch(error => {
             console.error(error);
           });
       };
-    
-
 
     useEffect(() => {
-        getMenuItemsFromApi()               
+      getMenusFromApi(id)
+      // console.log(MenuItems)
+    }, [])
+    
+    useEffect(() => {
+      // console.log("RUNNINGNGNGNNGN")
+      if(!isFirstTime) {
+        getMenuItemsFromApi()  
+      } else {
+        setIsFirstTime(false)
+      }
+                     
     }, [currentCategory])
 
     const oneCategory = ({item}) => (
