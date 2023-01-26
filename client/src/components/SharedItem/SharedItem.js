@@ -5,7 +5,7 @@ import checkIcon from '../../../assets/icons/checkmark.png';
 import { Context } from '../../globalContext/globalContext';
 import WebsocketController from '../../websocket/websocket';
 
-const SharedItem = ({ cart, orderedBy, sharedBy, item, parentCallback}) => {
+const SharedItem = ({ cart, order, orderedBy, sharedBy, parentCallback}) => {
     const [checked, setChecked] = useState(false)
     const [Cart, setCart] = useState(cart)
     
@@ -20,18 +20,21 @@ const SharedItem = ({ cart, orderedBy, sharedBy, item, parentCallback}) => {
     <Pressable style = {styles.container}
     onPress={() => {
 
-        let index = cart.indexOf(item)
-        cart[index].sharedBy.push(userObj['first_name'])
-        console.log(cart[index].sharedBy)
+        let index = cart.indexOf(order)
+        console.log("cart index")
+        console.log(index)
+        console.log(cart[index])
+        cart[index].push(userObj['first_name'])
+        console.log(cart[index]['sharedBy'])
         ws.send(JSON.stringify(cart))
 
      
         console.log(checked)
         setChecked(!checked)
         if(!checked) { 
-            parentCallback(price/2) 
+            parentCallback(order.item.price/2) 
         } else { 
-            parentCallback(-1 * price/2) 
+            parentCallback(-1 * order.item.price/2) 
         }
       }}>
         <View
@@ -62,7 +65,7 @@ const SharedItem = ({ cart, orderedBy, sharedBy, item, parentCallback}) => {
                 
         </View>
         <View style={{marginLeft: 10}}>
-            <Text style={[checked ? styles.black: styles.faded]}>{item.name}</Text>
+            <Text style={[checked ? styles.black: styles.faded]}>{order.item.name}</Text>
             {checked ? 
                 <Text style = {[styles.description, styles.faded]}>
                     {"Ordered By: " + orderedBy + "\nShared By: " + userObj.first_name + " " + sharedBy}
@@ -77,7 +80,7 @@ const SharedItem = ({ cart, orderedBy, sharedBy, item, parentCallback}) => {
         {checked ? 
         <View style={styles.price}>
             <NumberFormat
-                value = {item.price}
+                value = {order.item.price}
                 displayType = "text"
                 thousandSeparator={true}
                 prefix = "$"
@@ -88,7 +91,7 @@ const SharedItem = ({ cart, orderedBy, sharedBy, item, parentCallback}) => {
                 }>
             </NumberFormat>
             <NumberFormat
-                value = {item.price/2}
+                value = {order.item.price/2}
                 displayType = "text"
                 thousandSeparator={true}
                 prefix = "$"
@@ -101,7 +104,7 @@ const SharedItem = ({ cart, orderedBy, sharedBy, item, parentCallback}) => {
         </View>
         :
         <NumberFormat
-            value = {item.price}
+            value = {order.item.price}
             displayType = "text"
             thousandSeparator={true}
             prefix = "$"

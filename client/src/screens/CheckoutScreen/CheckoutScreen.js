@@ -116,7 +116,7 @@ ws.onmessage = ({data}) => {
                 (userObj['first_name'] != order.orderedBy) ?
                 <SharedItem
                     key = {order.id}
-                    item={order.item}
+                    order={order}
                     cart = {Cart}
                     orderedBy = {order.orderedBy}
                     sharedBy = {order.sharedBy}
