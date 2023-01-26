@@ -21,13 +21,9 @@ const MenuScreen = ({route, navigation}) => {
     const globalContext = useContext(Context)
 
     const { userObj } = globalContext
-
-  
-    const serverMessagesList = [];
-
   
     const [serverState, setServerState] = useState('Loading...');
-    const [serverMessages, setServerMessages] = useState(serverMessagesList);
+  
 
   let controller = new WebsocketController();
   var ws = controller.ws;
@@ -50,15 +46,11 @@ const MenuScreen = ({route, navigation}) => {
     console.log(JSON.parse(data))
     let message = JSON.parse(data)
     let newCart = []
-    // let newCart = JSON.parse(JSON.stringify(Cart))
     
     for (let i = 0; i < message.length; i++) {
       newCart.push(message[i])
     }
-    // console.log(cart)
     setCart(newCart)
-    // serverMessagesList.push(data);
-    // setServerMessages(serverMessagesList)
   };
 
   useEffect(() => {
@@ -172,6 +164,7 @@ const MenuScreen = ({route, navigation}) => {
             price = {item.price}
             description = {item.description}
             cart = {Cart}
+            setCart ={setCart}
             subtotal = {subtotal}
             restaurant_id = {id}
             isOrdering = {true}

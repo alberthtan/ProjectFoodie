@@ -8,31 +8,43 @@ import WebsocketController from '../../websocket/websocket'
 
 const ItemScreen = ({route, navigation}) => {
 
-  const { item, name, price, description, count, cart, subtotal, restaurant_id, isOrdering } = route.params;
+  const { item, name, price, description, cart, setCart, subtotal, restaurant_id, isOrdering } = route.params;
 
-  // let controller = new WebsocketController();
-  // var ws = controller.ws;
+  let controller = new WebsocketController();
+  var ws = controller.ws;
 
-  // useEffect(() => {
-  //   ws.onopen = () => {
-  //     setServerState('Connected to the server')
-  //     setDisableButton(false);
-  //   };
-  //   ws.onclose = (e) => {
-  //     console.log(e)
-  //     setServerState('Disconnected. Check internet or server.')
-  //     setDisableButton(true);
-  //   };
-  //   ws.onerror = (e) => {
-  //     console.log('got here')
-  //     setServerState(e.message);
-  //   };
-  //   ws.onmessage = ({data}) => {
-  //     console.log(JSON.parse(data))
-  //     serverMessagesList.push(data);
-  //     setServerMessages(serverMessagesList)
-  //   };
-  // }, [])
+  const [serverState, setServerState] = useState('Loading...');
+
+  ws.onopen = () => {
+    console.log("opening ws in item screen")
+    setServerState('Connected to the server')
+    setDisableButton(false);
+  };
+  ws.onclose = (e) => {
+    console.log(e)
+    setServerState('Disconnected. Check internet or server.')
+    setDisableButton(true);
+  };
+  ws.onerror = (e) => {
+    console.log('got here')
+    setServerState(e.message);
+  };
+  ws.onmessage = ({data}) => {
+    console.log(JSON.parse(data))
+    let message = JSON.parse(data)
+    let newCart = []
+    
+    for (let i = 0; i < message.length; i++) {
+      newCart.push(message[i])
+    }
+    setCart(newCart)
+  };
+
+  const handleAddItem = async () => {
+    cart.push({item: item, orderedBy: userObj['first_name'], sharedBy: []})
+    ws.send(JSON.stringify(cart))
+    navigation.navigate('Menu', {cart: cart, subtotal: subtotal + price, restaurant_id: restaurant_id})
+  }
 
   var imageUrl;
   
@@ -53,11 +65,7 @@ const ItemScreen = ({route, navigation}) => {
     addToOrderButton = <View style = {styles.addToCart}>
         <CustomButton
           text = "Add to Order"
-          onPress = {() => {
-            // cart.push({name: name, price: price})
-            cart.push({item: item, orderedBy: userObj['first_name'], sharedBy: []})
-            navigation.navigate('Menu', {cart: cart, count: count + 1, subtotal: subtotal + price, restaurant_id: restaurant_id})
-          }}
+          onPress = {handleAddItem}
         /> 
     </View>
   }
