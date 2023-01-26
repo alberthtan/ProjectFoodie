@@ -25,59 +25,53 @@ const CheckoutScreen = ({route, navigation}) => {
   const { userObj } = globalContext
 //   console.log(cart)
 
-const serverMessagesList = [];
-
 const [serverState, setServerState] = useState('Loading...');
-const [serverMessages, setServerMessages] = useState(serverMessagesList);
 
 let controller = new WebsocketController();
 var ws = controller.ws;
 
-useEffect(() => {
+ws.onopen = () => {
+    setServerState('Connected to the server')
+    // console.log(serverState)
+    setDisableButton(false);
+};
+ws.onclose = (e) => {
+    console.log(e)
+    setServerState('Disconnected. Check internet or server.')
+    setDisableButton(true);
+};
+ws.onerror = (e) => {
+    console.log('got here')
+    setServerState(e.message);
+};
+ws.onmessage = ({data}) => {
+    console.log(JSON.parse(data))
+    // console.log({data})
+    serverMessagesList.push(data);
 
-    console.log(serverState)
-    ws.onopen = () => {
-      setServerState('Connected to the server')
-      // console.log(serverState)
-      setDisableButton(false);
-    };
-    ws.onclose = (e) => {
-      console.log(e)
-      setServerState('Disconnected. Check internet or server.')
-      setDisableButton(true);
-    };
-    ws.onerror = (e) => {
-      console.log('got here')
-      setServerState(e.message);
-    };
-    ws.onmessage = ({data}) => {
-        console.log(JSON.parse(data))
-        // console.log({data})
-        serverMessagesList.push(data);
+    // cart = cart.concat(JSON.parse(data))
+    cart.push('hello')
+    console.log('here')
+    console.log(cart)
+    // for(let i=0; i < cart.length; i++){
+    //     cart.push(data[i])
+    // }
 
-        // cart = cart.concat(JSON.parse(data))
-        cart.push('hello')
-        console.log('here')
-        console.log(cart)
-        // for(let i=0; i < cart.length; i++){
-        //     cart.push(data[i])
-        // }
+    sharedCart.length = 0
+    let message = JSON.parse(data)
 
-        sharedCart.length = 0
-        let message = JSON.parse(data)
-
-        for(let i=0; i < message.length; i++) {
-            if (message[i].orderedBy != userObj['first_name']) {
-                sharedCart.push(message[i])
-            }
+    for(let i=0; i < message.length; i++) {
+        if (message[i].orderedBy != userObj['first_name']) {
+            sharedCart.push(message[i])
         }
-        console.log(sharedCart)
-        
-        // console.log(serverMessagesList)
-        setServerMessages(serverMessagesList)
-        // console.log(serverMessages)
-    };
-  }, [])
+    }
+    console.log(sharedCart)
+    
+    // console.log(serverMessagesList)
+    setServerMessages(serverMessagesList)
+    // console.log(serverMessages)
+};
+
 
   const submitMessage = async () => {
     ws.send('hello');

@@ -7,7 +7,7 @@ const MenuItem = ({navigation, item, name, price, description, cart, setCart, su
     <TouchableOpacity
         style = {styles.container}
         onPress = {() => navigation.navigate('Item', {item: item, name: name, description: description, 
-                                                      price: price, cart: cart, setCart: setCart,
+                                                      price: price, cart: cart,
                                                       subtotal: subtotal, restaurant_id : restaurant_id, isOrdering: isOrdering})}>
             
       <Text style = {styles.itemName}>{name}</Text>

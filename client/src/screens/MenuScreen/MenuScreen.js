@@ -45,50 +45,17 @@ const MenuScreen = ({route, navigation}) => {
   ws.onmessage = ({data}) => {
     console.log(JSON.parse(data))
     let message = JSON.parse(data)
-    let newCart = []
+    let temp = []
     
     for (let i = 0; i < message.length; i++) {
-      newCart.push(message[i])
+      temp.push(message[i])
     }
-    setCart(newCart)
+    setCart(temp)
   };
 
   useEffect(() => {
-    // DO NOT DELETE
     getMenusFromApi(id)
-
-    // console.log(serverState)
-    // ws.onopen = () => {
-    //   setServerState('Connected to the server')
-    //   // console.log(serverState)
-    //   // setDisableButton(false);
-    // };
-    // ws.onclose = (e) => {
-    //   console.log(e)
-    //   setServerState('Disconnected. Check internet or server.')
-    //   // setDisableButton(true);
-    // };
-    // ws.onerror = (e) => {
-    //   console.log('got here')
-    //   setServerState(e.message);
-    // };
-    // ws.onmessage = ({data}) => {
-    //   console.log(JSON.parse(data))
-    //   let message = JSON.parse(data)
-      
-    //   for (let i = 0; i < message.length; i++) {
-    //     cart.push(message[i])
-    //   }
-    //   console.log(cart)
-    //   setCart(cart)
-    //   // serverMessagesList.push(data);
-    //   // setServerMessages(serverMessagesList)
-    // };
   }, [])
-
-  const handleCheckout = async (cart) => {
-    ws.send(JSON.stringify(cart))
-  }
 
     const getMenusFromApi = async (id) => {
         return await fetch('https://dutch-pay-test.herokuapp.com/menus/?format=json')
@@ -164,7 +131,6 @@ const MenuScreen = ({route, navigation}) => {
             price = {item.price}
             description = {item.description}
             cart = {Cart}
-            setCart ={setCart}
             subtotal = {subtotal}
             restaurant_id = {id}
             isOrdering = {true}
@@ -177,7 +143,7 @@ const MenuScreen = ({route, navigation}) => {
                     <CustomButton 
                         text={"View Order (" + Cart.length + ")"}
                         style = {{bottom: 0, position: 'absolute'}}
-                        onPress = {() => {navigation.navigate('Checkout', {cart: Cart, subtotal: subtotal}), handleCheckout()}}/>
+                        onPress = {() => {navigation.navigate('Checkout', {cart: Cart, subtotal: subtotal})}}/>
                 </View>
     }
 

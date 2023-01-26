@@ -1,5 +1,5 @@
 import { Dimensions, ScrollView, View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import CustomButton from '../../components/CustomButton';
 import NumberFormat from 'react-number-format';
 import BackButton from '../../components/BackButton';
@@ -8,10 +8,11 @@ import WebsocketController from '../../websocket/websocket'
 
 const ItemScreen = ({route, navigation}) => {
 
-  const { item, name, price, description, cart, setCart, subtotal, restaurant_id, isOrdering } = route.params;
+  const { item, name, price, description, cart, subtotal, restaurant_id, isOrdering } = route.params;
 
   let controller = new WebsocketController();
   var ws = controller.ws;
+  const [Cart, setCart] = useState(cart)
 
   const [serverState, setServerState] = useState('Loading...');
 
@@ -32,18 +33,23 @@ const ItemScreen = ({route, navigation}) => {
   ws.onmessage = ({data}) => {
     console.log(JSON.parse(data))
     let message = JSON.parse(data)
-    let newCart = []
+    let temp = []
     
     for (let i = 0; i < message.length; i++) {
-      newCart.push(message[i])
+      temp.push(message[i])
     }
-    setCart(newCart)
+    setCart(temp)
   };
 
   const handleAddItem = async () => {
-    cart.push({item: item, orderedBy: userObj['first_name'], sharedBy: []})
-    ws.send(JSON.stringify(cart))
-    navigation.navigate('Menu', {cart: cart, subtotal: subtotal + price, restaurant_id: restaurant_id})
+    let temp = []
+    for (let i = 0; i < Cart.length; i++) {
+      temp.push(Cart[i])
+    }
+    temp.push({item: item, orderedBy: userObj['first_name'], sharedBy: []})
+    setCart(temp)
+    ws.send(JSON.stringify(Cart))
+    navigation.navigate('Menu', {cart: Cart, subtotal: subtotal + price, restaurant_id: restaurant_id})
   }
 
   var imageUrl;
@@ -57,8 +63,6 @@ const ItemScreen = ({route, navigation}) => {
   else if (name == 'Sauteed Edamame'){
     imageUrl = 'https://media.istockphoto.com/id/945129060/photo/edamame.jpg?s=612x612&w=0&k=20&c=vGZXT_2KQnICyS8T883Pe-wRKDq1I9d3_Gb0CgUm6-s='
   }
-
-  console.log(cart)
 
   let addToOrderButton
   if (isOrdering === true) {
