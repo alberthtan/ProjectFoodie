@@ -16,61 +16,51 @@ import { v4 } from 'uuid'
 
 const CheckoutScreen = ({route, navigation}) => {
   const {cart, subtotal, restaurant_id} = route.params
-  const sharedCart = []
+  const [sharedCart, setSharedCart] = useState([])
 
   const [subtotalValue, setSubtotalValue] = useState(subtotal)
+  const [Cart, setCart] = useState(cart)
+  const [serverState, setServerState] = useState('Loading...');
 
   const globalContext = useContext(Context)
-
   const { userObj } = globalContext
-//   console.log(cart)
 
-const [serverState, setServerState] = useState('Loading...');
 
 let controller = new WebsocketController();
 var ws = controller.ws;
 
 ws.onopen = () => {
     setServerState('Connected to the server')
-    // console.log(serverState)
     setDisableButton(false);
 };
 ws.onclose = (e) => {
-    console.log(e)
     setServerState('Disconnected. Check internet or server.')
     setDisableButton(true);
 };
 ws.onerror = (e) => {
-    console.log('got here')
     setServerState(e.message);
 };
 ws.onmessage = ({data}) => {
-    console.log(JSON.parse(data))
-    // console.log({data})
-    serverMessagesList.push(data);
-
-    // cart = cart.concat(JSON.parse(data))
-    cart.push('hello')
-    console.log('here')
-    console.log(cart)
-    // for(let i=0; i < cart.length; i++){
-    //     cart.push(data[i])
-    // }
-
-    sharedCart.length = 0
     let message = JSON.parse(data)
+    let temp = []
+    
+    for (let i = 0; i < message.length; i++) {
+      temp.push(message[i])
+    }
+    setCart(temp)
+};
 
-    for(let i=0; i < message.length; i++) {
-        if (message[i].orderedBy != userObj['first_name']) {
-            sharedCart.push(message[i])
+useEffect(() => {
+    console.log("shared cart is updating...")
+    let temp = []
+    for(let i=0; i < Cart.length; i++) {
+        if (Cart[i].orderedBy != userObj['first_name']) {
+            temp.push(Cart[i])
         }
     }
-    console.log(sharedCart)
-    
-    // console.log(serverMessagesList)
-    setServerMessages(serverMessagesList)
-    // console.log(serverMessages)
-};
+    console.log(temp)
+    setSharedCart(temp)
+}, [Cart])
 
 
   const submitMessage = async () => {
@@ -98,10 +88,10 @@ ws.onmessage = ({data}) => {
                 Your Items
             </Text>
 
-            {cart.map(item => (
+            {Cart.map(item => (
                 (userObj['first_name'] == item.orderedBy) ?
                 <CheckoutItem
-                    key = {cart.indexOf(item)}
+                    key = {Cart.indexOf(item)}
                     navigation = {navigation}
                     name = {item.item.name}
                     price = {item.item.price}
@@ -110,29 +100,22 @@ ws.onmessage = ({data}) => {
             ))}
 
             <AddItemsButton
-                onPress = {() => navigation.navigate('Menu', {cart: cart, subtotal: subtotalValue, restaurant_id: restaurant_id})}
+                onPress = {() => navigation.navigate('Menu', {cart: Cart, subtotal: subtotalValue, restaurant_id: restaurant_id})}
             />
 
             {sharedCart.map(item => (
+                (userObj['first_name'] != item.orderedBy) ?
                 <SharedItem
-                    key = {cart.indexOf(item)}
+                    key = {Cart.indexOf(item)}
                     name = {item.item.name}
                     price = {item.item.price}
+                    orderedBy = {item.orderedBy}
+                    sharedBy = {item.sharedBy}
                     parentCallback = {handleCallback}
                 />
+                :
+                <></>
             ))}
-
-            <SharedItem
-                name="Shoyu Ramen"
-                price={10}
-                parentCallback = {handleCallback}
-            />
-
-            <SharedItem
-                name="Wasabi Shock Salad"
-                price={7}
-                parentCallback = {handleCallback}
-            />
 
 
             <View style = {{marginTop: 20}}>

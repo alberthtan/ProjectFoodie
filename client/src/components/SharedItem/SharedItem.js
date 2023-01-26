@@ -1,11 +1,15 @@
 import { StyleSheet, Text, View, Pressable, Image } from 'react-native'
-import React , { useState } from 'react'
+import React , { useState, useContext } from 'react'
 import NumberFormat from 'react-number-format'
 import checkIcon from '../../../assets/icons/checkmark.png';
+import { Context } from '../../globalContext/globalContext';
 
-const SharedItem = ({navigation, name, price, parentCallback}) => {
+const SharedItem = ({navigation, orderedBy, sharedBy, name, price, parentCallback}) => {
     const [checked, setChecked] = useState(false)
+    
+    const globalContext = useContext(Context)
 
+    const { userObj } = globalContext
 
   return (
     <Pressable style = {styles.container}
@@ -49,10 +53,10 @@ const SharedItem = ({navigation, name, price, parentCallback}) => {
             <Text style={[checked ? styles.black: styles.faded]}>{name}</Text>
             {checked ? 
                 <Text style = {[styles.description, styles.faded]}>
-                    Allen Chun, Albert Tan
+                    {"Ordered By: " + orderedBy + "\nShared By: " + userObj.first_name + " " + sharedBy}
                 </Text> : 
                 <Text style = {[styles.description, styles.faded]}>
-                    Albert Tan
+                    {"Ordered By: " + orderedBy + "\nShared By: " + sharedBy}
                 </Text>
             }
         </View>
