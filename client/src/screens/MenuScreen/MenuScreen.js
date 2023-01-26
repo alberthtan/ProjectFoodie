@@ -44,6 +44,8 @@ const MenuScreen = ({route, navigation}) => {
     setServerState(e.message);
   };
   ws.onmessage = ({data}) => {
+    console.log("ACQUIRING MESSAGE")
+    console.log(data)
     let message = JSON.parse(data)
     let temp = []
     
