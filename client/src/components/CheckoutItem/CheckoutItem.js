@@ -7,7 +7,7 @@ const CheckoutItem = ({navigation, sharedBy, name, price}) => {
     <View>
     <View style = {styles.container}>
         <Text style = {styles.name}>{name}</Text>
-        <NumberFormat
+        {/* <NumberFormat
             value = {price / (sharedBy.length + 1)}
             displayType = "text"
             thousandSeparator={true}
@@ -15,7 +15,45 @@ const CheckoutItem = ({navigation, sharedBy, name, price}) => {
             decimalScale={2}
             fixedDecimalScale = {true}
             renderText={(value) => <Text style = {styles.price}>{value}</Text>}>
+        </NumberFormat> */}
+        {sharedBy.length != 0 ? 
+        <View style={styles.price}>
+            <NumberFormat
+                value = {price}
+                displayType = "text"
+                thousandSeparator={true}
+                prefix = "$"
+                decimalScale={2}
+                fixedDecimalScale = {true}
+                renderText={(value) =>
+                    <Text style={[{textDecorationLine: 'line-through', fontSize: 15}, styles.faded]}>{value} </Text>          
+                }>
+            </NumberFormat>
+            <NumberFormat
+                value = {price/ (sharedBy.length + 1)}
+                displayType = "text"
+                thousandSeparator={true}
+                prefix = "$"
+                decimalScale={2}
+                fixedDecimalScale = {true}
+                renderText={(value) =>
+                    <Text style={{fontSize: 15}}>{value}</Text>          
+                }>
+            </NumberFormat>
+        </View>
+        :
+        <NumberFormat
+            value = {price}
+            displayType = "text"
+            thousandSeparator={true}
+            prefix = "$"
+            decimalScale={2}
+            fixedDecimalScale = {true}
+            renderText={(value) =>
+                <Text style={[styles.price]}>{value}</Text>          
+            }>
         </NumberFormat>
+        }
     </View>
     {sharedBy.length != 0 ? 
     <Text>{sharedBy}</Text> : <></>
@@ -43,6 +81,11 @@ const styles = StyleSheet.create({
         right: 0,
         position: 'absolute',
         marginRight: 20,
-        fontSize: 15
+        fontSize: 15,
+        flexDirection: 'row'
+    },
+
+    faded: {
+        color: '#7C7878'
     }
 })
