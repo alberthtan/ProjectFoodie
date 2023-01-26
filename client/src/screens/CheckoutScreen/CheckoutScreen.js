@@ -12,7 +12,9 @@ import HeaderBar from '../../components/HeaderBar'
 import SharedItem from '../../components/SharedItem'
 import WebsocketController from '../../websocket/websocket'
 import { Context } from '../../globalContext/globalContext'
+import 'react-native-get-random-values'
 import { v4 } from 'uuid'
+import key from 'weak-key'
 
 const CheckoutScreen = ({route, navigation}) => {
   const {cart, subtotal, restaurant_id} = route.params
@@ -57,6 +59,9 @@ useEffect(() => {
     for(let i=0; i < Cart.length; i++) {
         if (Cart[i].orderedBy != userObj['first_name']) {
             temp.push(Cart[i])
+            // temp[i].id = v4()
+            console.log(Cart[i].id)
+            // console.log(temp[i].id)
         }
     }
     // console.log("SHARED \n")
@@ -89,7 +94,7 @@ useEffect(() => {
             {Cart.map(item => (
                 (userObj['first_name'] == item.orderedBy) ?
                 <CheckoutItem
-                    key = {Cart.indexOf(item)}
+                    key = {item.id}
                     navigation = {navigation}
                     name = {item.item.name}
                     price = {item.item.price}
@@ -101,18 +106,17 @@ useEffect(() => {
                 onPress = {() => navigation.navigate('Menu', {cart: Cart, subtotal: subtotalValue, restaurant_id: restaurant_id})}
             />
 
-            {sharedCart.map(item => (
-                console.log(sharedCart.indexOf(item)),
+            {Cart.map(item => (
+                // console.log(item.id),
                 (userObj['first_name'] != item.orderedBy) ?
                 <SharedItem
-                    key = {sharedCart.indexOf(item)}
+                    key = {item.id}
                     name = {item.item.name}
                     price = {item.item.price}
                     orderedBy = {item.orderedBy}
                     sharedBy = {item.sharedBy}
                     parentCallback = {handleCallback}
-                />
-                :
+                /> :
                 <></>
             ))}
 
