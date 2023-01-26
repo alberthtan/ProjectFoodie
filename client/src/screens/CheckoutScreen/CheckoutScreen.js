@@ -12,9 +12,12 @@ import HeaderBar from '../../components/HeaderBar'
 import SharedItem from '../../components/SharedItem'
 import WebsocketController from '../../websocket/websocket'
 import { Context } from '../../globalContext/globalContext'
+import { v4 } from 'uuid'
 
 const CheckoutScreen = ({route, navigation}) => {
-  const {cart, count, subtotal, restaurant_id} = route.params
+  const {cart, subtotal, restaurant_id} = route.params
+  const sharedCart = []
+
   const [subtotalValue, setSubtotalValue] = useState(subtotal)
 
   const globalContext = useContext(Context)
@@ -31,6 +34,7 @@ let controller = new WebsocketController();
 var ws = controller.ws;
 
 useEffect(() => {
+
     console.log(serverState)
     ws.onopen = () => {
       setServerState('Connected to the server')
@@ -50,6 +54,25 @@ useEffect(() => {
         console.log(JSON.parse(data))
         // console.log({data})
         serverMessagesList.push(data);
+
+        // cart = cart.concat(JSON.parse(data))
+        cart.push('hello')
+        console.log('here')
+        console.log(cart)
+        // for(let i=0; i < cart.length; i++){
+        //     cart.push(data[i])
+        // }
+
+        sharedCart.length = 0
+        let message = JSON.parse(data)
+
+        for(let i=0; i < message.length; i++) {
+            if (message[i].orderedBy != userObj['first_name']) {
+                sharedCart.push(message[i])
+            }
+        }
+        console.log(sharedCart)
+        
         // console.log(serverMessagesList)
         setServerMessages(serverMessagesList)
         // console.log(serverMessages)
@@ -93,18 +116,16 @@ useEffect(() => {
             ))}
 
             <AddItemsButton
-                onPress = {() => navigation.navigate('Menu', {cart: cart, count: count, subtotal: subtotalValue, restaurant_id: restaurant_id})}
+                onPress = {() => navigation.navigate('Menu', {cart: cart, subtotal: subtotalValue, restaurant_id: restaurant_id})}
             />
 
-            {cart.map(item => (
-                (userObj['first_name'] != item.orderedBy) ?
+            {sharedCart.map(item => (
                 <SharedItem
                     key = {cart.indexOf(item)}
                     name = {item.item.name}
                     price = {item.item.price}
                     parentCallback = {handleCallback}
-                /> :
-                <></>
+                />
             ))}
 
             <SharedItem

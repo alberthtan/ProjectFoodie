@@ -3,15 +3,12 @@ import React, {useEffect, useState}  from 'react'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import xicon from '../../../assets/icons/xicon.png';
 
-
-
 const CameraScreen = ({navigation}) => {
 
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
     const [tableList, setTableList] = useState([])
     const [restaurantList, setRestaurantList] = useState([])
-    // const db = firebase.firestore()
 
     const getRestaurantsFromApi = () => {
         return fetch('https://dutch-pay-test.herokuapp.com/restaurants/?format=json')
@@ -62,7 +59,12 @@ const CameraScreen = ({navigation}) => {
                         restaurant_name = restaurantList[i]["name"]
                     }
                 }
-                navigation.navigate('Menu', {cart: [], count: 0, subtotal: 0, id : restaurant_id, name: restaurant_name})
+                // if(restaurant_name == "dummy") {
+                //     alert("Restaurant not found!")
+                // } else {
+                navigation.navigate('Menu', {cart: [], subtotal: 0, id : restaurant_id, name: restaurant_name})
+                // }
+
             } 
         })();
 

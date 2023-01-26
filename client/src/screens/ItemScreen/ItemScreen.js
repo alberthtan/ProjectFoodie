@@ -1,16 +1,38 @@
 import { Dimensions, ScrollView, View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
-import { Overlay } from 'react-native-elements'
-import React, {useContext} from 'react'
-import { useRoute } from '@react-navigation/native';
+import React, {useContext, useEffect} from 'react'
 import CustomButton from '../../components/CustomButton';
 import NumberFormat from 'react-number-format';
-import backIcon from '../../../assets/icons/backicon.png';
 import BackButton from '../../components/BackButton';
 import { Context } from '../../globalContext/globalContext'
+import WebsocketController from '../../websocket/websocket'
 
 const ItemScreen = ({route, navigation}) => {
 
   const { item, name, price, description, count, cart, subtotal, restaurant_id, isOrdering } = route.params;
+
+  // let controller = new WebsocketController();
+  // var ws = controller.ws;
+
+  // useEffect(() => {
+  //   ws.onopen = () => {
+  //     setServerState('Connected to the server')
+  //     setDisableButton(false);
+  //   };
+  //   ws.onclose = (e) => {
+  //     console.log(e)
+  //     setServerState('Disconnected. Check internet or server.')
+  //     setDisableButton(true);
+  //   };
+  //   ws.onerror = (e) => {
+  //     console.log('got here')
+  //     setServerState(e.message);
+  //   };
+  //   ws.onmessage = ({data}) => {
+  //     console.log(JSON.parse(data))
+  //     serverMessagesList.push(data);
+  //     setServerMessages(serverMessagesList)
+  //   };
+  // }, [])
 
   var imageUrl;
   
@@ -42,26 +64,6 @@ const ItemScreen = ({route, navigation}) => {
 
   return (
     <View style = {styles.firstView}>
-
-      {/* <Overlay isVisible={true}>
-        <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}>
-                <Image source={backIcon} resizeMode="contain" style={{
-                    width: 30,
-                    height: 30,
-                    alignSelf:'center',
-                    justifyContent: 'center',
-                    flex: 1,
-                    // marginBottom: 8,
-                    tintColor: '#000000',
-                }}/>
-        </TouchableOpacity>
-      </Overlay> */}
-      
-      {/* <Text style = {styles.itemName}>
-        {name}
-      </Text> */}
       <TouchableOpacity
               style={styles.backButton}
               onPress={() => navigation.goBack()}>

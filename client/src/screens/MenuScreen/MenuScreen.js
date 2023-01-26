@@ -11,7 +11,8 @@ import { Context } from '../../globalContext/globalContext'
 import WebsocketController from '../../websocket/websocket'
 
 const MenuScreen = ({route, navigation}) => {
-    const { id, name, cart, count, subtotal } = route.params
+    const { id, name, cart, subtotal } = route.params
+    const [Cart, setCart] = useState(cart)
     const [Menus, setMenus] = useState([])
     const [MenuCategories, setMenuCategories] = useState([])
     const [MenuItems, setMenuItems] = useState([])
@@ -21,64 +22,80 @@ const MenuScreen = ({route, navigation}) => {
 
     const { userObj } = globalContext
 
-    
-
+  
     const serverMessagesList = [];
 
   
     const [serverState, setServerState] = useState('Loading...');
-    const [messageText, setMessageText] = useState('hello');
-    const [disableButton, setDisableButton] = useState(true);
-    const [inputFieldEmpty, setInputFieldEmpty] = useState(true);
     const [serverMessages, setServerMessages] = useState(serverMessagesList);
 
   let controller = new WebsocketController();
   var ws = controller.ws;
 
+  ws.onopen = () => {
+    setServerState('Connected to the server')
+    // console.log(serverState)
+    // setDisableButton(false);
+  };
+  ws.onclose = (e) => {
+    console.log(e)
+    setServerState('Disconnected. Check internet or server.')
+    // setDisableButton(true);
+  };
+  ws.onerror = (e) => {
+    console.log('got here')
+    setServerState(e.message);
+  };
+  ws.onmessage = ({data}) => {
+    console.log(JSON.parse(data))
+    let message = JSON.parse(data)
+    let newCart = []
+    // let newCart = JSON.parse(JSON.stringify(Cart))
+    
+    for (let i = 0; i < message.length; i++) {
+      newCart.push(message[i])
+    }
+    // console.log(cart)
+    setCart(newCart)
+    // serverMessagesList.push(data);
+    // setServerMessages(serverMessagesList)
+  };
+
   useEffect(() => {
     // DO NOT DELETE
     getMenusFromApi(id)
 
-    console.log(serverState)
-    ws.onopen = () => {
-      setServerState('Connected to the server')
-      // console.log(serverState)
-      setDisableButton(false);
-    };
-    ws.onclose = (e) => {
-      console.log(e)
-      setServerState('Disconnected. Check internet or server.')
-      setDisableButton(true);
-    };
-    ws.onerror = (e) => {
-      console.log('got here')
-      setServerState(e.message);
-    };
-    ws.onmessage = ({data}) => {
-      console.log(JSON.parse(data))
-      // console.log({data})
-      serverMessagesList.push(data);
-      // console.log(serverMessagesList)
-      setServerMessages(serverMessagesList)
-      // console.log(serverMessages)
-    };
+    // console.log(serverState)
+    // ws.onopen = () => {
+    //   setServerState('Connected to the server')
+    //   // console.log(serverState)
+    //   // setDisableButton(false);
+    // };
+    // ws.onclose = (e) => {
+    //   console.log(e)
+    //   setServerState('Disconnected. Check internet or server.')
+    //   // setDisableButton(true);
+    // };
+    // ws.onerror = (e) => {
+    //   console.log('got here')
+    //   setServerState(e.message);
+    // };
+    // ws.onmessage = ({data}) => {
+    //   console.log(JSON.parse(data))
+    //   let message = JSON.parse(data)
+      
+    //   for (let i = 0; i < message.length; i++) {
+    //     cart.push(message[i])
+    //   }
+    //   console.log(cart)
+    //   setCart(cart)
+    //   // serverMessagesList.push(data);
+    //   // setServerMessages(serverMessagesList)
+    // };
   }, [])
 
-  const submitMessage = async (cart) => {
-    // const cartList = []
-    // for(let i=0; i < cart.length; i++) {
-    //   let cartItem = {name: cart[i], orderedBy: userObj['first_name'], sharedBy: []}
-    //   // console.log(cartItem)
-    //   cartList.push(cartItem)
-    // }
-    
-    // console.log(cartList)
+  const handleCheckout = async (cart) => {
     ws.send(JSON.stringify(cart))
-    // ws.send(JSON.stringify(cartList))
-    // console.log('here')
-    // setMessageText(data)
-    // ws.send(data);
-    // setInputFieldEmpty(true)
   }
 
     const getMenusFromApi = async (id) => {
@@ -154,8 +171,7 @@ const MenuScreen = ({route, navigation}) => {
             name = {item.name}
             price = {item.price}
             description = {item.description}
-            count = {count}
-            cart = {cart}
+            cart = {Cart}
             subtotal = {subtotal}
             restaurant_id = {id}
             isOrdering = {true}
@@ -163,12 +179,12 @@ const MenuScreen = ({route, navigation}) => {
     )
 
     let button
-    if (count > 0) {
+    if (Cart.length > 0) {
         button = <View style = {{alignItems: 'center', justifyContent: 'center', borderTopWidth: 1, height: Dimensions.get('window').height * 0.15, borderColor: '#D9D9D9'}}>
                     <CustomButton 
-                        text={"View Order (" + count + ")"}
+                        text={"View Order (" + Cart.length + ")"}
                         style = {{bottom: 0, position: 'absolute'}}
-                        onPress = {() => {navigation.navigate('Checkout', {cart: cart, count: count, subtotal: subtotal}), submitMessage(cart)}}/>
+                        onPress = {() => {navigation.navigate('Checkout', {cart: Cart, subtotal: subtotal}), handleCheckout()}}/>
                 </View>
     }
 
