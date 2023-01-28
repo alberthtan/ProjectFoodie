@@ -11,8 +11,8 @@ import { Context } from '../../globalContext/globalContext'
 import WebsocketController from '../../websocket/websocket'
 
 const MenuScreen = ({route, navigation}) => {
-    const { restaurant_id, name, cart, subtotal, table_id } = route.params
-    const [Cart, setCart] = useState(cart)
+    const { restaurant_id, name, subtotal, table_id } = route.params
+    
     const [Menus, setMenus] = useState([])
     const [MenuCategories, setMenuCategories] = useState([])
     const [MenuItems, setMenuItems] = useState([])
@@ -21,7 +21,8 @@ const MenuScreen = ({route, navigation}) => {
 
     const globalContext = useContext(Context)
 
-    const { userObj } = globalContext
+    const { userObj, cart, setCart } = globalContext
+    // const [Cart, setCart] = useState(cart)
   
     const [serverState, setServerState] = useState('Loading...');
   
@@ -141,7 +142,6 @@ const MenuScreen = ({route, navigation}) => {
             name = {item.name}
             price = {item.price}
             description = {item.description}
-            cart = {Cart}
             subtotal = {subtotal}
             table_id = {table_id}
             restaurant_id = {restaurant_id}
@@ -151,12 +151,12 @@ const MenuScreen = ({route, navigation}) => {
     )
 
     let button
-    if (Cart.length > 0) {
+    if (cart.length > 0) {
         button = <View style = {{alignItems: 'center', justifyContent: 'center', borderTopWidth: 1, height: Dimensions.get('window').height * 0.15, borderColor: '#D9D9D9'}}>
                     <CustomButton 
-                        text={"View Order (" + Cart.length + ")"}
+                        text={"View Order (" + cart.length + ")"}
                         style = {{bottom: 0, position: 'absolute'}}
-                        onPress = {() => {navigation.navigate('Checkout', {cart: Cart, table_id: table_id, subtotal: subtotal})}}/>
+                        onPress = {() => {navigation.navigate('Checkout', {table_id: table_id, subtotal: subtotal, restaurant_name: name})}}/>
                 </View>
     }
 

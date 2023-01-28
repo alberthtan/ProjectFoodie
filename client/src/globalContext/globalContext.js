@@ -7,6 +7,7 @@ const Provider = ( { children } ) => {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [userObj, setUserObj] = useState(false)
+    const [cart, setCart] = useState([])
     const setToken = async (refresh, access) => {
         await SecureStore.setItemAsync('refresh', refresh)
         await SecureStore.setItemAsync('access', access)
@@ -59,6 +60,8 @@ const Provider = ( { children } ) => {
         // appSettings,
         // setAppSettings,
         userObj,
+        cart,
+        setCart,
         setUserObj,
         setToken,
         getToken,

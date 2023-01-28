@@ -17,14 +17,13 @@ import { Context } from '../../globalContext/globalContext'
 LogBox.ignoreLogs(['Warning: Each child in a list should have a unique "key" prop.'])
 
 const CheckoutScreen = ({route, navigation}) => {
-  const {cart, subtotal, restaurant_id, table_id} = route.params
+  const {subtotal, restaurant_id, table_id, restaurant_name} = route.params
 
   const [subtotalValue, setSubtotalValue] = useState(subtotal)
-  const [Cart, setCart] = useState(cart)
   const [serverState, setServerState] = useState('Loading...');
 
   const globalContext = useContext(Context)
-  const { userObj } = globalContext
+  const { userObj, cart, setCart } = globalContext
 
 
 let controller = new WebsocketController();
@@ -75,7 +74,7 @@ ws.onmessage = ({data}) => {
                 Your Items
             </Text>
 
-            {Cart.map(order => (
+            {cart.map(order => (
                 (userObj['first_name'] == order.orderedBy) ?
                 <CheckoutItem
                     key = {order.id}
@@ -88,7 +87,7 @@ ws.onmessage = ({data}) => {
             ))}
 
             <AddItemsButton
-                onPress = {() => navigation.navigate('Menu', {cart: Cart, subtotal: subtotalValue, table_id: table_id, restaurant_id: restaurant_id})}
+                onPress = {() => navigation.navigate('Menu', {subtotal: subtotalValue, table_id: table_id, restaurant_id: restaurant_id, resaurant_name: restaurant_name})}
             />
 
             {/* {sharedCart.map(item => (
@@ -103,14 +102,14 @@ ws.onmessage = ({data}) => {
                 <></>
             ))} */}
 
-            {Cart.map(order => 
+            {cart.map(order => 
             (
                 (userObj['first_name'] != order.orderedBy) ?
                 <SharedItem
                     key = {order.id}
                     order = {order}
                     table_id = {table_id}
-                    cart = {Cart}
+                    cart = {cart}
                     orderedBy = {order.orderedBy}
                     sharedBy = {order.sharedBy}
                     parentCallback = {handleCallback}

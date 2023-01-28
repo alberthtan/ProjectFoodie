@@ -11,11 +11,14 @@ import key from 'weak-key'
 
 const ItemScreen = ({route, navigation}) => {
 
-  const { item, name, price, description, cart, subtotal, restaurant_id, table_id, isOrdering, restaurant_name } = route.params;
+  const { item, name, price, description, subtotal, restaurant_id, table_id, isOrdering, restaurant_name } = route.params;
+
+  const globalContext = useContext(Context)
+  const { userObj, cart, setCart } = globalContext
 
   let controller = new WebsocketController();
   var ws = controller.ws;
-  const [Cart, setCart] = useState(cart)
+  // const [Cart, setCart] = useState(cart)
 
   const [serverState, setServerState] = useState('Loading...');
 
@@ -44,20 +47,18 @@ const ItemScreen = ({route, navigation}) => {
 
   const handleAddItem = async () => {
     let temp = []
-    for (let i = 0; i < Cart.length; i++) {
-      temp.push(Cart[i])
+    for (let i = 0; i < cart.length; i++) {
+      temp.push(cart[i])
     }
     temp.push({id: v4(), item: item, orderedBy: userObj['first_name'], sharedBy: []})
     setCart(temp)
     console.log(JSON.stringify({table_id: table_id, cart: temp}))
     ws.send(JSON.stringify({table_id: table_id, cart: temp}))
-    navigation.navigate('Menu', {cart: Cart, subtotal: subtotal + price, restaurant_id: restaurant_id, table_id: table_id})
+    navigation.navigate('Menu', {cart: cart, subtotal: subtotal + price, restaurant_id: restaurant_id, table_id: table_id})
   }
 
   var imageUrl;
-  
-  const globalContext = useContext(Context)
-  const { userObj } = globalContext
+
 
   if (name == 'Original Ramen') {
     imageUrl = 'https://www.elmundoeats.com/wp-content/uploads/2021/02/FP-Quick-30-minutes-chicken-ramen.jpg'

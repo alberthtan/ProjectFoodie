@@ -11,6 +11,11 @@ class WebsocketController extends React.Component{
         if(!instance){
             console.log("creating new instance of websocket")
             instance = this;
+        } 
+
+        if(!this.ws) {
+            this.ws = new WebSocket('wss://dutch-pay-ws.herokuapp.com/');
+            console.log("websocket!!!")
         }
 
         this.state = {
@@ -20,7 +25,7 @@ class WebsocketController extends React.Component{
         }
         
 
-        this.ws = new WebSocket('wss://dutch-pay-ws.herokuapp.com/');
+        // this.ws = new WebSocket('wss://dutch-pay-ws.herokuapp.com/');
 
         // this.ws.onopen = () => {
         //     console.log("occurred")
