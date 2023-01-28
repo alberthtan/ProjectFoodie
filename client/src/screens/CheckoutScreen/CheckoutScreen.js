@@ -17,7 +17,7 @@ import { Context } from '../../globalContext/globalContext'
 LogBox.ignoreLogs(['Warning: Each child in a list should have a unique "key" prop.'])
 
 const CheckoutScreen = ({route, navigation}) => {
-  const {cart, subtotal, restaurant_id} = route.params
+  const {cart, subtotal, restaurant_id, table_id} = route.params
 
   const [subtotalValue, setSubtotalValue] = useState(subtotal)
   const [Cart, setCart] = useState(cart)

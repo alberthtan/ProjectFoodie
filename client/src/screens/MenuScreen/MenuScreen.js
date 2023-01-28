@@ -52,9 +52,11 @@ const MenuScreen = ({route, navigation}) => {
     let temp = []
     
     for (let i = 0; i < message.cart.length; i++) {
+      // console.log('got here')
       temp.push(message.cart[i])
     }
     setCart(temp)
+    // console.log(Cart)
   };
 
     const getMenusFromApi = async (id) => {
@@ -143,6 +145,7 @@ const MenuScreen = ({route, navigation}) => {
             subtotal = {subtotal}
             table_id = {table_id}
             restaurant_id = {restaurant_id}
+            restaurant_name = {name}
             isOrdering = {true}
         />
     )

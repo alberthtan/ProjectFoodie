@@ -11,7 +11,7 @@ import key from 'weak-key'
 
 const ItemScreen = ({route, navigation}) => {
 
-  const { item, name, price, description, cart, subtotal, restaurant_id, table_id, isOrdering } = route.params;
+  const { item, name, price, description, cart, subtotal, restaurant_id, table_id, isOrdering, restaurant_name } = route.params;
 
   let controller = new WebsocketController();
   var ws = controller.ws;
@@ -49,8 +49,9 @@ const ItemScreen = ({route, navigation}) => {
     }
     temp.push({id: v4(), item: item, orderedBy: userObj['first_name'], sharedBy: []})
     setCart(temp)
+    console.log(JSON.stringify({table_id: table_id, cart: temp}))
     ws.send(JSON.stringify({table_id: table_id, cart: temp}))
-    navigation.navigate('Menu', {cart: Cart, subtotal: subtotal + price, restaurant_id: restaurant_id})
+    navigation.navigate('Menu', {cart: Cart, subtotal: subtotal + price, restaurant_id: restaurant_id, table_id: table_id})
   }
 
   var imageUrl;
