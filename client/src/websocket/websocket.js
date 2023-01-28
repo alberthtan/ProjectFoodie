@@ -20,7 +20,7 @@ class WebsocketController extends React.Component{
         }
         
 
-        this.ws = new WebSocket('ws://10.0.0.26:8000');
+        this.ws = new WebSocket('wss://dutch-pay-ws.herokuapp.com/');
 
         // this.ws.onopen = () => {
         //     console.log("occurred")

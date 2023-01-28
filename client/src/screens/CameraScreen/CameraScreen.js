@@ -62,7 +62,7 @@ const CameraScreen = ({navigation}) => {
                 // if(restaurant_name == "dummy") {
                 //     alert("Restaurant not found!")
                 // } else {
-                navigation.navigate('Menu', {cart: [], subtotal: 0, id : restaurant_id, name: restaurant_name})
+                navigation.navigate('Menu', {cart: [], subtotal: 0, restaurant_id : restaurant_id, restaurant_name: restaurant_name, table_id: id})
                 // }
 
             } 

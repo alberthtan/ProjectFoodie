@@ -14,10 +14,6 @@ import SharedItem from '../../components/SharedItem'
 import WebsocketController from '../../websocket/websocket'
 import { Context } from '../../globalContext/globalContext'
 
-import 'react-native-get-random-values'
-import { v4 } from 'uuid'
-import key from 'weak-key'
-
 LogBox.ignoreLogs(['Warning: Each child in a list should have a unique "key" prop.'])
 
 const CheckoutScreen = ({route, navigation}) => {
@@ -34,14 +30,12 @@ const CheckoutScreen = ({route, navigation}) => {
 let controller = new WebsocketController();
 var ws = controller.ws;
 
-// ws.onopen = () => {
-//     console.log('ANDREW TATE')
-//     setServerState('Connected to the server')
-//     setDisableButton(false);
-// };
+ws.onopen = () => {
+    console.log('opening ws in checkout screen')
+    setServerState('Connected to the server')
+};
 ws.onclose = (e) => {
     setServerState('Disconnected. Check internet or server.')
-    setDisableButton(true);
 };
 ws.onerror = (e) => {
     setServerState(e.message);
@@ -50,12 +44,10 @@ ws.onmessage = ({data}) => {
     let message = JSON.parse(data)
     let temp = []
     
-    for (let i = 0; i < message.length; i++) {
-      temp.push(message[i])
+    for (let i = 0; i < message.cart.length; i++) {
+      temp.push(message.cart[i])
     }
     setCart(temp)
-    console.log("Message received!!!")
-    console.log(temp)
 };
 
 // useEffect(() => {
@@ -96,7 +88,7 @@ ws.onmessage = ({data}) => {
             ))}
 
             <AddItemsButton
-                onPress = {() => navigation.navigate('Menu', {cart: Cart, subtotal: subtotalValue, restaurant_id: restaurant_id})}
+                onPress = {() => navigation.navigate('Menu', {cart: Cart, subtotal: subtotalValue, table_id: table_id, restaurant_id: restaurant_id})}
             />
 
             {/* {sharedCart.map(item => (
@@ -116,7 +108,8 @@ ws.onmessage = ({data}) => {
                 (userObj['first_name'] != order.orderedBy) ?
                 <SharedItem
                     key = {order.id}
-                    order={order}
+                    order = {order}
+                    table_id = {table_id}
                     cart = {Cart}
                     orderedBy = {order.orderedBy}
                     sharedBy = {order.sharedBy}

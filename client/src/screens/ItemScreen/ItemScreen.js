@@ -11,7 +11,7 @@ import key from 'weak-key'
 
 const ItemScreen = ({route, navigation}) => {
 
-  const { item, name, price, description, cart, subtotal, restaurant_id, isOrdering } = route.params;
+  const { item, name, price, description, cart, subtotal, restaurant_id, table_id, isOrdering } = route.params;
 
   let controller = new WebsocketController();
   var ws = controller.ws;
@@ -22,12 +22,10 @@ const ItemScreen = ({route, navigation}) => {
   ws.onopen = () => {
     console.log("opening ws in item screen")
     setServerState('Connected to the server')
-    setDisableButton(false);
   };
   ws.onclose = (e) => {
     console.log(e)
     setServerState('Disconnected. Check internet or server.')
-    setDisableButton(true);
   };
   ws.onerror = (e) => {
     console.log('got here')
@@ -38,8 +36,8 @@ const ItemScreen = ({route, navigation}) => {
     let message = JSON.parse(data)
     let temp = []
     
-    for (let i = 0; i < message.length; i++) {
-      temp.push(message[i])
+    for (let i = 0; i < message.cart.length; i++) {
+      temp.push(message.cart[i])
     }
     setCart(temp)
   };
@@ -51,7 +49,7 @@ const ItemScreen = ({route, navigation}) => {
     }
     temp.push({id: v4(), item: item, orderedBy: userObj['first_name'], sharedBy: []})
     setCart(temp)
-    ws.send(JSON.stringify(temp))
+    ws.send(JSON.stringify({table_id: table_id, cart: temp}))
     navigation.navigate('Menu', {cart: Cart, subtotal: subtotal + price, restaurant_id: restaurant_id})
   }
 

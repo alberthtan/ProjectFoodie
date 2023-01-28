@@ -5,7 +5,7 @@ import checkIcon from '../../../assets/icons/checkmark.png';
 import { Context } from '../../globalContext/globalContext';
 import WebsocketController from '../../websocket/websocket';
 
-const SharedItem = ({ cart, order, orderedBy, sharedBy, parentCallback}) => {
+const SharedItem = ({ cart, table_id, order, orderedBy, sharedBy, parentCallback}) => {
     const [checked, setChecked] = useState(false)
     const [Cart, setCart] = useState(cart)
     
@@ -31,12 +31,12 @@ const SharedItem = ({ cart, order, orderedBy, sharedBy, parentCallback}) => {
             cart[index]['sharedBy'].push(userObj['first_name'])
             console.log('sharedBy')
             console.log(cart[index]['sharedBy'])
-            ws.send(JSON.stringify(cart))
+            ws.send(JSON.stringify({table_id: table_id, cart: cart}))
         } 
         // If user wants to remove from shared list and name is in list, remove user
         else if(checked && index_of_name != -1) {
             cart[index]['sharedBy'].splice(index_of_name, 1)
-            ws.send(JSON.stringify(cart))
+            ws.send(JSON.stringify({table_id: table_id, cart: cart}))
         }
         
 

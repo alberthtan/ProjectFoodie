@@ -11,7 +11,7 @@ import { Context } from '../../globalContext/globalContext'
 import WebsocketController from '../../websocket/websocket'
 
 const MenuScreen = ({route, navigation}) => {
-    const { id, name, cart, subtotal } = route.params
+    const { restaurant_id, name, cart, subtotal, table_id } = route.params
     const [Cart, setCart] = useState(cart)
     const [Menus, setMenus] = useState([])
     const [MenuCategories, setMenuCategories] = useState([])
@@ -31,6 +31,8 @@ const MenuScreen = ({route, navigation}) => {
 
   ws.onopen = () => {
     setServerState('Connected to the server')
+    console.log("opening ws in menu screen")
+    ws.send(JSON.stringify({table_id: table_id, cart: []}))
     // console.log(serverState)
     // setDisableButton(false);
   };
@@ -49,8 +51,8 @@ const MenuScreen = ({route, navigation}) => {
     let message = JSON.parse(data)
     let temp = []
     
-    for (let i = 0; i < message.length; i++) {
-      temp.push(message[i])
+    for (let i = 0; i < message.cart.length; i++) {
+      temp.push(message.cart[i])
     }
     setCart(temp)
   };
@@ -86,7 +88,6 @@ const MenuScreen = ({route, navigation}) => {
           .then(response => response.json())
           .then(json => {
             const result = json.filter(item => item["category"] == currentCategory)
-            console.log(result)
             setMenuItems(result)
           })
           .catch(error => {
@@ -95,7 +96,7 @@ const MenuScreen = ({route, navigation}) => {
       };
 
     useEffect(() => {
-      getMenusFromApi(id)
+      getMenusFromApi(restaurant_id)
       // console.log(MenuItems)
     }, [])
     
@@ -140,7 +141,8 @@ const MenuScreen = ({route, navigation}) => {
             description = {item.description}
             cart = {Cart}
             subtotal = {subtotal}
-            restaurant_id = {id}
+            table_id = {table_id}
+            restaurant_id = {restaurant_id}
             isOrdering = {true}
         />
     )
@@ -151,7 +153,7 @@ const MenuScreen = ({route, navigation}) => {
                     <CustomButton 
                         text={"View Order (" + Cart.length + ")"}
                         style = {{bottom: 0, position: 'absolute'}}
-                        onPress = {() => {navigation.navigate('Checkout', {cart: Cart, subtotal: subtotal})}}/>
+                        onPress = {() => {navigation.navigate('Checkout', {cart: Cart, table_id: table_id, subtotal: subtotal})}}/>
                 </View>
     }
 
