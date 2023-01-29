@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, createContext} from "react";
 import * as SecureStore from 'expo-secure-store'
+import WebsocketController from "../websocket/websocket";
 
 const Context = createContext()
 
@@ -28,6 +29,9 @@ const Provider = ( { children } ) => {
             alert(`Unable to delete data key = ${key} from secure storage.`);
         }
     }
+
+    let controller = new WebsocketController();
+    var ws = controller.ws;
 
     // function initAppSettings() {
     //     fetch(`${domain}/app/settings`, {
@@ -66,6 +70,7 @@ const Provider = ( { children } ) => {
         setToken,
         getToken,
         deleteToken,
+        ws
     }
 
     return <Context.Provider value={globalContext}>{children}</Context.Provider>

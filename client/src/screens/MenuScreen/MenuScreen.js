@@ -21,14 +21,14 @@ const MenuScreen = ({route, navigation}) => {
 
     const globalContext = useContext(Context)
 
-    const { userObj, cart, setCart } = globalContext
+    const { userObj, ws, cart, setCart } = globalContext
     // const [Cart, setCart] = useState(cart)
   
     const [serverState, setServerState] = useState('Loading...');
   
 
-  let controller = new WebsocketController();
-  var ws = controller.ws;
+  // let controller = new WebsocketController();
+  // var ws = controller.ws;
 
   ws.onopen = () => {
     setServerState('Connected to the server')
