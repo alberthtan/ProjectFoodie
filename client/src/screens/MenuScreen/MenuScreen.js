@@ -29,14 +29,17 @@ const MenuScreen = ({route, navigation}) => {
 
   // let controller = new WebsocketController();
   // var ws = controller.ws;
+  useEffect(() => {
+      ws.send(JSON.stringify({table_id: table_id, cart: cart}))
+  }, [])
 
-  ws.onopen = () => {
-    setServerState('Connected to the server')
-    console.log("opening ws in menu screen")
-    ws.send(JSON.stringify({table_id: table_id, cart: []}))
-    // console.log(serverState)
-    // setDisableButton(false);
-  };
+  // ws.onopen = () => {
+  //   setServerState('Connected to the server')
+  //   console.log("opening ws in menu screen")
+  //   ws.send(JSON.stringify({table_id: table_id, cart: cart}))
+  //   // console.log(serverState)
+  //   // setDisableButton(false);
+  // };
   ws.onclose = (e) => {
     console.log(e)
     setServerState('Disconnected. Check internet or server.')
