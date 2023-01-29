@@ -76,7 +76,7 @@ const submitMessage = async () => {
         
     }
     ws.send(JSON.stringify({table_id: table_id, cart: cart}))
-    ws.close()
+    // ws.close()
     navigation.navigate('Home', {ordered: true})
 }
 
