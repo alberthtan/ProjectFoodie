@@ -27,6 +27,7 @@ const MenuScreen = ({route, navigation}) => {
     const [serverState, setServerState] = useState('Loading...');
   
 
+
   // let controller = new WebsocketController();
   // var ws = controller.ws;
   // useEffect(() => {
