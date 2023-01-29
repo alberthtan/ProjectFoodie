@@ -11,7 +11,7 @@ import CheckoutTaxes from '../../components/CheckoutTaxes'
 import CheckoutTotal from '../../components/CheckoutTotal/CheckoutTotal'
 import HeaderBar from '../../components/HeaderBar'
 import SharedItem from '../../components/SharedItem'
-import WebsocketController from '../../websocket/websocket'
+
 import { Context } from '../../globalContext/globalContext'
 
 LogBox.ignoreLogs(['Warning: Each child in a list should have a unique "key" prop.'])
@@ -87,8 +87,22 @@ const submitMessage = async () => {
 }
 
 
-const handleCallback = (childData) => {
+const handleShared = (childData) => {
     setSubtotalValue(subtotalValue + childData)
+}
+
+const handleDelete = (key) => {
+    let i = 0
+    while(i < cart.length) {
+        if(cart[i].id == key) {
+            cart.splice(i, 1)
+            break
+        } else {
+            i++
+        }
+    }
+    setCart(cart)
+    ws.send(JSON.stringify({table_id: table_id, cart: cart}))
 }
 
   return (
@@ -105,10 +119,12 @@ const handleCallback = (childData) => {
                 (userObj['first_name'] == order.orderedBy) ?
                 <CheckoutItem
                     key = {order.id}
+                    id = {order.id}
                     navigation = {navigation}
                     name = {order.item.name}
                     price = {order.item.price}
                     sharedBy = {order.sharedBy}
+                    parentCallback = {handleDelete}
                 /> :
                 <></>
             ))}
@@ -116,18 +132,6 @@ const handleCallback = (childData) => {
             <AddItemsButton
                 onPress = {() => navigation.navigate('Menu', {subtotal: subtotalValue, table_id: table_id, restaurant_id: restaurant_id, name: restaurant_name})}
             />
-
-            {/* {sharedCart.map(item => (
-                (userObj['first_name'] != item.orderedBy) ?
-                <CheckoutItem
-                    key = {item.id}
-                    navigation = {navigation}
-                    name = {item.item.name}
-                    price = {item.item.price}
-                /> 
-                :
-                <></>
-            ))} */}
 
             {cart.map(order => 
             (
@@ -138,7 +142,7 @@ const handleCallback = (childData) => {
                     table_id = {table_id}
                     orderedBy = {order.orderedBy}
                     sharedBy = {order.sharedBy}
-                    parentCallback = {handleCallback}
+                    parentCallback = {handleShared}
                 /> :
                 <></>
             ))}

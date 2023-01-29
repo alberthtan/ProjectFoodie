@@ -1,21 +1,29 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Pressable, Image } from 'react-native'
 import React from 'react'
 import NumberFormat from 'react-number-format'
 
-const CheckoutItem = ({navigation, sharedBy, name, price}) => {
+import trashIcon from '../../../assets/icons/trash.png'
+
+const CheckoutItem = ({navigation, sharedBy, id, name, price, parentCallback}) => {
   return (
     <View>
     <View style = {styles.container}>
+
+        <Pressable
+            style={{height: 30, marginRight: 5, paddingBottom: 10, marginLeft: 20}}
+            onPress={() => {parentCallback(id)}}>
+                <Image source={trashIcon} resizeMode="contain" style={{
+                    width: 20,
+                    height: 20,
+                    alignSelf:'center',
+                    justifyContent: 'center',
+                    flex: 1,
+                    tintColor: '#000000',
+                }}/>
+        </Pressable>
+
         <Text style = {styles.name}>{name}</Text>
-        {/* <NumberFormat
-            value = {price / (sharedBy.length + 1)}
-            displayType = "text"
-            thousandSeparator={true}
-            prefix = "$"
-            decimalScale={2}
-            fixedDecimalScale = {true}
-            renderText={(value) => <Text style = {styles.price}>{value}</Text>}>
-        </NumberFormat> */}
+
         {sharedBy.length != 0 ? 
         <View style={styles.price}>
             <NumberFormat
