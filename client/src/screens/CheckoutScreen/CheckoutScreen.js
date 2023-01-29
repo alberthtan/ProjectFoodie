@@ -35,6 +35,15 @@ const CheckoutScreen = ({route, navigation}) => {
     setSubtotalValue(subtotal)
   }
 
+  const checkInOrder = () => {
+    for(let i=0; i < cart.length; i++) {
+        if(cart[i].orderedBy == userObj['first_name']) {
+            return true
+        }
+    }
+    return false
+  }
+
 
 let controller = new WebsocketController();
 var ws = controller.ws;
@@ -159,11 +168,14 @@ const handleCallback = (childData) => {
         </ScrollView>
 
         <View style = {[styles.orderButton]}>
-            <CustomButton
-                text = "Order"
-                onPress = {() => submitMessage()}
-                // onPress = {() => navigation.navigate('Home', {ordered: true})}
-            />
+            {checkInOrder() ? 
+                <CustomButton
+                    text = "Order"
+                    onPress = {() => submitMessage()}
+                    // onPress = {() => navigation.navigate('Home', {ordered: true})}
+                /> :
+                <></>
+            }
         </View>
     </View>
   )
