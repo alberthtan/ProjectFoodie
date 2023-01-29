@@ -14,10 +14,8 @@ const ItemScreen = ({route, navigation}) => {
   const { item, name, price, description, subtotal, restaurant_id, table_id, isOrdering, restaurant_name } = route.params;
 
   const globalContext = useContext(Context)
-  const { userObj, cart, setCart } = globalContext
+  const { ws, userObj, cart, setCart } = globalContext
 
-  let controller = new WebsocketController();
-  var ws = controller.ws;
   // const [Cart, setCart] = useState(cart)
 
   const [serverState, setServerState] = useState('Loading...');

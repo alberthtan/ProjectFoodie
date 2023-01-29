@@ -7,13 +7,10 @@ import WebsocketController from '../../websocket/websocket';
 
 const SharedItem = ({ table_id, order, orderedBy, sharedBy, parentCallback}) => {
     const globalContext = useContext(Context)
-    const { userObj, cart } = globalContext
+    const { ws, userObj, cart } = globalContext
 
     const [checked, setChecked] = useState(sharedBy.indexOf(userObj['first_name']) != -1)
     
-
-    let controller = new WebsocketController();
-    var ws = controller.ws;
 
   return (
     <Pressable style = {styles.container}

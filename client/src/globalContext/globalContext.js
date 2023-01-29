@@ -2,6 +2,10 @@ import React, { useState, useEffect, useRef, createContext} from "react";
 import * as SecureStore from 'expo-secure-store'
 import WebsocketController from "../websocket/websocket";
 
+console.log("CALLING GLOBAL CONTEXT")
+let controller = new WebsocketController();
+var ws = controller.ws;
+
 const Context = createContext()
 
 const Provider = ( { children } ) => {
@@ -30,8 +34,9 @@ const Provider = ( { children } ) => {
         }
     }
 
-    let controller = new WebsocketController();
-    var ws = controller.ws;
+    // console.log("CALLING GLOBAL CONTEXT")
+    // let controller = new WebsocketController();
+    // var ws = controller.ws;
 
     // function initAppSettings() {
     //     fetch(`${domain}/app/settings`, {

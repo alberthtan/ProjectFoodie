@@ -23,7 +23,7 @@ const CheckoutScreen = ({route, navigation}) => {
   const [serverState, setServerState] = useState('Loading...');
 
   const globalContext = useContext(Context)
-  const { userObj, cart, setCart } = globalContext
+  const { ws, userObj, cart, setCart } = globalContext
 
   const calculateSubtotal = () => {
     let subtotal = 0
@@ -44,9 +44,6 @@ const CheckoutScreen = ({route, navigation}) => {
     return false
   }
 
-
-let controller = new WebsocketController();
-var ws = controller.ws;
 
 ws.onopen = () => {
     console.log('opening ws in checkout screen')

@@ -1,37 +1,48 @@
-import React, { useState, useEffect, useRef, createContext} from "react";
+// import React, { useState, useEffect, useRef, createContext} from "react";
+// import WebsocketController from "../websocket/websocket";
 
-export const WebsocketContext = createContext();
-//                                            ready, value, send
+// let controller = new WebsocketController();
+// var ws = controller.ws;
 
-// Make sure to put WebsocketProvider higher up in
-// the component tree than any consumers.
-export const WebsocketProvider = ({ children }) => {
-//   const [isReady, setIsReady] = useState(false);
-//   const [val, setVal] = useState(null);
+// const SocketContext = createContext(ws)
 
-//   const ws = useRef(null);
+// const SocketProvider = ( { children } ) => {
 
-  const ws = new WebSocket("wss://dutch-pay-ws.herokuapp.com/");
 
-//   useEffect(() => {
-//     const socket = new WebSocket("wss://echo.websocket.events/");
+//     console.log("CALLING GLOBAL CONTEXT")
+//     let controller = new WebsocketController();
+//     var ws = controller.ws;
 
-//     // socket.onopen = () => setIsReady(true);
-//     // socket.onclose = () => setIsReady(false);
-//     // socket.onmessage = (event) => setVal(event.data);
+//     // function initAppSettings() {
+//     //     fetch(`${domain}/app/settings`, {
+//     //         method: 'GET'
+//     //     })
+//     //     .then(res => {
+//     //         if (res.ok) {
+//     //             return res.json()
+//     //         } else {
+//     //             throw res.json()
+//     //         }
+//     //     })
+//     //     .then(json => {
+//     //         console.log(json)
+//     //         setAppSettings(json)
+//     //     })
+//     //     .catch(error => {
+//     //         console.log(error)
+//     //     })
+//     // }
 
-//     ws.current = socket;
+//     // useEffect(() => {
+//     //     initAppSettings()
+//     // }, [])
 
-//     return () => {
-//       socket.close();
-//     };
-//   }, []);
+//     const globalContext = {
+//         ws
+//     }
 
-//   const ret = {ws};
+//     return <Context.Provider value={globalContext}>{children}</Context.Provider>
 
-  return (
-    <WebsocketContext.Provider value={ws}>
-      {children}
-    </WebsocketContext.Provider>
-  );
-};
+// };
+
+// export { SocketContext, SocketProvider };
