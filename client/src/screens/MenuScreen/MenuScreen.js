@@ -29,9 +29,9 @@ const MenuScreen = ({route, navigation}) => {
 
   // let controller = new WebsocketController();
   // var ws = controller.ws;
-  useEffect(() => {
-      ws.send(JSON.stringify({table_id: table_id, cart: cart}))
-  }, [])
+  // useEffect(() => {
+  //     ws.send(JSON.stringify({table_id: table_id}))
+  // }, [])
 
   // ws.onopen = () => {
   //   setServerState('Connected to the server')
@@ -50,7 +50,7 @@ const MenuScreen = ({route, navigation}) => {
     setServerState(e.message);
   };
   ws.onmessage = ({data}) => {
-    console.log("ACQUIRING MESSAGE")
+    console.log("ACQUIRING MESSAGE IN MENU")
     console.log(data)
     let message = JSON.parse(data)
     let temp = []

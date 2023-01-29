@@ -1,7 +1,8 @@
 import { View, Text, Dimensions, TouchableOpacity, StyleSheet, Image} from 'react-native'
 import React, {useEffect, useState}  from 'react'
 import { BarCodeScanner } from 'expo-barcode-scanner'
-import xicon from '../../../assets/icons/xicon.png';
+import xicon from '../../../assets/icons/xicon.png'
+import { Context } from '../../globalContext/globalContext'
 
 const CameraScreen = ({navigation}) => {
 
@@ -9,6 +10,23 @@ const CameraScreen = ({navigation}) => {
     const [scanned, setScanned] = useState(false);
     const [tableList, setTableList] = useState([])
     const [restaurantList, setRestaurantList] = useState([])
+
+    const globalContext = useContext(Context)
+    const { ws } = globalContext
+
+    ws.onmessage = ({data}) => {
+        console.log("ACQUIRING MESSAGE IN CAMERA")
+        console.log(data)
+        let message = JSON.parse(data)
+        let temp = []
+        
+        for (let i = 0; i < message.cart.length; i++) {
+          // console.log('got here')
+          temp.push(message.cart[i])
+        }
+        setCart(temp)
+        // console.log(Cart)
+      };
 
     const getRestaurantsFromApi = () => {
         return fetch('https://dutch-pay-test.herokuapp.com/restaurants/?format=json')
@@ -62,6 +80,8 @@ const CameraScreen = ({navigation}) => {
                 // if(restaurant_name == "dummy") {
                 //     alert("Restaurant not found!")
                 // } else {
+
+                ws.send(JSON.stringify({table_id: id}))
                 navigation.navigate('Menu', {subtotal: 0, restaurant_id : restaurant_id, name: restaurant_name, table_id: id})
                 // }
 
