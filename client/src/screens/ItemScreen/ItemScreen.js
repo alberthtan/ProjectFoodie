@@ -54,7 +54,7 @@ const ItemScreen = ({route, navigation}) => {
     setCart(temp)
     console.log(JSON.stringify({table_id: table_id, cart: temp}))
     ws.send(JSON.stringify({table_id: table_id, cart: temp}))
-    navigation.navigate('Menu', {cart: cart, subtotal: subtotal + price, restaurant_id: restaurant_id, table_id: table_id})
+    navigation.navigate('Menu', {cart: cart, subtotal: subtotal + price, restaurant_id: restaurant_id, table_id: table_id, name: restaurant_name})
   }
 
   var imageUrl;

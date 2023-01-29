@@ -25,6 +25,16 @@ const CheckoutScreen = ({route, navigation}) => {
   const globalContext = useContext(Context)
   const { userObj, cart, setCart } = globalContext
 
+  const calculateSubtotal = () => {
+    let subtotal = 0
+    for(let i=0; i < cart.length; i++) {
+        if(cart[i].orderedBy == userObj['first_name'] || cart[i].sharedBy.indexOf(userObj['first_name']) != -1) {
+            subtotal += cart[i].item.price / (cart[i].sharedBy.length + 1)
+        }
+    }
+    setSubtotalValue(subtotal)
+  }
+
 
 let controller = new WebsocketController();
 var ws = controller.ws;
@@ -49,20 +59,20 @@ ws.onmessage = ({data}) => {
     setCart(temp)
 };
 
-// useEffect(() => {
- 
-//     }
-// }, [Cart])
+useEffect(() => {
+    calculateSubtotal()
+    }
+, [])
 
 
-  const submitMessage = async () => {
-    ws.send('hello');
-  }
+const submitMessage = async () => {
+    console.log("hello")
+}
 
 
-  const handleCallback = (childData) => {
+const handleCallback = (childData) => {
     setSubtotalValue(subtotalValue + childData)
-  }
+}
 
   return (
     <View style = {{flex: 1}}>
@@ -87,7 +97,7 @@ ws.onmessage = ({data}) => {
             ))}
 
             <AddItemsButton
-                onPress = {() => navigation.navigate('Menu', {subtotal: subtotalValue, table_id: table_id, restaurant_id: restaurant_id, resaurant_name: restaurant_name})}
+                onPress = {() => navigation.navigate('Menu', {subtotal: subtotalValue, table_id: table_id, restaurant_id: restaurant_id, name: restaurant_name})}
             />
 
             {/* {sharedCart.map(item => (
@@ -109,7 +119,6 @@ ws.onmessage = ({data}) => {
                     key = {order.id}
                     order = {order}
                     table_id = {table_id}
-                    cart = {cart}
                     orderedBy = {order.orderedBy}
                     sharedBy = {order.sharedBy}
                     parentCallback = {handleCallback}
