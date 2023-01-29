@@ -66,7 +66,16 @@ useEffect(() => {
 
 
 const submitMessage = async () => {
-    console.log("hello")
+    let i = 0
+    while(i < cart.length) {
+        if(cart[i].orderedBy == userObj['first_name']) {
+            cart.splice(i, 1)
+        } else {
+            i++
+        }
+        
+    }
+    ws.send(JSON.stringify({table_id: table_id, cart: cart}))
 }
 
 
