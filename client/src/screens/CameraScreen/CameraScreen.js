@@ -73,6 +73,11 @@ const CameraScreen = ({navigation}) => {
 
             
                 navigation.navigate('Menu', {subtotal: 0, restaurant_id : restaurant_id, name: restaurant_name, table_id: id})
+                // ws.onopen = () => {
+                //         console.log("occurred")
+                //         // this.setState({serverState: 'Connected to the server'})
+                //         // console.log(serverState)
+                //     };
                 ws.send(JSON.stringify({table_id: id, cart: [], flag: true}))
                 // }
 

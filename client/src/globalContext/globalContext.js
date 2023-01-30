@@ -3,8 +3,23 @@ import * as SecureStore from 'expo-secure-store'
 import WebsocketController from "../websocket/websocket";
 
 console.log("CALLING GLOBAL CONTEXT")
-let controller = new WebsocketController();
-var ws = controller.ws;
+// let controller = new WebsocketController();
+// var ws = controller.ws;
+var ws = new WebSocket('wss://dutch-pay-ws.herokuapp.com/');
+
+ws.onopen = () => {
+    console.log('opening ws')
+};
+
+ws.onclose = (e) => {
+    console.log('Disconnected. Check internet or server.')
+    console.log(e.message)
+};
+
+ws.onerror = (e) => {
+    console.log('error')
+    console.log(e.message);
+};
 
 const Context = createContext()
 
