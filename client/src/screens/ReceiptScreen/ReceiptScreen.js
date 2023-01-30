@@ -9,19 +9,16 @@ import AddItemsButton from '../../components/AddItemsButton'
 import CheckoutSubtotal from '../../components/CheckoutSubtotal'
 import CheckoutTaxes from '../../components/CheckoutTaxes'
 import CheckoutTotal from '../../components/CheckoutTotal/CheckoutTotal'
-import HeaderBar from '../../components/HeaderBar'
-import SharedItem from '../../components/SharedItem'
-import SwipeBar from '../../components/SwipeBar';
+import ReceiptHeader from '../../components/ReceiptHeader'
 
 import { Context } from '../../globalContext/globalContext'
 
 LogBox.ignoreLogs(['Warning: Each child in a list should have a unique "key" prop.'])
 
-const CheckoutScreen = ({route, navigation}) => {
-  const {subtotal, restaurant_id, table_id, restaurant_name} = route.params
+const ReceiptScreen = ({route, navigation}) => {
+  const {subtotal} = route.params
 
   const [subtotalValue, setSubtotalValue] = useState(subtotal)
-  const [serverState, setServerState] = useState('Loading...');
 
   const globalContext = useContext(Context)
   const { ws, userObj, cart, setCart } = globalContext
@@ -29,7 +26,7 @@ const CheckoutScreen = ({route, navigation}) => {
   const calculateSubtotal = () => {
     let subtotal = 0
     for(let i=0; i < cart.length; i++) {
-        if(!cart[i].isOrdered) {
+        if(cart[i].isOrdered) {
             if(cart[i].orderedBy == userObj['first_name'] || cart[i].sharedBy.indexOf(userObj['first_name']) != -1) {
                 subtotal += cart[i].item.price / (cart[i].sharedBy.length + 1)
             }
@@ -38,14 +35,6 @@ const CheckoutScreen = ({route, navigation}) => {
     setSubtotalValue(subtotal)
   }
 
-  const checkInOrder = () => {
-    for(let i=0; i < cart.length; i++) {
-        if(!cart[i].isOrdered && cart[i].orderedBy == userObj['first_name']) {
-            return true
-        }
-    }
-    return false
-  }
 
 ws.onopen = () => {
     console.log('opening ws in checkout screen')
@@ -72,55 +61,9 @@ useEffect(() => {
     }
 , [])
 
-
-const handleOrder = async () => {
-    for(let i=0; i < cart.length; i++) {
-        if(cart[i].orderedBy == userObj['first_name']) {
-            // cart.splice(i, 1)
-            cart[i].isOrdered = true
-        }       
-    }
-    ws.send(JSON.stringify({table_id: table_id, cart: cart}))
-    // ws.close()
-    navigation.navigate('Receipt', {subtotal: subtotalValue})
-}
-
-
-const handleShared = (childData) => {
-    setSubtotalValue(subtotalValue + childData)
-}
-
-const handleDelete = (key) => {
-    let i = 0
-    while(i < cart.length) {
-        if(cart[i].id == key) {
-            cart.splice(i, 1)
-            break
-        } else {
-            i++
-        }
-    }
-    setCart(cart)
-    ws.send(JSON.stringify({table_id: table_id, cart: cart}))
-}
-
-const handleTip = () => {
-    navigation.navigate('TipScreen', {subtotal: subtotalValue})
-}
-
-let statusbar // based on updating database, true for now
-if (true) {
-  statusbar = 
-  <View>
-    <SwipeBar
-        onPress={() => navigation.navigate('Receipt', {subtotal: subtotalValue})}/>
-  </View>
-}
-
   return (
     <View style = {{flex: 1}}>
-      <HeaderBar name='Checkout' navigation= {navigation}>
-        </HeaderBar>
+      <ReceiptHeader name='Receipt' navigation={navigation}/>
         
         <ScrollView showsVerticalScrollIndicator = {false}>
 
@@ -129,7 +72,7 @@ if (true) {
             </Text>
 
             {cart.map(order => (
-                (!order.isOrdered && userObj['first_name'] == order.orderedBy) ?
+                (order.isOrdered && (userObj['first_name'] == order.orderedBy)) ?
                 <CheckoutItem
                     key = {order.id}
                     id = {order.id}
@@ -137,25 +80,21 @@ if (true) {
                     name = {order.item.name}
                     price = {order.item.price}
                     sharedBy = {order.sharedBy}
-                    parentCallback = {handleDelete}
+                    parentCallback = {null}
                 /> :
                 <></>
             ))}
 
-            <AddItemsButton
-                onPress = {() => navigation.navigate('Menu', {subtotal: subtotalValue, table_id: table_id, restaurant_id: restaurant_id, name: restaurant_name})}
-            />
-
-            {cart.map(order => 
-            (
-                (!order.isOrdered && userObj['first_name'] != order.orderedBy) ?
-                <SharedItem
+            {cart.map(order => (
+                (order.isOrdered && order.sharedBy.indexOf(userObj['first_name']) != -1) ?
+                <CheckoutItem
                     key = {order.id}
-                    order = {order}
-                    table_id = {table_id}
-                    orderedBy = {order.orderedBy}
+                    id = {order.id}
+                    navigation = {navigation}
+                    name = {order.item.name}
+                    price = {order.item.price}
                     sharedBy = {order.sharedBy}
-                    parentCallback = {handleShared}
+                    parentCallback = {null}
                 /> :
                 <></>
             ))}
@@ -175,33 +114,11 @@ if (true) {
 
             <View style = {{marginTop: 30}}/>
         </ScrollView>
-
-        <View style = {[styles.orderButton]}>
-            <CustomButton
-                text = "Go to Tip Page"
-                onPress = {() => handleTip()}
-            /> 
-        </View>
-
-        <View style = {[styles.orderButton]}>
-            {checkInOrder() ? 
-                <CustomButton
-                    text = "Order"
-                    onPress = {() => handleOrder()}
-                /> :
-                <CustomButton
-                    text = "Order"
-                    type ='TERTIARY'
-                    onPress = {() => alert("No items in cart!")}
-                />
-            }
-        </View>
-        {statusbar}
     </View>
   )
 }
 
-export default CheckoutScreen
+export default ReceiptScreen
 
 const styles = StyleSheet.create({
     orderButton:{

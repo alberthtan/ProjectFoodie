@@ -9,6 +9,9 @@ import MenuScreen from '../screens/MenuScreen';
 import ItemScreen from '../screens/ItemScreen';
 import CheckoutScreen from '../screens/CheckoutScreen';
 import RestaurantScreen from '../screens/RestaurantScreen';
+import ReceiptScreen from '../screens/ReceiptScreen';
+import TipScreen from '../screens/TipScreen';
+
 import LoginHomeScreen from '../screens/LoginScreens/LoginHomeScreen';
 import LoginScreen1 from '../screens/LoginScreens/LoginScreen1';
 import LoginScreen2 from '../screens/LoginScreens/LoginScreen2';
@@ -16,6 +19,7 @@ import RegisterScreen1 from '../screens/LoginScreens/RegisterScreen1';
 import RegisterScreen2 from '../screens/LoginScreens/RegisterScreen2';
 import RegisterScreen3 from '../screens/LoginScreens/RegisterScreen3';
 import RegisterScreen4 from '../screens/LoginScreens/RegisterScreen4';
+
 import EditProfileScreen from '../screens/ProfileScreens/EditProfileScreen';
 import PastOrdersScreen from '../screens/ProfileScreens/PastOrdersScreen';
 import PaymentScreen from '../screens/ProfileScreens/PaymentScreen';
@@ -25,7 +29,6 @@ import ProfileScreen from '../screens/ProfileScreens/ProfileScreen';
 import {Context} from "../globalContext/globalContext.js";
 
 const Stack = createNativeStackNavigator();
-
 
 const Navigator = () => {
     const globalContext = useContext(Context)
@@ -131,6 +134,14 @@ const Navigator = () => {
             options={{headerShown: false}}
             name="Checkout"
             component={CheckoutScreen}/>
+          <Stack.Screen
+            options={{headerShown: false, gestureDirection: 'vertical'}}
+            name="Receipt"
+            component={ReceiptScreen}/>
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="TipScreen"
+            component={TipScreen}/>
           <Stack.Screen
             options={{headerShown: false}}
             name="RestaurantScreen"

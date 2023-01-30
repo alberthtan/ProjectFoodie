@@ -64,6 +64,16 @@ const MenuScreen = ({route, navigation}) => {
     // console.log(Cart)
   };
 
+  const calculateLength = () => {
+    let length = 0
+    for(let i=0; i < cart.length; i++) {
+      if(!cart[i].isOrdered) {
+        length += 1
+      }
+    }
+    return length
+  }
+
     const getMenusFromApi = async (id) => {
         return await fetch('https://dutch-pay-test.herokuapp.com/menus/?format=json')
           .then(response => response.json())
@@ -155,10 +165,10 @@ const MenuScreen = ({route, navigation}) => {
     )
 
     let button
-    if (cart.length > 0) {
+    if (calculateLength() > 0) {
         button = <View style = {{alignItems: 'center', justifyContent: 'center', borderTopWidth: 1, height: Dimensions.get('window').height * 0.15, borderColor: '#D9D9D9'}}>
                     <CustomButton 
-                        text={"View Order (" + cart.length + ")"}
+                        text={"View Order (" + calculateLength() + ")"}
                         style = {{bottom: 0, position: 'absolute'}}
                         onPress = {() => {navigation.navigate('Checkout', {table_id: table_id, subtotal: subtotal, restaurant_name: name})}}/>
                 </View>

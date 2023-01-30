@@ -8,9 +8,9 @@ const CheckoutItem = ({navigation, sharedBy, id, name, price, parentCallback}) =
   return (
     <View>
     <View style = {styles.container}>
-
+        {parentCallback ? 
         <Pressable
-            style={{height: 30, marginRight: 5, paddingBottom: 10, marginLeft: 20}}
+            style={{height: 50, marginLeft: 20}}
             onPress={() => {parentCallback(id)}}>
                 <Image source={trashIcon} resizeMode="contain" style={{
                     width: 20,
@@ -20,7 +20,9 @@ const CheckoutItem = ({navigation, sharedBy, id, name, price, parentCallback}) =
                     flex: 1,
                     tintColor: '#000000',
                 }}/>
-        </Pressable>
+        </Pressable> :
+        <></>
+        }
 
         <Text style = {styles.name}>{name}</Text>
 
@@ -77,6 +79,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         marginTop: 30,
+        alignItems: 'center'
     },
 
     name: {
