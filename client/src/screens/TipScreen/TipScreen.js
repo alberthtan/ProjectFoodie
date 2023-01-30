@@ -5,14 +5,6 @@ import { LogBox } from 'react-native';
 
 import CustomButton from '../../components/CustomButton'
 import TipButton from '../../components/TipButton';
-import CheckoutItem from '../../components/CheckoutItem'
-import AddItemsButton from '../../components/AddItemsButton'
-import CheckoutSubtotal from '../../components/CheckoutSubtotal'
-import CheckoutTaxes from '../../components/CheckoutTaxes'
-import CheckoutTotal from '../../components/CheckoutTotal/CheckoutTotal'
-import HeaderBar from '../../components/HeaderBar'
-import SharedItem from '../../components/SharedItem'
-import SwipeBar from '../../components/SwipeBar';
 
 import { Context } from '../../globalContext/globalContext'
 import CustomInput from '../../components/CustomInput';
@@ -46,13 +38,13 @@ const handleSubmitTip = async () => {
             </Text>
 
             <View style = {{marginTop: 20, flexDirection: 'row', paddingBottom: 20}}>
-              <TipButton id = {1} currentButton = {currentButton} setCurrentButton={setCurrentButton} percentage='15%' subtotal={10} parentCallback={setTipAmount}/>
-              <TipButton id = {2} currentButton = {currentButton} setCurrentButton={setCurrentButton} percentage='18%' subtotal={10} parentCallback={setTipAmount}/>
-              <TipButton id = {3} currentButton = {currentButton} setCurrentButton={setCurrentButton} percentage='20%' subtotal={10} parentCallback={setTipAmount}/>
+              <TipButton id = {1} currentButton = {currentButton} setCurrentButton={setCurrentButton} percentage='15%' subtotal={subtotal} parentCallback={setTipAmount}/>
+              <TipButton id = {2} currentButton = {currentButton} setCurrentButton={setCurrentButton} percentage='18%' subtotal={subtotal} parentCallback={setTipAmount}/>
+              <TipButton id = {3} currentButton = {currentButton} setCurrentButton={setCurrentButton} percentage='20%' subtotal={subtotal} parentCallback={setTipAmount}/>
               
             </View>
 
-            <View style={{width: '50%', alignSelf: 'center'}}>
+            <View style={{width: '60%', alignSelf: 'center'}}>
                 <CustomInput
                     keyboardType='numeric'
                     placeholder = 'Enter Custom Amount'
