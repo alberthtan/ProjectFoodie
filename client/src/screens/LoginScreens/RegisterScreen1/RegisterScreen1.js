@@ -83,7 +83,7 @@ const RegisterScreen1 = ({navigation}) => {
 
             <View style={styles.titleContainer}>
                 <Text style = {styles.title}>
-                    Enter your phone number
+                    Enter your email
                 </Text>
                 <Text style = {styles.subtitle}>
                     You'll login with a code instead of a password
@@ -115,7 +115,7 @@ const RegisterScreen1 = ({navigation}) => {
                 secureTextEntry
                 keyboardType="default"
             /> */}
-            <View style={{width:'100%', flex: 1, alignItems: 'center'}}>
+            <View style={{width:'100%', flex: 1, marginTop: '15%', alignItems: 'center'}}>
                 <CustomButton
                     text="Continue"
                     onPress={handleSignUp}

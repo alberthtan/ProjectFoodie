@@ -80,13 +80,6 @@ const LoginScreen1 = ({navigation}) => {
                     autoFocus={true}
                     keyboardType="email-address"
                     returnKeyType="next"/>
-                {/* <CustomInput
-                    placeholder="Password"
-                    value={password} 
-                    secureTextEntry
-                    setValue={setPassword}
-                    keyboardType="default"
-                    returnKeyType="go"/> */}
                 <View style={{width:'100%', flex: 1, marginTop: '45%', alignItems: 'center'}}>
                     <CustomButton
                         text="Continue"
