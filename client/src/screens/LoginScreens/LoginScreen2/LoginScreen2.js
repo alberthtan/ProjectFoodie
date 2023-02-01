@@ -13,26 +13,6 @@ const LoginScreen2 = ({navigation, route}) => {
     const { setIsLoggedIn, userObj, setUserObj, setToken, getToken } = globalContext
 
     const [code, setCode] = useState('')
-
-    // function initAppSettings() {
-    //     fetch(`${domain}/app/settings`, {
-    //         method: 'GET'
-    //     })
-    //     .then(res => {
-    //         if (res.ok) {
-    //             return res.json()
-    //         } else {
-    //             throw res.json()
-    //         }
-    //     })
-    //     .then(json => {
-    //         console.log(json)
-    //         setAppSettings(json)
-    //     })
-    //     .catch(error => {
-    //         console.log(error)
-    //     })
-    // }
     
     const sendEmailCode = () => {
         return fetch('https://dutch-pay-test.herokuapp.com/send-email-code/', {
