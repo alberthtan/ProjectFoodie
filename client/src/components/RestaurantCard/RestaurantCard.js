@@ -5,11 +5,16 @@ import CustomButton from '../CustomButton'
 
 // const restaurantImage = 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg'
 
+export const SLIDER_WIDTH = Dimensions.get('window').width + 80
+export const ITEM_WIDTH = 250
+
 const RestaurantCard = ({restaurant, index}) => {
   
   const openMap = () => {
-    let mapUrl = (Platform.OS === 'ios') ? ('maps://?q=' + restaurant.address) : ('http://maps.google.com/maps?q=' + restaurant.address)
-    Linking.openURL(mapUrl)
+    console.log(restaurant)
+    console.log(index)
+    // let mapUrl = (Platform.OS === 'ios') ? ('maps://?q=' + restaurant.address) : ('http://maps.google.com/maps?q=' + restaurant.address)
+    // Linking.openURL(mapUrl)
     // Platform.select({
     //     ios: () => {
     //         Linking.openURL('http://maps.apple.com/maps?daddr=');
@@ -23,7 +28,7 @@ const RestaurantCard = ({restaurant, index}) => {
   
   return (
     <View style={styles.card} key={index}>
-        <Image style= {{width: '50%', height: '25%', borderRadius: '20%'}} source={{uri: 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg'}}/>
+        <Image style= {{width: '50%', height: '25%', borderRadius: 20}} source={{uri: 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg'}}/>
      
       <Text style={styles.restaurantName}>
             Jacks' Wife Freda
