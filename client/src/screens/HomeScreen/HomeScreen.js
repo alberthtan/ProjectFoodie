@@ -9,6 +9,7 @@ import RestaurantItem from '../../components/RestaurantItem'
 import * as Font from 'expo-font';
 import RestaurantCard from '../../components/RestaurantCard'
 import Carousel, {Pagination} from 'react-native-snap-carousel'
+import CarouselCards from '../../components/RestaurantCarousel/CarouselCards'
 
 
 
@@ -79,35 +80,7 @@ const HomeScreen = ({route, navigation}) => {
       </View>
 
       <View style = {styles.cardContainer}>
-        <Carousel
-        sliderWidth={100}
-        itemWidth={50}
-          // layout="tinder"
-          // layoutCardOffset={0}
-        ref={isCarousel}
-        data={testRestaurants}
-        renderItem={oneRestaurant}
-          // sliderWidth={SLIDER_WIDTH}
-          // itemWidth={ITEM_WIDTH}
-          // removeClippedSubviews={false}
-          // onSnapToItem={(index) => setIndex(index)}
-          // useScrollView={true}
-        />
-        {/* <Pagination
-          dotsLength={testRestaurants.length}
-          activeDotIndex={index}
-          carouselRef={isCarousel}
-          dotStyle={{
-            width: 10,
-            height: 10,
-            borderRadius: 5,
-            marginHorizontal: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.92)'
-          }}
-          inactiveDotOpacity={0.4}
-          inactiveDotScale={0.6}
-          tappableDots={true}
-        /> */}
+        <CarouselCards/>
         {/* <RestaurantCard restaurant = {testRestaurants[0]}/> */}
       
       </View>

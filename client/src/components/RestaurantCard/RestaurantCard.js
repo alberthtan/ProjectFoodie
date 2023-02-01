@@ -5,7 +5,7 @@ import CustomButton from '../CustomButton'
 
 // const restaurantImage = 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg'
 
-const RestaurantCard = ({restaurant}) => {
+const RestaurantCard = ({restaurant, index}) => {
   
   const openMap = () => {
     let mapUrl = (Platform.OS === 'ios') ? ('maps://?q=' + restaurant.address) : ('http://maps.google.com/maps?q=' + restaurant.address)
@@ -22,17 +22,17 @@ const RestaurantCard = ({restaurant}) => {
 
   
   return (
-    <View style={styles.card}>
-        <Image style= {{width: '50%', height: '25%', borderRadius: '20%'}} source={{uri: restaurant.mainImage}}/>
+    <View style={styles.card} key={index}>
+        <Image style= {{width: '50%', height: '25%', borderRadius: '20%'}} source={{uri: 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg'}}/>
      
       <Text style={styles.restaurantName}>
             Jacks' Wife Freda
       </Text>
 
       <View style={styles.foodImagesContainer}>
-        <Image style= {styles.foodImage} source={{uri: restaurant.foodImage1}}/>
-        <Image style= {styles.foodImage} source={{uri: restaurant.foodImage2}}/>
-        <Image style= {styles.foodImage} source={{uri: restaurant.foodImage3}}/>
+        <Image style= {styles.foodImage} source={{uri: 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg'}}/>
+        <Image style= {styles.foodImage} source={{uri: 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg'}}/>
+        <Image style= {styles.foodImage} source={{uri: 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg'}}/>
       </View>
 
       <View style={{ justifyContent: 'center', alignItems: 'center', alignSelf: 'center'}}>
