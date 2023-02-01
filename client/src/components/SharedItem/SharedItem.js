@@ -3,8 +3,6 @@ import React , { useState, useContext } from 'react'
 import NumberFormat from 'react-number-format'
 import checkIcon from '../../../assets/icons/checkmark.png';
 import { Context } from '../../globalContext/globalContext';
-import WebsocketController from '../../websocket/websocket';
-
 const SharedItem = ({ table_id, order, orderedBy, sharedBy, parentCallback}) => {
     const globalContext = useContext(Context)
     const { ws, userObj, cart } = globalContext

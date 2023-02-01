@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, createContext} from "react";
 import * as SecureStore from 'expo-secure-store'
-import WebsocketController from "../websocket/websocket";
 
 console.log("CALLING GLOBAL CONTEXT")
 // let controller = new WebsocketController();

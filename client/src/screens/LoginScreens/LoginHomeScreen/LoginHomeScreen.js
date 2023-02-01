@@ -32,6 +32,7 @@ const LoginHomeScreen = ({navigation}) => {
 
             <CustomButton
                 text="Login"
+                type='LOGIN'
                 onPress={() => navigation.navigate('Login1')}
             />
             
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
-        backgroundColor: '#F9FBFC',
+        backgroundColor: 'white',
         paddingTop: 150,
     },
 
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
         padding: 20,
         paddingBottom: 50,
         // marginBottom: 30,
-        backgroundColor: '#F9FBFC',
+        backgroundColor: 'white',
     },
 
     logo: {

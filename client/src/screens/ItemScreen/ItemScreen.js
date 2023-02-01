@@ -4,7 +4,6 @@ import CustomButton from '../../components/CustomButton';
 import NumberFormat from 'react-number-format';
 import BackButton from '../../components/BackButton';
 import { Context } from '../../globalContext/globalContext'
-import WebsocketController from '../../websocket/websocket'
 import 'react-native-get-random-values'
 import { v4 } from 'uuid'
 import key from 'weak-key'

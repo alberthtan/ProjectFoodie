@@ -8,8 +8,6 @@ import CustomButton from '../../components/CustomButton'
 import HeaderBar from '../../components/HeaderBar'
 import { Context } from '../../globalContext/globalContext'
 
-import WebsocketController from '../../websocket/websocket'
-
 const MenuScreen = ({route, navigation}) => {
     const { restaurant_id, name, subtotal, table_id } = route.params
     
