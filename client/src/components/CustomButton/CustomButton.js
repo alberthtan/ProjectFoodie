@@ -26,6 +26,10 @@ const styles = StyleSheet.create({
       backgroundColor: '#3C6F37',
     },
 
+    container_MAP: {
+      backgroundColor: '#3C6F37',
+    },
+
     container_LOGIN: {
       backgroundColor: '#DDF5DB'
     },
@@ -41,6 +45,11 @@ const styles = StyleSheet.create({
 
     text_PRIMARY: {
       color: 'white',
+    },
+
+    text_MAP: {
+      color: 'white',
+      fontSize: 12
     },
 
     text_TERTIARY: {

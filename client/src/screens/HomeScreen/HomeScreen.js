@@ -1,148 +1,116 @@
 import { Dimensions, Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity} from 'react-native'
-import React, {useState, useEffect}  from 'react'
+import React, {useState, useEffect, useRef}  from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 
 import StatusBar from '../../components/StatusBar'
 import BottomUpReceipt from '../../components/BottomUpReceipt'
-import SearchBar from '../../components/SearchBar'
 import RestaurantItem from '../../components/RestaurantItem'
-import filterIcon from '../../../assets/icons/filter.png'
-import BottomUpFilter from '../../components/BottomUpFilter'
+// import { useFonts } from 'expo-font';
+import * as Font from 'expo-font';
+import RestaurantCard from '../../components/RestaurantCard'
+import Carousel, {Pagination} from 'react-native-snap-carousel'
 
-const popuplist = [
-  {
-    id: 1,
-    name: 'Original Ramen',
-    price: '$12.00',
-  },
-  {
-    id: 2,
-    name: 'Sauteed Edamame',
-    price: '$6.00',
-  },
-  {
-    id: 3,
-    name: 'Shoyu Ramen',
-    price: '$5.00',
-  },
-  {
-    id: 4,
-    name: 'Wasabi Shock Salad',
-    price: '$3.50',
-  },
-]
 
 
 const HomeScreen = ({route, navigation}) => {
   const [search, setSearch] = useState('')
   const { ordered } = route.params
   const [restaurantList, setRestaurantList] = useState([])
+  const [index, setIndex] = useState(0)
 
-  // Fetch Call
-  const getRestaurantsFromApi = () => {
-    return fetch('https://dutch-pay-test.herokuapp.com/restaurants/?format=json')
-      .then(response => response.json())
-      .then(json => {
-        setRestaurantList(json)
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  };
+  const isCarousel = useRef()
+  // const SLIDER_WIDTH = Dimensions.get('window').width + 80
+  // const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7)
 
-  useEffect(() => {
-    getRestaurantsFromApi();
-  }, [])
+  let testRestaurants = [
+    {
+      // id: 0,
+      mainImage: 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg',
+      address: '50+Carmine+St+New+York+NY+10014+United+States',
+      foodImage1: 'https://images.otstatic.com/prod1/28948642/4/huge.jpg',
+      foodImage2: 'https://images.otstatic.com/prod1/28948594/5/huge.jpg',
+      foodImage3: 'http://www.prettyinpistachio.com/wp-content/uploads/2013/10/JacksWifeFreda1-72ppi.jpg',
+    },
+    {
+      // id: 1,
+      mainImage: 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg',
+      address: '50+Carmine+St+New+York+NY+10014+United+States',
+      foodImage1: 'https://images.otstatic.com/prod1/28948642/4/huge.jpg',
+      foodImage2: 'https://images.otstatic.com/prod1/28948594/5/huge.jpg',
+      foodImage3: 'http://www.prettyinpistachio.com/wp-content/uploads/2013/10/JacksWifeFreda1-72ppi.jpg',
+    }
+  ]
 
-  let popupRef = React.createRef()
-  let filterpopupRef = React.createRef()
+  // const [fontsLoaded] = useFonts({
+  //   'Jost': require('../../../assets/fonts/Jost-Regular.ttf'),
+  // });
 
-  const onShowPopUp = () => {
-    popupRef.show()
+  // const fetchFonts = async () =>
+  //   await Font.loadAsync({
+  //     'Jost': require('../../../assets/fonts/Jost-Regular.ttf'),
+  // });
+
+  const oneRestaurant = ({item}) => {
+    <RestaurantCard restaurant = {item}/>
   }
-
-  const onClosePopUp = () => {
-    popupRef.close()
-  }
-
-  const onShowFilterPopUp = () => {
-    filterpopupRef.filterShow()
-  }
-
-  const onCloseFilterPopUp = () => {
-    filterpopupRef.filterClose()
-  }
-
-  // const [tableid, setTableID] = useState('')
-let statusbar // based on updating database, true for now
-let bottomPopUp
-if (ordered) {
-  statusbar = 
-  <View style ={{paddingBottom: 50}}>
-    <StatusBar barStyle="dark-content"
-                onPress={onShowPopUp}/>
-  </View>
-  bottomPopUp = 
-  <BottomUpReceipt
-    title="Your Orders"
-    ref={(target) => popupRef = target}
-    onTouchOutside={onClosePopUp}
-    data={popuplist}
-    navigation={navigation}
-  />
-}
-
-const oneRestaurant = ({item}) => (
-  <RestaurantItem
-      navigation = {navigation}
-      id = {item.id}
-      name = {item.name}
-      description = {item.description}
-      restaurantImage={item.restaurantImage}
-  />
-)
 
   return (
     <View style = {styles.container}>
-      {statusbar}
-      <Text style = {styles.title}>
-            Discovery
-      </Text>
 
-      {/* <View style = {{flexDirection: 'row', alignItems: 'center', alignContent: 'center', justifyContent: 'center'}}>
-        <SearchBar
-          placeholder="Search"
-          value={search} 
-          setValue={setSearch}
-          style={{flex: 1}}
-        />
-        <TouchableOpacity
-            onPress={onShowFilterPopUp}
-            style={{height: 30}}>
-          <Image source={filterIcon} style={styles.filter}/>
-        </TouchableOpacity>
-        
-      </View> */}
+      <View style={styles.spacerFlex}></View>
 
-      <View style={{flex: 1}}>
-        <FlatList
-          data={restaurantList}
-          renderItem={oneRestaurant}
-          showsHorizontalScrollIndicator = {false}
-        />
+      <View style={styles.titleContainer}>
+        <Text style = {styles.title}>
+          Welcome to <Text style={{color: '#3C6F37'}}>DutchPay</Text>
+        </Text>
+      </View>
+      
+
+      <View style = {styles.subtitleContainer}>
+        <Text style = {styles.subtitle}>
+          When you order at restaurants with the
+        </Text>
+        <Text style = {styles.subtitle}>
+          DutchPay camera, you'll see your orders and the 
+        </Text>
+        <Text style = {styles.subtitle}>
+           people you shared them with!
+        </Text>
       </View>
 
-      
-      {bottomPopUp}
-      {/* <SafeAreaView style={styles.container}>
-        <BottomUpFilter
-          title="Sort and Filter"
-          ref={(target) => filterpopupRef = target}
-          onTouchOutside={onCloseFilterPopUp}
-          // data={popuplist}
-          // navigation={navigation}
+      <View style = {styles.cardContainer}>
+        <Carousel
+        sliderWidth={100}
+        itemWidth={50}
+          // layout="tinder"
+          // layoutCardOffset={0}
+        ref={isCarousel}
+        data={testRestaurants}
+        renderItem={oneRestaurant}
+          // sliderWidth={SLIDER_WIDTH}
+          // itemWidth={ITEM_WIDTH}
+          // removeClippedSubviews={false}
+          // onSnapToItem={(index) => setIndex(index)}
+          // useScrollView={true}
         />
-      </SafeAreaView> */}
+        {/* <Pagination
+          dotsLength={testRestaurants.length}
+          activeDotIndex={index}
+          carouselRef={isCarousel}
+          dotStyle={{
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+            marginHorizontal: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.92)'
+          }}
+          inactiveDotOpacity={0.4}
+          inactiveDotScale={0.6}
+          tappableDots={true}
+        /> */}
+        {/* <RestaurantCard restaurant = {testRestaurants[0]}/> */}
+      
+      </View>
     </View>
   )
 }
@@ -150,25 +118,71 @@ const oneRestaurant = ({item}) => (
 const styles = StyleSheet.create({
     container: {
         flex: 1, 
-        // flexDirection: 'column',
-        // justifyContent: 'center'
+        backgroundColor: '#f6f5f5',
+    },
+
+    
+    titleContainer: {
+      flex: 2,
     },
 
     title: {
-      fontSize: 30,
-      fontWeight:"bold",
-      marginLeft: 20,
-      marginBottom: 20,
-      marginTop: Dimensions.get('window').height * 0.07,
-  },
+      alignSelf: 'center', 
+      fontSize: Dimensions.get('window').width * 0.07, 
+      fontWeight: 'bold',
+      // fontFamily: 'Roboto',
+      position: 'absolute',
+      bottom: Dimensions.get('window').width * 0.05,
+    },
 
-    filter: {
-      height: 15,
-      width: 15,
-      padding: 12,
-      justifyContent: 'center',
-      marginLeft: 15
+    subtitleContainer: {
+      flex: 1,
+      justifyContent: 'center'
+    },
+    
+    subtitle: {
+      alignSelf: 'center',
+      // fontFamily: 'Jost',
+      fontSize: Dimensions.get('window').width * 0.037,
+      marginVertical: 5,
+      textAlign: 'center'
+    },
+
+    cardContainer: {
+      flex: 4,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+
+    
+
+
+
+    card: {
+      // width: Dimensions.get('window').width * 0.3,
+      // height: Dimensions.get('window').height * 0.1,
+      width: 100,
+      height: 100,
+      // shadowColor: '#171717',
+      // // shadowOffset: {width: -2, height: 4},
+      // shadowOpacity: 0.3,
+      // shadowRadius: 4,
+      borderColor: 'black',
+      borderWidth: 10,
+      backgroundColor: 'red'
   },
+  restaurantName: {
+      fontWeight: 'bold',
+      fontColor: 'red'
+  },
+  restaurantImagesContainer: {
+      flexDirection: 'row'
+  },
+  restaurantImages: {
+
+  }
+
+
 })
 
 export default HomeScreen

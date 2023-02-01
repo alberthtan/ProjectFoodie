@@ -65,6 +65,7 @@ const LoginScreen1 = ({navigation}) => {
                     returnKeyType="go"
                     onSubmitEditing={() => handleLogin()}
                     autoCorrect={false}
+                    autoCapitalize={'none'}
                     enablesReturnKeyAutomatically={true}
                 />
                 <View style={{width:'100%', alignItems: 'center', marginTop: Dimensions.get('window').height * 0.22}}>

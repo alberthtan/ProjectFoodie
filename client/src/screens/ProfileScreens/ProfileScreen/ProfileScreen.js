@@ -5,7 +5,6 @@ import ProfileButton from '../../../components/ProfileButton'
 import profileIcon2 from '../../../../assets/icons/profile.png'
 import pastorders from '../../../../assets/icons/pastorders.png'
 import payment from '../../../../assets/icons/payment.png'
-import { auth } from '../../../config'
 import { Context } from '../../../globalContext/globalContext'
 // import LoginHomeScreen from '../../LoginScreens/LoginHomeScreen'
 
@@ -18,9 +17,7 @@ const ProfileScreen = ({navigation}) => {
   console.log(getToken('refresh'))
 
   const handleSignOut = () => {
-    auth
-      .signOut()
-      .then(async () => {
+      (async () => {
         await deleteToken("access")
         await deleteToken("refresh")
         let token = await getToken('access')

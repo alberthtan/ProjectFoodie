@@ -1,13 +1,38 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
-import React, {Component, useEffect} from 'react';
+import { StyleSheet, TextInput, Text } from 'react-native';
+import React, {Component, useEffect, useState} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {Provider} from './src/globalContext/globalContext.js'
-import { io } from "socket.io-client"
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
+// import useFonts from './src/globalContext/useFonts';
 
 import Navigator from './src/navigation/navigator.js'
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
+TextInput.defaultProps = TextInput.defaultProps || {};
+TextInput.defaultProps.allowFontScaling = false;
 
 export default function App () {
+  // const [IsReady, SetIsReady] = useState(false);
+
+  // const LoadFonts = async () => {
+  //   await  Font.loadAsync({
+  //   'Jost': require('./assets/fonts/Jost-Regular.ttf')})
+  // };
+
+  // if (!IsReady) {
+  //   return (
+  //     <AppLoading
+  //       startAsync={LoadFonts}
+  //       onFinish={() => {
+  //         SetIsReady(true)
+  //         console.log("done loading")
+  //       }}
+  //       onError={() => {}}
+  //     />
+  //   );
+  // }
 
     return(
       <Provider>

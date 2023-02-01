@@ -5,7 +5,7 @@ import React from 'react'
 const LoginHeader = ({navigation, title, subtitle}) => {
   return (
     <>
-        <View style={{flexDirection: 'row', alignContent: 'center', marginTop: Dimensions.get('window').height * 0.07}}>
+        <View style={styles.titleContainer}>
 
             <TouchableOpacity
                 style={styles.backButton}
@@ -29,22 +29,23 @@ const LoginHeader = ({navigation, title, subtitle}) => {
 export default LoginHeader
 
 const styles = StyleSheet.create({
+    titleContainer: {
+        flexDirection: 'row', 
+        alignContent: 'center', 
+        marginTop: Dimensions.get('window').height * 0.07
+    },
+
     backButton: {
-        // backgroundColor: 'blue',
         width: 28,
         height: 34,
-        // alignSelf: 'center'
         justifyContent: 'center'
     },
 
     title: {
-        // backgroundColor: 'red',
-      fontSize: 28,
+      fontSize: Dimensions.get('window').width * 0.067,
       color: '#3C6F37',
       fontWeight: 'bold',
-      paddingLeft: 10,
-    //   alignSelf: 'center',
-    //   justifyContent: 'center'
+      alignSelf: 'center',
     },
 
     subtitle: {

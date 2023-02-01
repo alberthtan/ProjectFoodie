@@ -2,7 +2,8 @@ import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity} from 'reac
 import React, {useState} from 'react'
 import CustomInput from '../../../components/CustomInput'
 import CustomButton from '../../../components/CustomButton'
-import BackButton from '../../../components/BackButton';
+
+import LoginHeader from '../../../components/LoginHeader';
 
 const RegisterScreen3 = ({navigation, route}) => {
     const { emailParam, firstName, lastName } = route.params;
@@ -34,43 +35,36 @@ const RegisterScreen3 = ({navigation, route}) => {
 
     return (
         <View style= {styles.root}>
-            
-            <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => navigation.goBack()}>
-                    <BackButton/>
-            </TouchableOpacity>
 
-            <View style={styles.container}>
-                <View style={styles.titleContainer}>
-                    <Text style = {styles.title}>
-                        Enter your phone number
-                    </Text>
-                    <Text style = {styles.subtitle}>
-                        You'll login with a code instead of a password
-                    </Text>
-                </View>
-                
+            <LoginHeader 
+                navigation={navigation}
+                title = "Enter your phone number"
+                subtitle = "You'll log in with a code instead of a password."
+            />
+
+            <View style={{alignItems: 'center'}}>
+
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <View style={{flex: 1}}>
-                        <Text style={{fontSize: 16}}>+1</Text>
-                    </View>
-                    <View style={{flex: 12}}>
-                        <CustomInput 
-                            placeholder="Phone Number"
-                            value={phoneNumber} 
-                            setValue={setPhoneNumber}
-                            autoFocus={true}
-                            keyboardType="number-pad"
-                        />
-                    </View>
-                    
+                     <Text style={{marginRight: 5}}>
+                        +1
+                     </Text>
+                     <CustomInput 
+                        placeholder="(615) 975-4270"
+                        value={phoneNumber} 
+                        setValue={setPhoneNumber}
+                        autoFocus={true}
+                        keyboardType="number-pad"
+                        returnKeyType="go"
+                        onSubmitEditing={() => handleSignUp()}
+                        // onChangeText={(firstName) => {inputLastName.current.focus()}}
+                    />
                 </View>
 
-                <View style={{width:'100%', flex: 1, marginTop: '50%', alignItems: 'center'}}>
+                <View style={{width:'100%', alignItems: 'center', marginTop: Dimensions.get('window').height * 0.28}}>
                     <CustomButton
                         text="Continue"
                         onPress={handleSignUp}
+                        disabled={(phoneNumber == '')}
                     />
                 </View>
             </View>
@@ -80,37 +74,11 @@ const RegisterScreen3 = ({navigation, route}) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        height: '100%',
-    },
     root: {
-        alignItems: 'center',
         flex:1,
         padding: 20,
         backgroundColor: '#F9FBFC',
         width: '100%',
-    },
-
-    backButton: {
-        height: 30,
-        marginTop: Dimensions.get('window').height * 0.07,
-        marginLeft: 0,
-        alignSelf: 'flex-start'
-    },
-
-    title: {
-      fontSize: 25,
-      color: '#3C6F37',
-      fontWeight: 'bold',
-      marginTop: 10,
-    },
-
-    subtitle: {
-        fontSize: 15,
-        color: 'black',
-        marginBottom: 10,
-        marginTop: 10
     },
 })
 

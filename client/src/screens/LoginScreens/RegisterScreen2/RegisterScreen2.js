@@ -8,7 +8,6 @@ import OTPInput from '../../../components/OTPInput';
 const RegisterScreen2 = ({navigation, route}) => {
     const { emailParam, firstName, lastName } = route.params;
     const subtitleString = "Sent to " + emailParam
-    // const [code, setCode] = useState(['', '', '', '', '', '']);
 
     const [num1, setNum1] = useState('')
     const [num2, setNum2] = useState('')
@@ -34,6 +33,7 @@ const RegisterScreen2 = ({navigation, route}) => {
           },
           body: JSON.stringify({
             email: emailParam,
+            is_register: true
           }),
         })
         .then(console.log("success"))
@@ -58,29 +58,26 @@ const RegisterScreen2 = ({navigation, route}) => {
         })
         .then(response => response.json())
         .then(json => {
-            console.log('success')
             if (json['code'] === code) {
                 navigation.navigate('Register3', {emailParam: emailParam, firstName: firstName, lastName, lastName})
+            } else {
+                console.log("Invalid code")
             }
-            console.log(json['code'])
         })
         .catch(error => {
             console.error(error);
         });
       }
 
-    //   const handleSignUp = () => {
-    //     // navigation.navigate('Register3', {emailParam: emailParam, firstName: firstName, lastName: lastName})
-    //     let code_string = num1 + num2 + num3 + num4 + num5 + num6
-    //     setCode(code_string)
-    //     verifyEmailCode()
-    // }
-
-    useEffect(() => {
+    const handleSignUp = () => {
         let code = num1 + num2 + num3 + num4 + num5 + num6
         if(code.length == 6) {
             verifyEmailCode(code)
         }
+    }
+
+    useEffect(() => {
+        handleSignUp()
     }, [num6])
 
 
@@ -187,9 +184,6 @@ const RegisterScreen2 = ({navigation, route}) => {
                         value={num6} 
                         onChangeText={(num) => {
                             setNum6(num);
-                            // if(num && !(num1 == '' || num2 == '' || num3 == '' || num4 == '' || num5 == '')) {
-                            //     handleSignUp()
-                            // }
                         }}
                         onKeyPress={({nativeEvent}) => {
                             if(nativeEvent.key === 'Backspace' && !num6) {
@@ -212,13 +206,13 @@ const RegisterScreen2 = ({navigation, route}) => {
                 Resend
             </Text>
 
-            {/* <View style={{width:'100%', flex: 1, alignItems: 'center', marginTop: Dimensions.get('window').height * 0.05}}>
+            <View style={{width:'100%', flex: 1, alignItems: 'center', marginTop: Dimensions.get('window').height * 0.2}}>
                 <CustomButton
                     text="Continue"
                     onPress={handleSignUp}
                     disabled={(num1 == '' || num2 == '' || num3 == '' || num4 == '' || num5 == '' || num6 == '')}
                 />
-            </View> */}
+            </View>
 
         </View>
   )
