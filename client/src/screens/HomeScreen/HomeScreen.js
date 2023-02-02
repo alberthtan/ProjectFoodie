@@ -6,17 +6,21 @@ import StatusBar from '../../components/StatusBar'
 import BottomUpReceipt from '../../components/BottomUpReceipt'
 import RestaurantItem from '../../components/RestaurantItem'
 // import { useFonts } from 'expo-font';
+// import {useFonts, Jost_400Regular,} from '@expo-google-fonts/jost'
 import * as Font from 'expo-font';
 import RestaurantCard from '../../components/RestaurantCard'
 import Carousel, {Pagination} from 'react-native-snap-carousel'
 import CarouselCards from '../../components/RestaurantCarousel/RestaurantCarousel'
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['expo-app-loading is deprecated in favor of expo-splash-screen: use SplashScreen.preventAutoHideAsync() and SplashScreen.hideAsync() instead.'])
 
 
 
 const HomeScreen = ({route, navigation}) => {
   const [search, setSearch] = useState('')
   const { ordered } = route.params
-  const [restaurantList, setRestaurantList] = useState([])
+  // const [restaurantList, setRestaurantList] = useState([])
   const [index, setIndex] = useState(0)
 
   const isCarousel = useRef()
@@ -42,6 +46,25 @@ const HomeScreen = ({route, navigation}) => {
     }
   ]
 
+  const [restaurantList, setRestaurantList] = useState([])
+
+  // Fetch Call
+  const getRestaurantsFromApi = () => {
+    return fetch('https://dutch-pay-test.herokuapp.com/restaurants/?format=json')
+      .then(response => response.json())
+      .then(json => {
+        setRestaurantList(json)
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    getRestaurantsFromApi();
+    console.log(restaurantList)
+  }, [])
+
   // const [fontsLoaded] = useFonts({
   //   'Jost': require('../../../assets/fonts/Jost-Regular.ttf'),
   // });
@@ -50,10 +73,6 @@ const HomeScreen = ({route, navigation}) => {
   //   await Font.loadAsync({
   //     'Jost': require('../../../assets/fonts/Jost-Regular.ttf'),
   // });
-
-  const oneRestaurant = ({item}) => {
-    <RestaurantCard restaurant = {item}/>
-  }
 
   return (
     <View style = {styles.container}>
@@ -80,7 +99,9 @@ const HomeScreen = ({route, navigation}) => {
       </View>
 
       <View style = {styles.cardContainer}>
-        <CarouselCards/>
+        <View style={{marginTop: Dimensions.get('window').height * 0.05}}>
+          <CarouselCards data={restaurantList}/>
+        </View>
         {/* <RestaurantCard restaurant = {testRestaurants[0]}/> */}
       
       </View>
@@ -101,9 +122,9 @@ const styles = StyleSheet.create({
 
     title: {
       alignSelf: 'center', 
-      fontSize: Dimensions.get('window').width * 0.07, 
+      fontSize: Dimensions.get('window').width * 0.075, 
       fontWeight: 'bold',
-      // fontFamily: 'Roboto',
+      fontFamily: 'Roboto_700Bold',
       position: 'absolute',
       bottom: Dimensions.get('window').width * 0.05,
     },
@@ -115,8 +136,8 @@ const styles = StyleSheet.create({
     
     subtitle: {
       alignSelf: 'center',
-      // fontFamily: 'Jost',
-      fontSize: Dimensions.get('window').width * 0.037,
+      fontFamily: 'Jost_400Regular',
+      fontSize: Dimensions.get('window').width * 0.04,
       marginVertical: 5,
       textAlign: 'center'
     },
@@ -124,7 +145,8 @@ const styles = StyleSheet.create({
     cardContainer: {
       flex: 4,
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      alignItems: 'center'
     },
 
     

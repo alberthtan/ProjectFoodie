@@ -1,7 +1,9 @@
-import { View, Text , StyleSheet, Pressable, TouchableOpacity, TouchableHighlight} from 'react-native'
+import { View, Text , StyleSheet, Pressable, TouchableOpacity, TouchableHighlight, Image} from 'react-native'
 import React from 'react'
+import location from '../../../assets/icons/location.png'
+import { assets } from '../../../react-native.config'
 
-const CustomButton = ({onPress, text, type = "PRIMARY", disabled}) => {
+const CustomButton = ({onPress, text, type = "PRIMARY", disabled, map}) => {
   return (
     <TouchableHighlight
       onPress={onPress} 
