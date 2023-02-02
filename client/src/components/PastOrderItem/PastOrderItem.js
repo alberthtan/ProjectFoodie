@@ -1,44 +1,43 @@
-import { StyleSheet, Text, View, Pressable, TouchableOpacity, Image} from 'react-native'
+import { StyleSheet, Text, View, Pressable, TouchableOpacity, Image, TouchableHighlight, Dimensions} from 'react-native'
 import React from 'react'
 import NumberFormat from 'react-number-format'
 
-const PastOrderItem = ({navigation, restaurantName, transactionDate, status, restaurantImage}) => {
+const PastOrderItem = ({navigation, restaurantName, transactionDate, sharedBy, restaurantImage}) => {
   return (
-    <TouchableOpacity
+    <TouchableHighlight
         style = {styles.container}
         // onPress = {() => navigation.navigate('RestaurantScreen')}>
-        onPress = {() => console.log('area pressed')}>
+        underlayColor='#E5EFE3'
+        onPress = {() => navigation.navigate('Receipt2', {subtotal: 0})}>
         <View style={{flexDirection: 'row', width: '100%', alignItems: 'center'}}>
             
-            <View style={{width: '20%', borderRadius: 30, marginRight: 15}}>
+            <View style={{width: '20%', borderRadius: 30, left: 10}}>
                 <Image style= {{width: 78, height: 60, borderRadius: 10}} source={{uri: restaurantImage}}/>
             </View>
-            <View style = {{width: '50%'}}>
+            <View style = {{width: '65%', marginLeft: '5%'}}>
                 <Text style = {styles.restaurantName}>{restaurantName}</Text>
                 <Text style = {styles.transactionDate}>
                     {transactionDate}
                 </Text>
-                <Text style = {styles.status}>
-                    {status}
+                <Text style = {styles.sharedBy}>
+                    <Text style={{fontWeight: 'normal'}}>Shared with </Text>{sharedBy}
                 </Text>
             </View>
-            <TouchableOpacity style={styles.receipt} onPress={() => console.log("receipt pressed")}>
+            {/* <TouchableOpacity style={styles.receipt} onPress={() => console.log("receipt pressed")}>
                 <Text style={styles.text}>Receipt</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </View>
     
-    </TouchableOpacity>
+    </TouchableHighlight>
   )
 }
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 15,
-        marginLeft: 10,
         width: '100%',
         justifyContent: 'center',
-        height: 60,
-        flex: 1
+        height: Dimensions.get('window').height * 0.113,
+        flex: 1,
     },
 
     restaurantName: {
@@ -54,9 +53,9 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
     },
 
-    status: {
+    sharedBy: {
         fontSize: 12,
-        color: 'green',
+        fontWeight: 'bold'
     },
 
     receipt: {

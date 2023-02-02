@@ -25,6 +25,7 @@ import PastOrdersScreen from '../screens/ProfileScreens/PastOrdersScreen';
 import PaymentScreen from '../screens/ProfileScreens/PaymentScreen';
 import AddPaymentScreen from '../screens/ProfileScreens/AddPaymentScreen';
 import ProfileScreen from '../screens/ProfileScreens/ProfileScreen';
+import ReceiptScreen2 from '../screens/ReceiptScreen2/ReceiptScreen2'
 
 import {Context} from "../globalContext/globalContext.js";
 
@@ -154,6 +155,10 @@ const Navigator = () => {
             options={{headerShown: false}}
             name="PastOrders"
             component={PastOrdersScreen}/>
+            <Stack.Screen
+            options={{headerShown: false}}
+            name="Receipt2"
+            component={ReceiptScreen2}/>
           <Stack.Screen
             options={{headerShown: false}}
             name="Payments"

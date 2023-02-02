@@ -13,7 +13,7 @@ LogBox.ignoreLogs(['expo-app-loading is deprecated in favor of expo-splash-scree
 
 const HomeScreen = ({route, navigation}) => {
   const [restaurantList, setRestaurantList] = useState([])
-  const [noReceipts, setNoReceipts] = useState(true)
+  const [noReceipts, setNoReceipts] = useState(false)
 
   // Fetch Call
   const getRestaurantsFromApi = () => {
@@ -61,7 +61,7 @@ const HomeScreen = ({route, navigation}) => {
             <Text style={{color: '#3C6F37'}}>DutchPay</Text>
           </Text>
         <View style={styles.dutchCard}>
-          <DutchCard onPress={() => {console.log("Dutchcard pressed!")}}/>
+          <DutchCard onPress={() => {navigation.navigate('PastOrders')}}/>
         </View>
       </>
       }

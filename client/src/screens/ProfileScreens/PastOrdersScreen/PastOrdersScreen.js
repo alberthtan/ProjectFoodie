@@ -9,22 +9,22 @@ const pastOrdersList = [
   {
     id: 1,
     restaurantName: 'Ippudo',
-    transactionDate: '12/31/2020',
-    status: 'COMPLETED',
+    transactionDate: 'Nov 11, 2022',
+    sharedBy: 'John Doe, Adam Smith, Sarah Brown, Emily Blunt, Roger Federer',
     restaurantImage: 'https://www.kikkoman.eu/fileadmin/_processed_/0/0/csm_WEB_Traditional_Fukuoka_Ramen_646cd39e6b.jpg'
   },
   {
     id: 2,
     restaurantName: 'Jack\'s Wife Freda',
-    transactionDate: '12/31/2020',
-    status: 'COMPLETED',
+    transactionDate: 'Nov 04, 2022',
+    sharedBy: 'John Doe, Adam Smith',
     restaurantImage: 'https://cdn.vox-cdn.com/thumbor/dIpTdNGyJdUgxa8KCdkEtXcVXi4=/0x0:960x628/1200x800/filters:focal(404x238:556x390)/cdn.vox-cdn.com/uploads/chorus_image/image/57106681/17021915_1328439217202661_4461976011855380041_n.0.jpg'
   },
   {
     id: 3,
     restaurantName: 'Samwon Garden',
-    transactionDate: '12/31/2020',
-    status: 'COMPLETED',
+    transactionDate: 'Oct 15, 2022',
+    sharedBy: 'John Doe',
     restaurantImage: 'https://stardiamondaward.com/wp-content/uploads/2019/05/samwongarden-korean-bbq-inside.png'
   },
 ]
@@ -38,7 +38,7 @@ const oneOrder = ({item}) => (
       navigation = {navigation}
       restaurantName = {item.restaurantName}
       transactionDate= {item.transactionDate}
-      status = {item.status}
+      sharedBy = {item.sharedBy}
       restaurantImage={item.restaurantImage}
   />
 )
@@ -48,7 +48,6 @@ const oneOrder = ({item}) => (
       <HeaderBar name="Past Orders" navigation={navigation}/>
       <View style={{flex: 1}}>
         <FlatList
-          style={{paddingTop: 10}}
           data={pastOrdersList}
           renderItem={oneOrder}
           showsHorizontalScrollIndicator = {false}

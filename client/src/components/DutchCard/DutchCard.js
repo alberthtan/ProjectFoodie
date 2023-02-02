@@ -56,12 +56,7 @@ const styles = StyleSheet.create({
       width: 50,
       height: 55,
       alignSelf:'center',
-      // justifyContent: 'flex-end',
       alignItems: 'flex-end',
-      // marginLeft: 10
       left: 10,
-    //   backgroundColor: 'red'
-      // // tintColor: '#000000',
-      // flex: 0.5
     },
 })
