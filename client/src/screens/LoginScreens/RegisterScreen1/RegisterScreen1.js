@@ -9,6 +9,8 @@ const RegisterScreen1 = ({navigation}) => {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
+    const [invalid, setInvalid] = useState(false)
+    const [invalidText, setInvalidText] = useState('')
 
     const inputFirstName = useRef()
     const inputLastName = useRef()
@@ -37,9 +39,12 @@ const RegisterScreen1 = ({navigation}) => {
             .then(response => {
                 console.log(response.status)
                 if (response.status === 201) {
+                    setInvalid(false)
                     navigation.navigate('Register2', {emailParam: email, firstName: firstName, lastName: lastName})
                 } else if (response.status === 400){
                     console.log('Unable to send email code')
+                    setInvalidText('Email already exists')
+                    setInvalid(true)
                 }
             })
             .catch(error => {
@@ -47,6 +52,8 @@ const RegisterScreen1 = ({navigation}) => {
             });
         } else {
             console.log("Invalid email format")
+            setInvalidText('Invalid email format')
+            setInvalid(true)
         }
         
       }
@@ -97,6 +104,13 @@ const RegisterScreen1 = ({navigation}) => {
                     autoCorrect={false}
                     enablesReturnKeyAutomatically={true}
                 />
+                {invalid ? 
+                    <Text
+                        style={styles.invalidStyle}>
+                        {invalidText}
+                    </Text> : 
+                    <></>
+                }
             </View>
 
             <View style={{width:'100%', alignItems: 'center', marginTop: Dimensions.get('window').height * 0.05}}>
@@ -116,6 +130,12 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: 'white',
         width: '100%',
+    },
+    invalidStyle: {
+        position: 'absolute',
+        color: 'red',
+        right: Dimensions.get('window').width * 0.04,
+        top: Dimensions.get('window').height * 0.25,
     },
 })
 

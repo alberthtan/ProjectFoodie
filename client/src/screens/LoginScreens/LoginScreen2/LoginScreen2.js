@@ -13,9 +13,10 @@ const LoginScreen2 = ({navigation, route}) => {
 
     const { emailParam } = route.params
     const subtitleString = "Sent to " + emailParam
-    const { setIsLoggedIn, userObj, setUserObj, setToken, getToken } = globalContext
+    const { setIsLoggedIn, setUserObj, setToken } = globalContext
 
-    // const [code, setCode] = useState('')
+    const [invalid, setInvalid] = useState(false)
+    const [invalidText, setInvalidText] = useState('')
 
     const [num1, setNum1] = useState('')
     const [num2, setNum2] = useState('')
@@ -75,8 +76,10 @@ const LoginScreen2 = ({navigation, route}) => {
             if (json.hasOwnProperty('code')) {
                 console.log("invalid code")
                 console.log(json['code'])
+                setInvalidText('Code does not match')
+                setInvalid(true)
             } else if (json['username'] === emailParam){
-
+                setInvalid(false)
                 setToken(json.token.refresh, json.token.access)
                 setUserObj(json)
                 setIsLoggedIn(true)
@@ -226,7 +229,14 @@ const LoginScreen2 = ({navigation, route}) => {
                 }}>
                 Resend
             </Text>
-            <View style={{width:'100%', flex: 1, alignItems: 'center', marginTop: Dimensions.get('window').height * 0.05}}>
+            {invalid ? 
+                <Text
+                    style={styles.invalidStyle}>
+                    {invalidText}
+                </Text> : 
+                <></>
+            }
+            <View style={{width:'100%', alignItems: 'center', marginTop: Dimensions.get('window').height * 0.2}}>
                 <CustomButton
                     text="Continue"
                     onPress={handleLogin}
@@ -249,7 +259,15 @@ const styles = StyleSheet.create({
     hyperlinkStyle: {
         color: 'green',
         alignSelf: 'flex-end',
+        marginTop: '2%',
         marginRight: '5%',
+    },
+
+    invalidStyle: {
+        position: 'absolute',
+        color: 'red',
+        right: Dimensions.get('window').width * 0.095,
+        top: Dimensions.get('window').height * 0.33,
     },
 })
 

@@ -17,7 +17,6 @@
   "dependencies": {
     "@expo-google-fonts/jost": "^0.2.2",
     "@expo-google-fonts/roboto": "^0.2.2",
-    "@expo-google-fonts/roboto": "^0.2.2",
     "@firebase/auth": "^0.20.7",
     "@firebase/firestore": "^3.5.0",
     "@react-native-firebase/app": "^15.4.0",

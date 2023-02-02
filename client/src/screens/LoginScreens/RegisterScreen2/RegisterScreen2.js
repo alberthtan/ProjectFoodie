@@ -9,6 +9,9 @@ const RegisterScreen2 = ({navigation, route}) => {
     const { emailParam, firstName, lastName } = route.params;
     const subtitleString = "Sent to " + emailParam
 
+    const [invalid, setInvalid] = useState(false)
+    const [invalidText, setInvalidText] = useState('')
+
     const [num1, setNum1] = useState('')
     const [num2, setNum2] = useState('')
     const [num3, setNum3] = useState('')
@@ -59,9 +62,12 @@ const RegisterScreen2 = ({navigation, route}) => {
         .then(response => response.json())
         .then(json => {
             if (json['code'] === code) {
+                setInvalid(false)
                 navigation.navigate('Register3', {emailParam: emailParam, firstName: firstName, lastName, lastName})
             } else {
                 console.log("Invalid code")
+                setInvalidText('Code does not match')
+                setInvalid(true)
             }
         })
         .catch(error => {
@@ -206,6 +212,13 @@ const RegisterScreen2 = ({navigation, route}) => {
                 Resend
             </Text>
 
+            {invalid ? 
+                <Text
+                    style={styles.invalidStyle}>
+                    {invalidText}
+                </Text> : 
+                <></>
+            }
             <View style={{width:'100%', flex: 1, alignItems: 'center', marginTop: Dimensions.get('window').height * 0.2}}>
                 <CustomButton
                     text="Continue"
@@ -229,7 +242,15 @@ const styles = StyleSheet.create({
     hyperlinkStyle: {
         color: 'green',
         alignSelf: 'flex-end',
-        margin: '5%',
+        marginTop: '2%',
+        marginRight: '5%',
+    },
+
+    invalidStyle: {
+        position: 'absolute',
+        color: 'red',
+        right: Dimensions.get('window').width * 0.095,
+        top: Dimensions.get('window').height * 0.33,
     },
 })
 

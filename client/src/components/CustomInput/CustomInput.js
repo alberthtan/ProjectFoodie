@@ -2,7 +2,7 @@ import { Alert, View, TextInput, StyleSheet, Dimensions} from 'react-native'
 import React from 'react'
 
 
-function Input ({value, setValue, placeholder, autoFocus, keyboardType, secureTextEntry, returnKeyType, onSubmitEditing, autoCapitalize, enablesReturnKeyAutomatically, autoCorrect}, ref) {
+function Input ({value, setValue, placeholder, autoFocus, keyboardType, secureTextEntry, returnKeyType, onSubmitEditing, autoCapitalize, enablesReturnKeyAutomatically, autoCorrect, maxLength}, ref) {
   return (
     <View style={styles.container}>
         <TextInput
@@ -19,6 +19,7 @@ function Input ({value, setValue, placeholder, autoFocus, keyboardType, secureTe
             enablesReturnKeyAutomatically={enablesReturnKeyAutomatically}
             autoCorrect={autoCorrect}
             ref={ref}
+            maxLength={maxLength}
         />
    </View>
   )

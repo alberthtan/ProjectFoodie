@@ -30,7 +30,6 @@ const RegisterScreen3 = ({navigation, route}) => {
 
       const handleSignUp = () => {
         sendCode()
-        // navigation.navigate('Register4', {phoneParam: phoneNumber, emailParam: emailParam, firstName: firstName, lastName: lastName})
     }
 
     return (
@@ -56,6 +55,7 @@ const RegisterScreen3 = ({navigation, route}) => {
                         keyboardType="number-pad"
                         returnKeyType="go"
                         onSubmitEditing={() => handleSignUp()}
+                        maxLength={10}
                         // onChangeText={(firstName) => {inputLastName.current.focus()}}
                     />
                 </View>
