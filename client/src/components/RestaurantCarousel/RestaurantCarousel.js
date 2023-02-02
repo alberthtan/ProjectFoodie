@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import { View, Dimensions } from "react-native"
 import Carousel from 'react-native-snap-carousel'
 // import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from './CardItem.js'
-import CarouselCardItem from './CarouselCardItem'
 import RestaurantCard from '../RestaurantCard'
 import data from './data'
 
@@ -20,7 +19,7 @@ const CarouselCards = () => {
         layout="default"
         layoutCardOffset={5}
         ref={isCarousel}
-        data={testRestaurants}
+        data={data}
         renderItem={RestaurantCard}
         sliderWidth={SLIDER_WIDTH}
         itemWidth={ITEM_WIDTH}

@@ -8,36 +8,27 @@ import CustomButton from '../CustomButton'
 export const SLIDER_WIDTH = Dimensions.get('window').width + 80
 export const ITEM_WIDTH = 250
 
-const RestaurantCard = ({restaurant, index}) => {
-  
+const RestaurantCard = ({item, index}) => {
+  let restaurant = item
   const openMap = () => {
-    console.log(restaurant)
-    console.log(index)
-    // let mapUrl = (Platform.OS === 'ios') ? ('maps://?q=' + restaurant.address) : ('http://maps.google.com/maps?q=' + restaurant.address)
-    // Linking.openURL(mapUrl)
-    // Platform.select({
-    //     ios: () => {
-    //         Linking.openURL('http://maps.apple.com/maps?daddr=');
-    //     },
-    //     android: () => {
-    //         Linking.openURL('http://maps.google.com/maps?daddr=');
-    //     }
-    // });
+    let mapUrl = (Platform.OS === 'ios') ? ('maps://?q=' + restaurant.address) : ('http://maps.google.com/maps?q=' + restaurant.address)
+    Linking.openURL(mapUrl)
+
 }
 
   
   return (
     <View style={styles.card} key={index}>
-        <Image style= {{width: '50%', height: '25%', borderRadius: 20}} source={{uri: 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg'}}/>
+        <Image style= {{width: '50%', height: '25%', borderRadius: 20}} source={{uri: restaurant.mainImage}}/>
      
       <Text style={styles.restaurantName}>
-            Jacks' Wife Freda
+            {restaurant.name}
       </Text>
 
       <View style={styles.foodImagesContainer}>
-        <Image style= {styles.foodImage} source={{uri: 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg'}}/>
-        <Image style= {styles.foodImage} source={{uri: 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg'}}/>
-        <Image style= {styles.foodImage} source={{uri: 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg'}}/>
+        <Image style= {styles.foodImage} source={{uri: restaurant.foodImage1}}/>
+        <Image style= {styles.foodImage} source={{uri: restaurant.foodImage2}}/>
+        <Image style= {styles.foodImage} source={{uri: restaurant.foodImage3}}/>
       </View>
 
       <View style={{ justifyContent: 'center', alignItems: 'center', alignSelf: 'center'}}>

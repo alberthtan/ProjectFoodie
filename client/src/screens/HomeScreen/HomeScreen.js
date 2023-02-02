@@ -9,7 +9,7 @@ import RestaurantItem from '../../components/RestaurantItem'
 import * as Font from 'expo-font';
 import RestaurantCard from '../../components/RestaurantCard'
 import Carousel, {Pagination} from 'react-native-snap-carousel'
-import CarouselCards from '../../components/RestaurantCarousel/CarouselCards'
+import CarouselCards from '../../components/RestaurantCarousel/RestaurantCarousel'
 
 
 
