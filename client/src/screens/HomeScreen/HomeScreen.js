@@ -1,16 +1,10 @@
 import { Dimensions, Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity} from 'react-native'
 import React, {useState, useEffect, useRef}  from 'react'
-import { FlatList } from 'react-native-gesture-handler'
 
-import StatusBar from '../../components/StatusBar'
-import BottomUpReceipt from '../../components/BottomUpReceipt'
-import RestaurantItem from '../../components/RestaurantItem'
-// import { useFonts } from 'expo-font';
-// import {useFonts, Jost_400Regular,} from '@expo-google-fonts/jost'
-import * as Font from 'expo-font';
-import RestaurantCard from '../../components/RestaurantCard'
-import Carousel, {Pagination} from 'react-native-snap-carousel'
 import CarouselCards from '../../components/RestaurantCarousel/RestaurantCarousel'
+import DutchCard from '../../components/DutchCard';
+
+
 import { LogBox } from 'react-native';
 
 LogBox.ignoreLogs(['expo-app-loading is deprecated in favor of expo-splash-screen: use SplashScreen.preventAutoHideAsync() and SplashScreen.hideAsync() instead.'])
@@ -19,6 +13,7 @@ LogBox.ignoreLogs(['expo-app-loading is deprecated in favor of expo-splash-scree
 
 const HomeScreen = ({route, navigation}) => {
   const [restaurantList, setRestaurantList] = useState([])
+  const [noReceipts, setNoReceipts] = useState(false)
 
   // Fetch Call
   const getRestaurantsFromApi = () => {
@@ -40,29 +35,42 @@ const HomeScreen = ({route, navigation}) => {
   return (
     <View style = {styles.container}>
 
-      <View style={styles.titleContainer}>
-        <Text style = {styles.title}>
-          Welcome to <Text style={{color: '#3C6F37'}}>DutchPay</Text>
-        </Text>
-      </View>
+      {noReceipts ? 
+      <>
+        <View style={styles.titleContainer}>
+          <Text style = {styles.title}>
+            Welcome to <Text style={{color: '#3C6F37'}}>DutchPay</Text>
+          </Text>
+        </View>
+        
+
+        <View style = {styles.subtitleContainer}>
+          <Text style = {styles.subtitle}>
+            When you order at restaurants with the
+          </Text>
+          <Text style = {styles.subtitle}>
+            DutchPay camera, you'll see your orders and the 
+          </Text>
+          <Text style = {styles.subtitle}>
+            people you shared them with!
+          </Text>
+        </View>
+      </> :
+      <>
+          <Text style = {styles.title2}>
+            <Text style={{color: '#3C6F37'}}>DutchPay</Text>
+          </Text>
+        <View style={styles.dutchCard}>
+          <DutchCard onPress={() => {console.log("Dutchcard pressed!")}}/>
+        </View>
+      </>
+      }
+
       
 
-      <View style = {styles.subtitleContainer}>
-        <Text style = {styles.subtitle}>
-          When you order at restaurants with the
-        </Text>
-        <Text style = {styles.subtitle}>
-          DutchPay camera, you'll see your orders and the 
-        </Text>
-        <Text style = {styles.subtitle}>
-           people you shared them with!
-        </Text>
-      </View>
-
       <View style = {styles.cardContainer}>
-        <View style={{marginTop: Dimensions.get('window').height * 0.05}}>
+
           <CarouselCards data={restaurantList}/>
-        </View>
       </View>
     </View>
   )
@@ -102,10 +110,33 @@ const styles = StyleSheet.create({
 
     cardContainer: {
       flex: 4,
-      alignItems: 'center',
-      justifyContent: 'center',
-      alignItems: 'center'
+      marginTop: Dimensions.get('window').height * 0.05,
+      justifyContent: 'center'
     },
+
+
+    title2: {
+      justifyContent: 'center',
+      fontSize: Dimensions.get('window').width * 0.075, 
+      fontWeight: 'bold',
+      fontFamily: 'Roboto_700Bold',
+      position: 'absolute',
+
+      top: Dimensions.get('window').height * 0.08,
+      left: Dimensions.get('window').width * 0.05,
+    },
+
+    dutchCard: {
+      // flex: 2,
+      // height: 300,
+      justifyContent: 'center',
+      alignItems: 'center',
+      // backgroundColor: 'blue',
+      // position: 'absolute',
+      marginTop: Dimensions.get('window').height * 0.18,
+      bottom: Dimensions.get('window').height * 0.02
+      // paddingTop: Dimensions.get('window').height * 0.1
+    }
 })
 
 export default HomeScreen

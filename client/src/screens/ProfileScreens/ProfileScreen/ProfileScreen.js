@@ -16,19 +16,17 @@ const ProfileScreen = ({navigation}) => {
   console.log(userObj)
   console.log(getToken('refresh'))
 
-  const handleSignOut = () => {
-      (async () => {
-        await deleteToken("access")
-        await deleteToken("refresh")
-        let token = await getToken('access')
-        setIsLoggedIn(false)
-        console.log(token)
+  const handleSignOut = async () => {
+      await deleteToken("access")
+      await deleteToken("refresh")
+      let token = await getToken('access')
+      setIsLoggedIn(false)
+      console.log(token)
 
         
         // navigation.goBack('LoginHome')
-      })
-      // .then(navigation.navigate("LoginHome"))
-      .catch(error => alert(error.message))
+        // navigation.navigate("LoginHome")
+      // navigation.navigate("LoginHome")
   }
 
   return (

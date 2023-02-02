@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
-import frontArrowIcon from '../../../assets/icons/frontarrow.png'
+import FrontArrowIcon from '../../../assets/icons/frontarrow.png'
 
 const ProfileButton = ({name, onPress, imageSource}) => {
   return (
@@ -10,7 +10,7 @@ const ProfileButton = ({name, onPress, imageSource}) => {
           <Text style={styles.buttonText}>
               {name}
           </Text>
-          <Image source={frontArrowIcon} resizeMode="contain" style={styles.frontArrow}/>
+          <Image source={FrontArrowIcon} resizeMode="contain" style={styles.frontArrow}/>
         </View>
     </TouchableOpacity>
   )
