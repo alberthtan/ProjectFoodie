@@ -2,17 +2,14 @@ import { View, StyleSheet, Text, Pressable, TouchableOpacity} from 'react-native
 import React from 'react'
 
 
-const MenuCategoryButton = ({parentCallBack, item, currentCategory, setCurrentCategory}) => {
-  const compareId = (currentCategory.id == item.id)
+const MenuCategoryButton = ({navigation, id, name, currentCategory, setCurrentCategory}) => {
+  const compareId = (currentCategory == id)
   return (
     <TouchableOpacity
-      onPress = {() => {
-        setCurrentCategory(item)
-        parentCallBack(item)
-      }}
+      onPress = {() => {setCurrentCategory(id)}}
       style={[styles.container, compareId ? styles.green: styles.gray]}
       >
-        <Text style={[compareId ? {color: 'white'}: {color: 'black'}]}>{item.name}</Text>
+        <Text style={[{fontWeight: 'bold'}, compareId ? {color: 'white'}: {color: 'black'}]}>{name}</Text>
     </TouchableOpacity>
   )
 
@@ -24,8 +21,7 @@ const styles = StyleSheet.create({
       // height: 30,
       borderRadius: 30,
       padding: 10,
-      // alignSelf: 'flex-start',
-      alignSelf: 'center',
+      alignSelf: 'flex-start',
       marginLeft: 10,
       marginRight: 5,
       // justifyContent: 'center',
@@ -38,7 +34,6 @@ const styles = StyleSheet.create({
   },
 
   green: {
-    
       backgroundColor: '#3C6F37'
   }
 

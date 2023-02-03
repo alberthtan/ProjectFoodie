@@ -191,7 +191,8 @@ if (true) {
                 /> :
                 <CustomButton
                     text = "Order"
-                    type ='TERTIARY'
+                    type ='DISABLED'
+                    disabled={true}
                     onPress = {() => alert("No items in cart!")}
                 />
             }
