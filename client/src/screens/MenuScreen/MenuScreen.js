@@ -19,8 +19,6 @@ const MenuScreen = ({route, navigation}) => {
     const isCarousel = React.useRef(null)
     const isHeader = React.useRef(null)
 
-    const [disabled, setDisabled] = useState(false)
-
     const globalContext = useContext(Context)
 
     const { userObj, ws, cart, setCart } = globalContext
@@ -128,20 +126,12 @@ const MenuScreen = ({route, navigation}) => {
       };
 
     const handleCallbackCarousel = (currentIndex) => {
-        if(!disabled) {
-          setCurrentCategory(MenuCategories[currentIndex])
-          isHeader.current.scrollToIndex({animated: true, index: currentIndex})
-        } else {
-          setDisabled(false)
-        }
-        
-        
+        setCurrentCategory(MenuCategories[currentIndex])
+        isHeader.current.scrollToIndex({animated: true, index: currentIndex})
     }
 
     const handleCallbackCategory = (item) => {
-      setDisabled(true)
       let index = MenuCategories.indexOf(item)
-      console.log(index)
       isCarousel.current.snapToItem(index)
       isHeader.current.scrollToIndex({animated: true, index: index})
     }

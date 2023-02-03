@@ -11,8 +11,6 @@ const MenuCategoryButton = ({parentCallBack, item, currentCategory, setCurrentCa
     <TouchableHighlight
       ref={isCategoryButton}
       onPress = {() => {
-        //??????????????
-        setCurrentCategory(item)
         parentCallBack(item,)
       }}
       style={[styles.container, ((compareId) ? styles.underline: styles.noUnderline)]}
