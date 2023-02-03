@@ -8,7 +8,7 @@ import CustomButton from '../../components/CustomButton'
 import HeaderBar from '../../components/HeaderBar'
 import { Context } from '../../globalContext/globalContext'
 import MenuItemsCarousel from '../../components/MenuItemsCarousel'
-import CategoriesCarousel from '../../components/CategoriesCarousel'
+import MenuHeader from '../../components/MenuHeader/MenuHeader'
 
 const MenuScreen = ({route, navigation}) => {
     const { restaurant_id, name, subtotal, table_id } = route.params
@@ -17,6 +17,7 @@ const MenuScreen = ({route, navigation}) => {
     const [MenuItems, setMenuItems] = useState([])
     const [currentCategory, setCurrentCategory] = useState(null)
     const isCarousel = React.useRef(null)
+    const isHeader = React.useRef(null)
 
     const globalContext = useContext(Context)
 
@@ -40,28 +41,28 @@ const MenuScreen = ({route, navigation}) => {
   //   // console.log(serverState)
   //   // setDisableButton(false);
   // };
-  ws.onclose = (e) => {
-    console.log(e)
-    setServerState('Disconnected. Check internet or server.')
-    // setDisableButton(true);
-  };
-  ws.onerror = (e) => {
-    console.log('got here')
-    setServerState(e.message);
-  };
-  ws.onmessage = ({data}) => {
-    console.log("ACQUIRING MESSAGE IN MENU")
-    console.log(data)
-    let message = JSON.parse(data)
-    let temp = []
+  // ws.onclose = (e) => {
+  //   console.log(e)
+  //   setServerState('Disconnected. Check internet or server.')
+  //   // setDisableButton(true);
+  // };
+  // ws.onerror = (e) => {
+  //   console.log('got here')
+  //   setServerState(e.message);
+  // };
+  // ws.onmessage = ({data}) => {
+  //   console.log("ACQUIRING MESSAGE IN MENU")
+  //   console.log(data)
+  //   let message = JSON.parse(data)
+  //   let temp = []
     
-    for (let i = 0; i < message.cart.length; i++) {
-      // console.log('got here')
-      temp.push(message.cart[i])
-    }
-    setCart(temp)
-    // console.log(Cart)
-  };
+  //   for (let i = 0; i < message.cart.length; i++) {
+  //     // console.log('got here')
+  //     temp.push(message.cart[i])
+  //   }
+  //   setCart(temp)
+  //   // console.log(Cart)
+  // };
 
   const calculateLength = () => {
     let length = 0
@@ -202,15 +203,9 @@ const MenuScreen = ({route, navigation}) => {
 
   return (
     <View style = {{flex: 1}}>
-        <HeaderBar name={name} navigation={navigation} destination="HomeTabs"/>
+        {/* <HeaderBar name={name} navigation={navigation} destination="HomeTabs"/>
 
         <View style={{height: Dimensions.get('window').height * 0.1, justifyContent: 'center'}}>
-          {/* <CategoriesCarousel
-            data={MenuCategories}
-            currentCategory={currentCategory}
-            setCurrentCategory={setCurrentCategory}
-            navigation={navigation}
-            /> */}
             <FlatList
             style={{}}
                 horizontal= {true}
@@ -218,7 +213,16 @@ const MenuScreen = ({route, navigation}) => {
                 data = { MenuCategories }
                 renderItem = { oneCategory }
             />
-        </View>
+        </View> */}
+
+        <MenuHeader 
+                  name={name} 
+                  isHeader={isHeader}
+                  navigation={navigation} 
+                  destination="HomeTabs" 
+                  oneCategory={oneCategory}
+                  MenuCategories={MenuCategories}
+                />
 
         <View style = {{flex: 1}}>
           <MenuItemsCarousel
