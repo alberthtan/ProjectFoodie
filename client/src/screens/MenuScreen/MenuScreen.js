@@ -12,12 +12,14 @@ import MenuHeader from '../../components/MenuHeader/MenuHeader'
 
 const MenuScreen = ({route, navigation}) => {
     const { restaurant_id, name, subtotal, table_id } = route.params
-
+    const [destinationCategory, setDestinationCategory]= useState([])
     const [MenuCategories, setMenuCategories] = useState([])
     const [MenuItems, setMenuItems] = useState([])
     const [currentCategory, setCurrentCategory] = useState(null)
     const isCarousel = React.useRef(null)
     const isHeader = React.useRef(null)
+
+    const [disabled, setDisabled] = useState(false)
 
     const globalContext = useContext(Context)
 
@@ -94,6 +96,7 @@ const MenuScreen = ({route, navigation}) => {
             const result = json.filter(category => category["menu"] == id)
             const emptyRows = new Array(result.length).fill([]);
             setCurrentCategory(result[0])
+            setDestinationCategory(result[0])
             setMenuCategories(result)
             setMenuItems(emptyRows)
           })
@@ -124,15 +127,23 @@ const MenuScreen = ({route, navigation}) => {
           });
       };
 
-    const handleCallback = (currentIndex) => {
-        setCurrentCategory(MenuCategories[currentIndex])
+    const handleCallbackCarousel = (currentIndex) => {
+        if(!disabled) {
+          setCurrentCategory(MenuCategories[currentIndex])
+          isHeader.current.scrollToIndex({animated: true, index: currentIndex})
+        } else {
+          setDisabled(false)
+        }
+        
+        
     }
 
-    const handleCallback2 = (item) => {
+    const handleCallbackCategory = (item) => {
+      setDisabled(true)
       let index = MenuCategories.indexOf(item)
       console.log(index)
       isCarousel.current.snapToItem(index)
-        
+      isHeader.current.scrollToIndex({animated: true, index: index})
     }
 
     useEffect(() => {
@@ -154,13 +165,16 @@ const MenuScreen = ({route, navigation}) => {
 
     // const snapToIndex = 
 
-    const oneCategory = ({item}) => (
+    const oneCategory = ({item, index}) => (
         <MenuCategoryButton
             navigation = {navigation}
             item = {item}
             currentCategory = {currentCategory}
             setCurrentCategory = {setCurrentCategory}
-            parentCallBack = {handleCallback2}
+            parentCallBack = {handleCallbackCategory}
+            id={index}
+            destinationCategory={destinationCategory}
+            setDestinationCategory={setDestinationCategory}
         />
     )
 
@@ -233,7 +247,7 @@ const MenuScreen = ({route, navigation}) => {
             navigation={navigation}
             table_id={table_id}
             restaurant_id={restaurant_id}
-            parentCallback={handleCallback}
+            parentCallback={handleCallbackCarousel}
             />
                 {/* <FlatList
                     showsVerticalScrollIndicator = {true}

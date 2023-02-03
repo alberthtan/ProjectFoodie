@@ -27,7 +27,7 @@ const MenuItemsCarousel = ({isCarousel, data, subtotal, name, navigation, table_
         isOrdering = {true}
     />)
   }
-  console.log('here')
+  // console.log('here')
 
   return (
     <View style={{alignItems: 'center', alignSelf: 'center'}}>
@@ -35,8 +35,14 @@ const MenuItemsCarousel = ({isCarousel, data, subtotal, name, navigation, table_
         // layout="default"
         // layout="tinder"
         // layoutCardOffset={0}
-        // onSnapToItem={(slideIndex) => parentCallback(slideIndex)}
-        onScrollIndexChanged={(slideIndex) => parentCallback(slideIndex)}
+        onSnapToItem={(slideIndex) => {
+          parentCallback(slideIndex)
+          console.log("snapped")
+        }}
+        onScrollIndexChanged={(slideIndex) => {
+          parentCallback(slideIndex)
+          console.log("scrolled")
+        }}
         inactiveSlideOpacity={1}
         inactiveSlideScale={1}
         ref={isCarousel}
@@ -45,6 +51,7 @@ const MenuItemsCarousel = ({isCarousel, data, subtotal, name, navigation, table_
         sliderWidth={SLIDER_WIDTH}
         itemWidth={ITEM_WIDTH}
         useScrollView={true}
+        useExperimentalSnap={true}
         // decelerationRate={'fast'}
       />
     </View>

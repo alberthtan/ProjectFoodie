@@ -7,23 +7,15 @@ const MenuCategoryButton = ({parentCallBack, item, currentCategory, setCurrentCa
   const isCategoryButton = React.useRef(null)
 
   return (
-    // <TouchableOpacity
-    //   onPress = {() => {
-    //     setCurrentCategory(item)
-    //     parentCallBack(item)
-    //   }}
-    //   style={[styles.container, compareId ? styles.green: styles.gray]}
-    //   >
-    //     <Text style={[compareId ? {color: 'white'}: {color: 'black'}]}>{item.name}</Text>
-    // </TouchableOpacity>
 
     <TouchableHighlight
       ref={isCategoryButton}
       onPress = {() => {
+        //??????????????
         setCurrentCategory(item)
         parentCallBack(item,)
       }}
-      style={[styles.container, (compareId ? styles.underline: styles.noUnderline)]}
+      style={[styles.container, ((compareId) ? styles.underline: styles.noUnderline)]}
       underlayColor='#E5EFE3'
       >
         <View>
@@ -43,10 +35,9 @@ const styles = StyleSheet.create({
       // borderRadius: 30,
       // backgroundColor: 'blue',
       padding: 10,
+      // height: 50,
       alignSelf: 'flex-end',
       // alignSelf: 'center',
-      marginLeft: 10,
-      marginRight: 5,
       // justifyContent: 'center',
       // alignItems: 'center',
       // flex: 1

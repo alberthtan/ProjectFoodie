@@ -6,30 +6,6 @@ import MenuCategoryButton from '../MenuCategoryButton'
 import BackButton from '../BackButton'
 
 const MenuHeader = ({name, navigation, destination, MenuCategories, oneCategory, isHeader}) => {
-    // const widthAnim = useRef(new Animated.Value(sliderWidth)).current;
-    // const xAnim = useRef(new Animated.Value(sliderX)).current;
-
-    // const handleScroll = (event) => {
-    //     console.log(event.nativeEvent.contentOffset.x);
-    // }
-
-    // useEffect(() => {
-    //     Animated.timing(widthAnim, {
-    //       toValue: sliderWidth,
-    //       duration: 100,
-    //       useNativeDriver: true,
-    //     }).start();
-    //     console.log("width " + sliderWidth)
-    //   }, [sliderWidth]);
-
-    //   useEffect(() => {
-    //     Animated.timing(xAnim, {
-    //       toValue: sliderX,
-    //       duration: 100,
-    //       useNativeDriver: true,
-    //     }).start();
-    //     console.log("x " + sliderX)
-    //   }, [sliderX]);
 
     return (
         <View style={styles.container}>
@@ -61,20 +37,7 @@ const MenuHeader = ({name, navigation, destination, MenuCategories, oneCategory,
                 />
             </View>
 
-            {/* <Animated.View
-                        style={{height: Dimensions.get('window').height * 0.007,
-                        // width: widthAnim,
-                        backgroundColor: 'black',
-                        transform: [{ translateX: xAnim}, 
-                            {scaleX: widthAnim.interpolate({
-                                inputRange: [0, Dimensions.get('window').width],
-                                outputRange: [0, 1]  
-                        })}]
-                    }}
-                    /> */}
 
-           
-            
 
             
         </View>
@@ -88,7 +51,7 @@ const styles = StyleSheet.create({
     container: {
 
         width: '100%',
-        height: Dimensions.get('window').height * 0.2,
+        height: Dimensions.get('window').height * 0.18,
 
         paddingTop: Dimensions.get('window').height * 0.06,
         // paddingBottom: 5,
@@ -120,7 +83,7 @@ const styles = StyleSheet.create({
     title: {
         fontFamily: 'Roboto_700Bold',
         flex: 6,
-        fontSize: Dimensions.get('window').width * 0.055,
+        fontSize: Dimensions.get('window').width * 0.056,
         alignSelf: 'center',
         textAlign: 'center',
         // backgroundColor: 'red'
