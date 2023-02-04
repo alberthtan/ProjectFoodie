@@ -19,6 +19,7 @@ const ReceiptScreen = ({route, navigation}) => {
   const {subtotal} = route.params
 
   const [subtotalValue, setSubtotalValue] = useState(subtotal)
+  const [serverState, setServerState] = useState('Loading...')
 
   const globalContext = useContext(Context)
   const { ws, userObj, cart, setCart } = globalContext

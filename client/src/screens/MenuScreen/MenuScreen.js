@@ -24,7 +24,7 @@ const MenuScreen = ({route, navigation}) => {
     const { userObj, ws, cart, setCart } = globalContext
     // const [Cart, setCart] = useState(cart)
   
-    // const [serverState, setServerState] = useState('Loading...');
+    const [serverState, setServerState] = useState('Loading...');
   
 
 
@@ -41,28 +41,28 @@ const MenuScreen = ({route, navigation}) => {
   //   // console.log(serverState)
   //   // setDisableButton(false);
   // };
-  // ws.onclose = (e) => {
-  //   console.log(e)
-  //   setServerState('Disconnected. Check internet or server.')
-  //   // setDisableButton(true);
-  // };
-  // ws.onerror = (e) => {
-  //   console.log('got here')
-  //   setServerState(e.message);
-  // };
-  // ws.onmessage = ({data}) => {
-  //   console.log("ACQUIRING MESSAGE IN MENU")
-  //   console.log(data)
-  //   let message = JSON.parse(data)
-  //   let temp = []
+  ws.onclose = (e) => {
+    console.log(e)
+    setServerState('Disconnected. Check internet or server.')
+    // setDisableButton(true);
+  };
+  ws.onerror = (e) => {
+    console.log('got here')
+    setServerState(e.message);
+  };
+  ws.onmessage = ({data}) => {
+    console.log("ACQUIRING MESSAGE IN MENU")
+    console.log(data)
+    let message = JSON.parse(data)
+    let temp = []
     
-  //   for (let i = 0; i < message.cart.length; i++) {
-  //     // console.log('got here')
-  //     temp.push(message.cart[i])
-  //   }
-  //   setCart(temp)
-  //   // console.log(Cart)
-  // };
+    for (let i = 0; i < message.cart.length; i++) {
+      // console.log('got here')
+      temp.push(message.cart[i])
+    }
+    setCart(temp)
+    // console.log(Cart)
+  };
 
   const calculateLength = () => {
     let length = 0

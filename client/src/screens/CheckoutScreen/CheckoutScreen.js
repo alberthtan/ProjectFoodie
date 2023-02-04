@@ -31,7 +31,9 @@ const CheckoutScreen = ({route, navigation}) => {
     for(let i=0; i < cart.length; i++) {
         if(!cart[i].isOrdered) {
             if(cart[i].orderedBy == userObj['first_name'] || cart[i].sharedBy.indexOf(userObj['first_name']) != -1) {
+                
                 subtotal += cart[i].item.price / (cart[i].sharedBy.length + 1)
+                console.log(subtotal)
             }
         }
     }
@@ -70,7 +72,7 @@ ws.onmessage = ({data}) => {
 useEffect(() => {
     calculateSubtotal()
     }
-, [])
+, [cart])
 
 
 const handleOrder = async () => {
@@ -176,12 +178,12 @@ if (true) {
             <View style = {{marginTop: 30}}/>
         </ScrollView>
 
-        <View style = {[styles.orderButton]}>
+        {/* <View style = {[styles.orderButton]}>
             <CustomButton
                 text = "Go to Tip Page"
                 onPress = {() => handleTip()}
             /> 
-        </View>
+        </View> */}
 
         <View style = {[styles.orderButton]}>
             {checkInOrder() ? 

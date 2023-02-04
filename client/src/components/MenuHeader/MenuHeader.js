@@ -1,11 +1,15 @@
 import { Easing, Animated, StyleSheet, ScrollView, Text, View, TouchableOpacity, Dimensions, FlatList} from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useContext } from 'react'
 import MenuCategoryButton from '../MenuCategoryButton'
+import { Context } from '../../globalContext/globalContext'
 
 
 import BackButton from '../BackButton'
 
 const MenuHeader = ({name, navigation, destination, MenuCategories, oneCategory, isHeader}) => {
+    const globalContext = useContext(Context)
+
+    const { setCart } = globalContext
 
     return (
         <View style={styles.container}>
@@ -13,7 +17,10 @@ const MenuHeader = ({name, navigation, destination, MenuCategories, oneCategory,
                 <View style={{flex: 1, alignSelf: 'center'}}>
                     <TouchableOpacity
                         style={styles.backButton}
-                        onPress={() => destination ? navigation.navigate(destination) : navigation.goBack()}>
+                        onPress={() => {
+                            setCart([])
+                            navigation.navigate(destination)
+                        }}>
                         <BackButton/>
                     </TouchableOpacity>
                 </View>

@@ -8,8 +8,8 @@ const CameraScreen = ({navigation}) => {
 
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
-    const [tableList, setTableList] = useState([])
-    const [restaurantList, setRestaurantList] = useState([])
+    const [table, setTable] = useState(null)
+    const [restaurant, setRestaurant] = useState(null)
 
     const globalContext = useContext(Context)
     const { ws } = globalContext
@@ -18,22 +18,24 @@ const CameraScreen = ({navigation}) => {
     //     console.log("ACQUIRING MESSAGE IN CAMERA")
     //   };
 
-    const getRestaurantsFromApi = () => {
-        return fetch('https://dutch-pay-test.herokuapp.com/restaurants/?format=json')
+    const getRestaurantsFromApi = async (id) => {
+        return fetch('https://dutch-pay-test.herokuapp.com/restaurants/' + id)
           .then(response => response.json())
           .then(json => {
-            setRestaurantList(json)
+            setRestaurant(json)
           })
           .catch(error => {
             console.error(error);
           });
       };
 
-      const getTablesFromApi = () => {
-        return fetch('https://dutch-pay-test.herokuapp.com/tables/?format=json')
+      const getTableFromApi = async (id) => {
+        return fetch('https://dutch-pay-test.herokuapp.com/tables/' + id)
           .then(response => response.json())
           .then(json => {
-            setTableList(json)
+            console.log('hello')
+            console.log(json)
+            setTable(json)
           })
           .catch(error => {
             console.error(error);
@@ -49,39 +51,29 @@ const CameraScreen = ({navigation}) => {
         }  
     }, [])
 
+    useEffect(()=>{
+        if(table && restaurant) {
+            console.log('fuasdfasdf')
+            setScanned(true)
+            const restaurant_id = restaurant["id"]
+            const restaurant_name = restaurant["name"]
+
+            navigation.navigate('Menu', {subtotal: 0, restaurant_id : restaurant_id, name: restaurant_name, table_id: table.id})
+            ws.send(JSON.stringify({table_id: table.id, cart: [], flag: true}))
+        }
+
+    }, [table])
+
     const handleBarCodeScanned = (result) => {
         (async()=> {
-            await getTablesFromApi()
-            await getRestaurantsFromApi()
-
             const id = JSON.stringify(result.data).replace(/['"]+/g, '')
-
-            const filtered_tables = tableList.filter(table => table["id"] == id)
-
-            if(filtered_tables.length != 0) {
-                setScanned(true)
-                const restaurant_id = filtered_tables[0]["restaurant"]
-                var restaurant_name = "dummy"
-                for(let i=0; i < restaurantList.length; i++) {
-                    if(restaurantList[i]["id"] == restaurant_id) {
-                        restaurant_name = restaurantList[i]["name"]
-                    }
-                }
-                // if(restaurant_name == "dummy") {
-                //     alert("Restaurant not found!")
-                // } else {
-
-            
-                navigation.navigate('Menu', {subtotal: 0, restaurant_id : restaurant_id, name: restaurant_name, table_id: id})
-                // ws.onopen = () => {
-                //         console.log("occurred")
-                //         // this.setState({serverState: 'Connected to the server'})
-                //         // console.log(serverState)
-                //     };
-                ws.send(JSON.stringify({table_id: id, cart: [], flag: true}))
-                // }
-
-            } 
+            console.log(id)
+            await getTableFromApi(id)
+            console.log('hey')
+            console.log(table)
+            if(table) {
+                await getRestaurantsFromApi(table["restaurant"])
+            }
         })();
 
         
