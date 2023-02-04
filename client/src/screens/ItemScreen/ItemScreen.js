@@ -1,4 +1,4 @@
-import { Dimensions, ScrollView, View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
+import { Dimensions, ScrollView, View, Text, StyleSheet, TouchableOpacity, Pressable, Image} from 'react-native'
 import React, {useContext, useEffect, useState} from 'react'
 import CustomButton from '../../components/CustomButton';
 import NumberFormat from 'react-number-format';
@@ -10,12 +10,22 @@ import key from 'weak-key'
 
 const ItemScreen = ({route, navigation}) => {
 
-  const { item, name, price, description, subtotal, restaurant_id, table_id, isOrdering, restaurant_name } = route.params;
+  const { item, subtotal, restaurant_id, table_id, isOrdering, restaurant_name } = route.params;
 
   const globalContext = useContext(Context)
   const { ws, userObj, cart, setCart } = globalContext
 
-  // const [Cart, setCart] = useState(cart)
+  const [quantity, setQuantity] = useState(0)
+
+  const foodItem = {
+    name: item.name,
+    price: item.price,
+    calorieCount: '550',
+    description: item.description,
+    dietary: 'vegetarian',
+    imageUrl: 'https://www.elmundoeats.com/wp-content/uploads/2021/02/FP-Quick-30-minutes-chicken-ramen.jpg'
+  }
+
 
   const [serverState, setServerState] = useState('Loading...');
 
@@ -57,10 +67,10 @@ const ItemScreen = ({route, navigation}) => {
   var imageUrl;
 
 
-  if (name == 'Original Ramen') {
+  if (item.name == 'Original Ramen') {
     imageUrl = 'https://www.elmundoeats.com/wp-content/uploads/2021/02/FP-Quick-30-minutes-chicken-ramen.jpg'
   } 
-  else if (name == 'Sauteed Edamame'){
+  else if (item.name == 'Sauteed Edamame'){
     imageUrl = 'https://media.istockphoto.com/id/945129060/photo/edamame.jpg?s=612x612&w=0&k=20&c=vGZXT_2KQnICyS8T883Pe-wRKDq1I9d3_Gb0CgUm6-s='
   }
 
@@ -75,67 +85,119 @@ const ItemScreen = ({route, navigation}) => {
   }
 
   return (
-    <View style = {styles.firstView}>
-      <TouchableOpacity
-              style={styles.backButton}
-              onPress={() => navigation.goBack()}>
-                  <BackButton/>
-        </TouchableOpacity>
-      <ScrollView style = {{height: Dimensions.get('window').height * 0.7}}>
-        {/* <View style = {styles.container}>
-          <Text>Picture of Food</Text>
-          <Image style= {styles.container} source={{uri: newUrl}}/>
-        </View> */}
-        <Image style= {styles.container} source={{uri: imageUrl}}/>
-        
-        <Text style = {styles.itemName}>
-          {name}
-        </Text>
-        <NumberFormat
-            value = {price}
-            displayType = "text"
-            thousandSeparator={true}
-            prefix = "$"
-            decimalScale={2}
-            fixedDecimalScale = {true}
-            renderText={(value) => <Text style = {styles.price}>{value}</Text>}>
-        </NumberFormat>
-        <Text style = {styles.description}>{description}</Text>
-      </ScrollView>
+    <View style = {{flex: 1}}>
 
-      {addToOrderButton}
+        <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
+                <BackButton/>
+        </TouchableOpacity>
+
+        <ScrollView style = {{height: Dimensions.get('window').height * 0.7}}>
+
+            <Image style= {styles.foodImage} source={{uri: foodItem.imageUrl}}/>
+            
+
+            <View style = {styles.infoContainer}>
+
+                <Text style = {styles.itemName}>
+                    {foodItem.name}
+                </Text>
+
+                <NumberFormat
+                    value = {foodItem.price}
+                    displayType = "text"
+                    thousandSeparator={true}
+                    prefix = "$"
+                    decimalScale={2}
+                    fixedDecimalScale = {true}
+                    renderText={(value) => <Text style = {styles.price}>{value}</Text>}>
+                </NumberFormat>
+
+                <Text style={styles.calorieCount}>
+                  {foodItem.calorieCount + ' cal.'}
+                </Text>
+
+                <Text style = {styles.description}>{foodItem.description}</Text>
+
+            </View>
+
+            <View style={{flexDirection: 'row', height: 100, width: '100%'}}>
+
+            <Pressable
+                style={styles.quantityButton}
+                onPress={() => {
+                  if(quantity > 0) {
+                    setQuantity(quantity - 1)
+                  }
+                    console.log('subtract')
+                }} >
+                <View style={{justifyContent: 'center'}}>
+                    <Text style={styles.quantityButtonText}>-</Text>
+                </View>
+            </Pressable>
+
+                <Text>{quantity}</Text>
+
+
+                <Pressable
+                style={styles.quantityButton}
+                onPress={() => {
+                    if(quantity < 10) {
+                      setQuantity(quantity + 1)
+                    }
+                    console.log('add')
+                }} >
+                <View style={{justifyContent: 'center'}}>
+                    <Text style={styles.quantityButtonText}>+</Text>
+                </View>
+            </Pressable>
+
+            </View>
+            
+
+        </ScrollView>
+
+        {addToOrderButton}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  foodImage: {
       height: Dimensions.get('window').height * 0.3,
       alignItems: 'center',
       justifyContent: 'center'
   },
 
-  firstView: {
-    flex: 1
+  infoContainer: {
+    marginLeft: Dimensions.get("window").width * 0.05,
+    marginTop: Dimensions.get("window").height * 0.02
   },
 
   itemName: {
-    marginTop: 10,
-    fontSize: 25,
+    marginVertical: 5,
+    fontSize: 28,
     fontWeight:"bold",
-    marginLeft: 10,
     marginRight: 10
   },
 
   price: {
-    marginTop: 10,
-    marginLeft: 10,
+    marginVertical: 3,
+    fontSize: 25,
+    fontWeight: 'bold'
+  },
+
+  calorieCount: {
+    marginVertical: 3,
+    fontSize: 16,
+    color: 'green',
+    fontFamily: 'Roboto_700Bold',
     fontWeight: 'bold'
   },
 
   description: {
     marginTop: 10,
-    marginLeft: 10,
     marginRight: 10,
     color: '#7C7878'
   },
@@ -155,6 +217,29 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     position: 'absolute',
     zIndex: 999,
+  },
+
+
+
+
+
+  quantityButton: {
+    height: 70,
+    width: 100,
+    alignSelf: "flex-start",
+    padding: 15,
+    margin: 10,
+    borderRadius: 50,
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'gray'
+},
+
+quantityButtonText: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: 'black',
+    textAlign: 'center'
 },
 })
 
