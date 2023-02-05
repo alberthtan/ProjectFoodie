@@ -1,12 +1,13 @@
-import { View, Text , StyleSheet, Pressable, TouchableOpacity, TouchableHighlight, Image} from 'react-native'
+import { Text , StyleSheet, TouchableHighlight } from 'react-native'
 import React from 'react'
-import location from '../../../assets/icons/location.png'
-import { assets } from '../../../react-native.config'
+import * as Haptics from 'expo-haptics'
 
-const CustomButton = ({onPress, text, type = "PRIMARY", disabled, map}) => {
+const CustomButton = ({onPress, text, type = "PRIMARY", disabled}) => {
   return (
     <TouchableHighlight
-      onPress={onPress} 
+      onPress={() => {onPress(),
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+      }} 
       underlayColor="#A8BDA6"
       disabled={disabled}
       style={[styles.container, !disabled ? styles['container_' + type]: styles['container_DISABLED']]}>

@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     title: {
         fontFamily: 'Roboto_700Bold',
         flex: 6,
-        fontSize: Dimensions.get('window').width * 0.056,
+        fontSize: Dimensions.get('window').width * 0.05,
         alignSelf: 'center',
         textAlign: 'center',
         // backgroundColor: 'red'

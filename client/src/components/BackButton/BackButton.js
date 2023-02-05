@@ -14,9 +14,6 @@ const styles = StyleSheet.create({
     button: {
         width: 18,
         height: 18,
-        // alignSelf:'center',
         justifyContent: 'center',
-        // flex: 1,
-        // tintColor: '#000000',
     }
 })

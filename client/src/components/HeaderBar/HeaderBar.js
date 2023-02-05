@@ -55,18 +55,14 @@ const styles = StyleSheet.create({
         height: 50,
 
         justifyContent: 'center',
-        // alignContent: 'center',
-        // alignSelf: 'center',
-        // backgroundColor: 'blue'
     },
 
     title: {
         fontFamily: 'Roboto_700Bold',
         flex: 6,
-        fontSize: Dimensions.get('window').width * 0.055,
+        fontSize: Dimensions.get('window').width * 0.05,
         alignSelf: 'center',
         textAlign: 'center',
-        // backgroundColor: 'red'
     },
 
 })

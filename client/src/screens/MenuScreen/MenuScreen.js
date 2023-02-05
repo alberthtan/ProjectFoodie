@@ -22,25 +22,9 @@ const MenuScreen = ({route, navigation}) => {
     const globalContext = useContext(Context)
 
     const { userObj, ws, cart, setCart } = globalContext
-    // const [Cart, setCart] = useState(cart)
   
     const [serverState, setServerState] = useState('Loading...');
   
-
-
-  // let controller = new WebsocketController();
-  // var ws = controller.ws;
-  // useEffect(() => {
-  //     ws.send(JSON.stringify({table_id: table_id}))
-  // }, [])
-
-  // ws.onopen = () => {
-  //   setServerState('Connected to the server')
-  //   console.log("opening ws in menu screen")
-  //   ws.send(JSON.stringify({table_id: table_id, cart: cart}))
-  //   // console.log(serverState)
-  //   // setDisableButton(false);
-  // };
   ws.onclose = (e) => {
     console.log(e)
     setServerState('Disconnected. Check internet or server.')
@@ -83,7 +67,7 @@ const MenuScreen = ({route, navigation}) => {
             getCategoriesFromApi(result[0].id)
           })
           .catch(error => {
-            console.error(error);
+            throw error;
           });
       };
 
@@ -99,7 +83,7 @@ const MenuScreen = ({route, navigation}) => {
             setMenuItems(emptyRows)
           })
           .catch(error => {
-            console.error(error);
+            throw error;
           });
       };
 
@@ -121,7 +105,7 @@ const MenuScreen = ({route, navigation}) => {
             setMenuItems(menuItems)
           })
           .catch(error => {
-            console.error(error);
+            throw error;
           });
       };
 
@@ -143,17 +127,11 @@ const MenuScreen = ({route, navigation}) => {
       }
     }, [MenuCategories])
 
-    // useEffect(() => {
-    //   // if(MenuItems.length != 0) {
-    //   //   // console.log(MenuItems)
-    //   // }
-    // }, [MenuItems])
 
     useEffect(() => {
       getMenusFromApi(restaurant_id)
     }, [])
 
-    // const snapToIndex = 
 
     const oneCategory = ({item, index}) => (
         <MenuCategoryButton
@@ -168,96 +146,59 @@ const MenuScreen = ({route, navigation}) => {
         />
     )
 
-    // const getCategories = () => (
-    //     <View style = {{height: 50, marginTop: 20}}>
-    //         <FlatList
-    //             horizontal= {true}
-    //             showsHorizontalScrollIndicator = {false}
-    //             data = { MenuCategories }
-    //             renderItem = { oneCategory }
-    //         />
-    //     </View>
-    // )
-
-    
-    const oneDish = ({item}) => (
-        <MenuItem
-            navigation = {navigation}
-            item = {item}
-            name = {item.name}
-            price = {item.price}
-            description = {item.description}
-            subtotal = {subtotal}
-            table_id = {table_id}
-            restaurant_id = {restaurant_id}
-            restaurant_name = {name}
-            isOrdering = {true}
-        />
-    )
-
-    // let button
-    // if (calculateLength() > 0) {
-    //     button = <View style = {{alignItems: 'center', justifyContent: 'center', borderTopWidth: 1, height: Dimensions.get('window').height * 0.15, borderColor: '#D9D9D9'}}>
-    //                 <CustomButton 
-    //                     text={"View Order (" + calculateLength() + ")"}
-    //                     style = {{bottom: 0, position: 'absolute'}}
-    //                     onPress = {() => {navigation.navigate('Checkout', {table_id: table_id, subtotal: subtotal, restaurant_name: name})}}/>
-    //             </View>
-    // }
+  
 
   return (
     <View style = {{flex: 1}}>
-        {/* <HeaderBar name={name} navigation={navigation} destination="HomeTabs"/>
-
-        <View style={{height: Dimensions.get('window').height * 0.1, justifyContent: 'center'}}>
-            <FlatList
-            style={{}}
-                horizontal= {true}
-                showsHorizontalScrollIndicator = {false}
-                data = { MenuCategories }
-                renderItem = { oneCategory }
-            />
-        </View> */}
 
         <MenuHeader 
-                  name={name} 
-                  isHeader={isHeader}
-                  navigation={navigation} 
-                  destination="HomeTabs" 
-                  oneCategory={oneCategory}
-                  MenuCategories={MenuCategories}
-                />
+            name={name} 
+            isHeader={isHeader}
+            navigation={navigation} 
+            destination="HomeTabs" 
+            oneCategory={oneCategory}
+            MenuCategories={MenuCategories}
+        />
 
-        <View style = {{flex: 1}}>
-          <MenuItemsCarousel
-            isCarousel={isCarousel}
-            data={MenuItems}
-            subtotal={subtotal}
-            name={name}
-            navigation={navigation}
-            table_id={table_id}
-            restaurant_id={restaurant_id}
-            parentCallback={handleCallbackCarousel}
-            />
-                {/* <FlatList
-                    showsVerticalScrollIndicator = {true}
-                    data = { MenuItems }
-                    renderItem = { oneDish }
-                    ListHeaderComponent={ getCategories }
-                /> */}
-           
-          {/* {(calculateLength() > 0) ? console.log("fuck") : console.log("shit")} */}
-
+        <View style = {{flex: 6.5}}>
+            <MenuItemsCarousel
+              isCarousel={isCarousel}
+              data={MenuItems}
+              subtotal={subtotal}
+              name={name}
+              navigation={navigation}
+              table_id={table_id}
+              restaurant_id={restaurant_id}
+              parentCallback={handleCallbackCarousel}
+              />
         </View>
+
         {(calculateLength() > 0) ? 
-            <View style = {{alignItems: 'center', justifyContent: 'center', borderTopWidth: 1, height: Dimensions.get('window').height * 0.15, borderColor: '#D9D9D9'}}>
-                    <CustomButton 
-                        text={"View Order (" + calculateLength() + ")"}
-                        style = {{bottom: 50, position: 'absolute'}}
-                        onPress = {() => {navigation.navigate('Checkout', {table_id: table_id, subtotal: subtotal, restaurant_name: name})}}/>
-                </View> : <></>}
+            <View style = {styles.viewOrderContainer}>
+                <CustomButton 
+                    text={"View Order (" + calculateLength() + ")"}
+                    style = {{bottom: 50, position: 'absolute'}}
+                    onPress = {() => {navigation.navigate('Checkout', {table_id: table_id, subtotal: subtotal, restaurant_name: name})}}
+                />
+            </View> : 
+            <></>
+        }
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  viewOrderContainer: {
+    alignItems: 'center', 
+    justifyContent: 'flex-start', 
+    backgroundColor: 'white', 
+    height: Dimensions.get('window').height * 0.12, 
+    paddingTop: 5,
+    borderWidth: 1, 
+    borderColor: '#D9D9D9', 
+  },
+
+
+})
 
 export default MenuScreen

@@ -4,8 +4,8 @@ import NumberFormat from 'react-number-format'
 
 const CheckoutTotal = ({subtotal, taxRate}) => {
   return (
-    <View style = {styles.container}>
-      <Text style = {styles.name}>Total</Text>
+    <View style={[styles.container, {flex: 1, flexDirection: 'row'}]}>
+      <Text style={styles.name}>Total</Text>
       <NumberFormat
         value = {subtotal + subtotal * taxRate}
         displayType = "text"
@@ -13,7 +13,7 @@ const CheckoutTotal = ({subtotal, taxRate}) => {
         prefix = "$"
         decimalScale={2}
         fixedDecimalScale = {true}
-        renderText={(value) => <Text style = {styles.total}>{value}</Text>}>
+        renderText={(value) => <Text style={styles.total}>{value}</Text>}>
         </NumberFormat>
     </View>
   )
@@ -23,15 +23,13 @@ export default CheckoutTotal
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        flexDirection: "row",
         marginTop: 20,
     },
 
     name: {
         marginLeft: 20,
         marginRight: 20,
-        fontSize: 15,
+        fontSize: 17,
         fontWeight: "bold"
     },
 
@@ -39,7 +37,8 @@ const styles = StyleSheet.create({
         right: 0,
         position: 'absolute',
         marginRight: 20,
-        fontSize: 15,
-        fontWeight: "bold"
+        fontSize: 17,
+        fontWeight: "bold",
+        textAlign: 'right'
     }
 })

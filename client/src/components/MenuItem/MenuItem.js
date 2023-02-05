@@ -1,14 +1,16 @@
 import { StyleSheet, Text, View, TouchableHighlight, Dimensions, Image } from 'react-native'
 import React from 'react'
 import NumberFormat from 'react-number-format'
+import * as Haptics from 'expo-haptics'
 
 const MenuItem = ({navigation, item, name, price, description, subtotal, restaurant_id, table_id, isOrdering, restaurant_name}) => {
   return (
     <TouchableHighlight
     style={{width: '100%', alignItems: 'center'}}
-        underlayColor='#E5EFE3'
-        onPress = {() => navigation.navigate('Item', {item: item,
-                                                      subtotal: subtotal, restaurant_id : restaurant_id, restaurant_name: restaurant_name, table_id: table_id, isOrdering: isOrdering})}>
+        underlayColor='#E4E4E4'
+        onPress = {() => {navigation.navigate('Item', {item: item,
+                                                      subtotal: subtotal, restaurant_id : restaurant_id, restaurant_name: restaurant_name, table_id: table_id, isOrdering: isOrdering}),
+                                                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}}>
             
           <View style={styles.container}>
             <View style={{width: '75%'}}>

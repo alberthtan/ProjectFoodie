@@ -6,6 +6,7 @@ import BackButton from '../../components/BackButton';
 import { Context } from '../../globalContext/globalContext'
 import 'react-native-get-random-values'
 import { v4 } from 'uuid'
+import * as Haptics from 'expo-haptics'
 import key from 'weak-key'
 
 const ItemScreen = ({route, navigation}) => {
@@ -15,7 +16,7 @@ const ItemScreen = ({route, navigation}) => {
   const globalContext = useContext(Context)
   const { ws, userObj, cart, setCart } = globalContext
 
-  const [quantity, setQuantity] = useState(0)
+  const [quantity, setQuantity] = useState(1)
 
   const foodItem = {
     name: item.name,
@@ -57,11 +58,13 @@ const ItemScreen = ({route, navigation}) => {
     for (let i = 0; i < cart.length; i++) {
       temp.push(cart[i])
     }
-    temp.push({id: v4(), item: item, orderedBy: userObj['first_name'], sharedBy: [], isOrdered: false})
+    for (let i = 0; i < quantity; i++) {
+      temp.push({id: v4(), item: item, orderedBy: userObj['first_name'], sharedBy: [], isOrdered: false})
+    }
     setCart(temp)
     console.log(JSON.stringify({table_id: table_id, cart: temp}))
     ws.send(JSON.stringify({table_id: table_id, cart: temp}))
-    navigation.navigate('Menu', {cart: cart, subtotal: subtotal + price, restaurant_id: restaurant_id, table_id: table_id, name: restaurant_name})
+    navigation.navigate('Menu', {subtotal: subtotal + foodItem.price, restaurant_id: restaurant_id, table_id: table_id, name: restaurant_name})
   }
 
   var imageUrl;
@@ -74,16 +77,6 @@ const ItemScreen = ({route, navigation}) => {
     imageUrl = 'https://media.istockphoto.com/id/945129060/photo/edamame.jpg?s=612x612&w=0&k=20&c=vGZXT_2KQnICyS8T883Pe-wRKDq1I9d3_Gb0CgUm6-s='
   }
 
-  let addToOrderButton
-  if (isOrdering === true) {
-    addToOrderButton = <View style = {styles.addToCart}>
-        <CustomButton
-          text = "Add to Order"
-          onPress = {handleAddItem}
-        /> 
-    </View>
-  }
-
   return (
     <View style = {{flex: 1}}>
 
@@ -93,72 +86,84 @@ const ItemScreen = ({route, navigation}) => {
                 <BackButton/>
         </TouchableOpacity>
 
-        <ScrollView style = {{height: Dimensions.get('window').height * 0.7}}>
+        <View style = {{flex: 8}}>
+            <ScrollView style = {{}}>
 
-            <Image style= {styles.foodImage} source={{uri: foodItem.imageUrl}}/>
-            
+                <Image style= {[styles.foodImage,{flex: 2}]} source={{uri: foodItem.imageUrl}}/>
 
-            <View style = {styles.infoContainer}>
 
-                <Text style = {styles.itemName}>
-                    {foodItem.name}
-                </Text>
+                <View style = {[styles.infoContainer, {flex: 1}]}>
 
-                <NumberFormat
-                    value = {foodItem.price}
-                    displayType = "text"
-                    thousandSeparator={true}
-                    prefix = "$"
-                    decimalScale={2}
-                    fixedDecimalScale = {true}
-                    renderText={(value) => <Text style = {styles.price}>{value}</Text>}>
-                </NumberFormat>
+                    <Text style = {styles.itemName}>
+                        {foodItem.name}
+                    </Text>
 
-                <Text style={styles.calorieCount}>
-                  {foodItem.calorieCount + ' cal.'}
-                </Text>
+                    <NumberFormat
+                        value = {foodItem.price}
+                        displayType = "text"
+                        thousandSeparator={true}
+                        prefix = "$"
+                        decimalScale={2}
+                        fixedDecimalScale = {true}
+                        renderText={(value) => <Text style = {styles.price}>{value}</Text>}>
+                    </NumberFormat>
 
-                <Text style = {styles.description}>{foodItem.description}</Text>
+                    <Text style={styles.calorieCount}>
+                      {foodItem.calorieCount + ' cal.'}
+                    </Text>
 
-            </View>
+                    <Text style = {styles.description}>{foodItem.description} </Text>
 
-            <View style={{flexDirection: 'row', height: 100, width: '100%'}}>
-
-            <Pressable
-                style={styles.quantityButton}
-                onPress={() => {
-                  if(quantity > 0) {
-                    setQuantity(quantity - 1)
-                  }
-                    console.log('subtract')
-                }} >
-                <View style={{justifyContent: 'center'}}>
-                    <Text style={styles.quantityButtonText}>-</Text>
                 </View>
-            </Pressable>
 
-                <Text>{quantity}</Text>
+                <View style={{marginVertical: Dimensions.get('window').height * 0.15}}>
+                  <View style={[styles.quantityButtonContainer, {flex: 1, flexDirection: 'row'}]}>
+                    <Pressable
+                        style={[styles.quantityButton, {flex: 1}]}
+                        disabled={quantity <= 1}
+                        onPress={() => {
+                          if(quantity > 1) {
+                            setQuantity(quantity - 1)
+                          }
+                          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+                        }} >
+                        <View style={{justifyContent: 'center'}}>
+                            <Text style={[styles.quantityButtonText, (quantity==1) ? styles.faded : styles.none]}>-</Text>
+                        </View>
+                    </Pressable>
+
+                        <Text style={[styles.quantityText, {flex: 1}]}>{quantity}</Text>
 
 
-                <Pressable
-                style={styles.quantityButton}
-                onPress={() => {
-                    if(quantity < 10) {
-                      setQuantity(quantity + 1)
-                    }
-                    console.log('add')
-                }} >
-                <View style={{justifyContent: 'center'}}>
-                    <Text style={styles.quantityButtonText}>+</Text>
-                </View>
-            </Pressable>
+                    <Pressable
+                        style={[styles.quantityButton, {flex: 1}]}
+                        disabled={quantity >= 10}
+                        onPress={() => {
+                            if(quantity < 10) {
+                              setQuantity(quantity + 1)
+                            }
+                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+                        }} >
+                        <View style={{justifyContent: 'center'}}>
+                            <Text style={[styles.quantityButtonText, {fontSize: 24}, (quantity==10) ? styles.faded : styles.none]}>+</Text>
+                        </View>
+                    </Pressable>
+                  </View>      
+                </View>        
 
-            </View>
-            
 
-        </ScrollView>
+            </ScrollView>
+        </View>
+        
 
-        {addToOrderButton}
+
+        <View style = {styles.addToCart}>
+          <CustomButton
+            text = "Add to Order"
+            style = {{bottom: 50, position: 'absolute'}}
+            onPress = {handleAddItem}
+          /> 
+        </View> 
     </View>
   )
 }
@@ -172,7 +177,7 @@ const styles = StyleSheet.create({
 
   infoContainer: {
     marginLeft: Dimensions.get("window").width * 0.05,
-    marginTop: Dimensions.get("window").height * 0.02
+    marginTop: Dimensions.get("window").height * 0.02,
   },
 
   itemName: {
@@ -184,7 +189,7 @@ const styles = StyleSheet.create({
 
   price: {
     marginVertical: 3,
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: 'bold'
   },
 
@@ -202,45 +207,64 @@ const styles = StyleSheet.create({
     color: '#7C7878'
   },
 
-  addToCart :{
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    borderTopWidth: 1,
-    borderColor: '#D9D9D9'
-  },
-
   backButton: {
-    height: 30,
+    height: 40,
+    width: 40,
     marginTop: Dimensions.get('window').height * 0.07,
     marginLeft: 10,
+    borderRadius: 20,
+    backgroundColor: '#D0D0D0',
     alignSelf: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'center',
     position: 'absolute',
     zIndex: 999,
   },
 
-
-
-
+  quantityButtonContainer: {
+    alignItems: 'center',
+    height: Dimensions.get('window').height * 0.05, 
+    width: '35%', 
+    borderRadius: 40, 
+    backgroundColor: '#DFDFDF', 
+    alignSelf: 'center',
+    shadowColor: '#171717',
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+        shadowOffset: {width: 0, height:10},
+  },
 
   quantityButton: {
-    height: 70,
-    width: 100,
-    alignSelf: "flex-start",
-    padding: 15,
-    margin: 10,
-    borderRadius: 50,
-    flex: 1,
+    height: '100%',
+    alignSelf: "center",
     justifyContent: 'center',
-    backgroundColor: 'gray'
 },
 
-quantityButtonText: {
-    fontWeight: 'bold',
-    fontSize: 18,
+  quantityButtonText: {
+    fontSize: 30,
     color: 'black',
     textAlign: 'center'
-},
+  },
+
+  quantityText: {
+    fontSize: 18,
+    color: 'black',
+    textAlign: 'center',
+    fontWeight: 'bold'
+  },
+
+  faded: {
+    color: 'gray',
+  },
+
+  addToCart :{
+      height: Dimensions.get('window').height * 0.12,
+      paddingTop: 5,
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      borderTopWidth: 1,
+      borderTopColor: '#D9D9D9',
+  },
 })
 
 export default ItemScreen

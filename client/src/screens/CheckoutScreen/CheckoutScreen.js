@@ -12,6 +12,7 @@ import CheckoutTotal from '../../components/CheckoutTotal/CheckoutTotal'
 import HeaderBar from '../../components/HeaderBar'
 import SharedItem from '../../components/SharedItem'
 import SwipeBar from '../../components/SwipeBar';
+import * as Haptics from 'expo-haptics'
 
 import { Context } from '../../globalContext/globalContext'
 
@@ -22,6 +23,7 @@ const CheckoutScreen = ({route, navigation}) => {
 
   const [subtotalValue, setSubtotalValue] = useState(subtotal)
   const [serverState, setServerState] = useState('Loading...');
+  const [users, setUsers] = useState([])
 
   const globalContext = useContext(Context)
   const { ws, userObj, cart, setCart } = globalContext
@@ -62,6 +64,7 @@ ws.onerror = (e) => {
 ws.onmessage = ({data}) => {
     let message = JSON.parse(data)
     let temp = []
+    console.log('got here')
     
     for (let i = 0; i < message.cart.length; i++) {
       temp.push(message.cart[i])
@@ -94,6 +97,8 @@ const handleShared = (childData) => {
 
 const handleDelete = (key) => {
     let i = 0
+    console.log('first cart')
+    console.log(cart)
     while(i < cart.length) {
         if(cart[i].id == key) {
             cart.splice(i, 1)
@@ -102,8 +107,26 @@ const handleDelete = (key) => {
             i++
         }
     }
+    console.log('second cart')
+    console.log(cart)
     setCart(cart)
     ws.send(JSON.stringify({table_id: table_id, cart: cart}))
+}
+
+useEffect(()=>{
+    getAllUsers()
+}, [cart])
+
+const getAllUsers = async () => {
+    console.log(cart)
+    // console.log(userObj['name'])
+    let temp = []
+    for (let i = 0; i < cart.length; i++) {
+        if (!temp.includes(cart[i].orderedBy) && userObj['first_name'] != cart[i].orderedBy && !cart[i].isOrdered) {
+            temp.push(cart[i]. orderedBy)
+        }
+    }
+    setUsers(temp)
 }
 
 const handleTip = () => {
@@ -126,9 +149,22 @@ if (true) {
         
         <ScrollView showsVerticalScrollIndicator = {false}>
 
-            <Text style = {[styles.totals, {fontWeight: 'bold', fontSize: 18}]}>
-                Your Items
-            </Text>
+            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+                <Text style = {[styles.title, {fontSize: 20, width: Dimensions.get('window').width * 0.63}]}>
+                    My Items
+                </Text>
+                
+                <TouchableOpacity
+                    onPress = {() => {navigation.navigate('Menu', {subtotal: subtotalValue, table_id: table_id, restaurant_id: restaurant_id, name: restaurant_name}),
+                                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}}
+                    style={styles.addItemsButton}>
+                    <Text style={styles.addItemsText}>+ Add Items</Text>
+                </TouchableOpacity>
+
+                
+
+            </View>
+            
 
             {cart.map(order => (
                 (!order.isOrdered && userObj['first_name'] == order.orderedBy) ?
@@ -139,30 +175,45 @@ if (true) {
                     name = {order.item.name}
                     price = {order.item.price}
                     sharedBy = {order.sharedBy}
-                    parentCallback = {handleDelete}
+                    handleDelete = {handleDelete}
                 /> :
                 <></>
             ))}
 
-            <AddItemsButton
-                onPress = {() => navigation.navigate('Menu', {subtotal: subtotalValue, table_id: table_id, restaurant_id: restaurant_id, name: restaurant_name})}
-            />
+            <View style={{backgroundColor: '#E8E8E8', height: 10, marginTop: 20}}/>
 
-            {cart.map(order => 
-            (
-                (!order.isOrdered && userObj['first_name'] != order.orderedBy) ?
-                <SharedItem
-                    key = {order.id}
-                    order = {order}
-                    table_id = {table_id}
-                    orderedBy = {order.orderedBy}
-                    sharedBy = {order.sharedBy}
-                    parentCallback = {handleShared}
-                /> :
-                <></>
+            {/* <Text style={styles.instructions}>
+                Check the dishes you wish to share with your friends!
+            </Text> */}
+
+            {users.map(user => (
+                <View style={{marginTop: Dimensions.get('window').height * 0.02}}>
+                    <Text style= {[styles.title, {fontSize: 20}]}>
+                     {user}'s Items
+                    </Text>
+                    {cart.map(order => (
+                        (!order.isOrdered && user == order.orderedBy) ?
+                        <SharedItem
+                            key = {order.id}
+                            order = {order}
+                            table_id = {table_id}
+                            sharedBy = {order.sharedBy}
+                            parentCallback = {handleShared}
+                        /> :
+                        <></>
+                    ))
+
+                    }
+
+                <View style={{backgroundColor: '#E8E8E8', height: 10, marginTop: 20}}/>
+
+                </View>
             ))}
 
-            <View style = {{marginTop: 20}}>
+            
+
+
+            <View style = {{ borderTopWidth: 0.5, borderTopColor: '#E5E5E5'}}>
                 <CheckoutSubtotal
                     subtotal = {subtotalValue}/>
 
@@ -185,21 +236,23 @@ if (true) {
             /> 
         </View> */}
 
-        <View style = {[styles.orderButton]}>
+        <View style = {styles.orderButton}>
             {checkInOrder() ? 
                 <CustomButton
                     text = "Order"
                     onPress = {() => handleOrder()}
+                    style = {{bottom: 50, position: 'absolute'}}
                 /> :
                 <CustomButton
                     text = "Order"
                     type ='DISABLED'
+                    style = {{bottom: 50, position: 'absolute'}}
                     disabled={true}
                     onPress = {() => alert("No items in cart!")}
                 />
             }
         </View>
-        {statusbar}
+        {/* {statusbar} */}
     </View>
   )
 }
@@ -207,18 +260,30 @@ if (true) {
 export default CheckoutScreen
 
 const styles = StyleSheet.create({
-    orderButton:{
-        height: Dimensions.get('window').height * 0.15,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderTopWidth: 1,
-        borderTopColor: '#D9D9D9',
+
+    addItemsButton: {
+        padding: 12,
+        borderRadius: 15,
+        backgroundColor: '#3C6F37',
+        marginBottom: 10
     },
 
-    totals: {
+    addItemsText: {
+        fontWeight: 'bold',
+        color: 'white',
+    },
+
+    title: {
+        marginLeft: 20,
+        fontSize: 15,
+        fontWeight: 'bold'
+    },
+
+    instructions: {
         marginLeft: 20,
         marginTop: 20,
-        fontSize: 15
+        fontSize: 13,
+        color: 'red'
     },
 
     rectangle: {
@@ -230,4 +295,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
       },
+
+    orderButton:{
+        height: Dimensions.get('window').height * 0.12,
+        paddingTop: 5,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        borderTopWidth: 1,
+        borderTopColor: '#D9D9D9',
+    },
 })
