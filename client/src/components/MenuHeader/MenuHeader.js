@@ -9,7 +9,7 @@ import BackButton from '../BackButton'
 const MenuHeader = ({name, navigation, destination, MenuCategories, oneCategory, isHeader}) => {
     const globalContext = useContext(Context)
 
-    const { ws, setCart } = globalContext
+    const { ws, setWs, setCart } = globalContext
 
     return (
         <View style={styles.container}>
@@ -21,6 +21,7 @@ const MenuHeader = ({name, navigation, destination, MenuCategories, oneCategory,
                             if(destination == 'HomeTabs') {
                                 console.log("closing websocket from frontend")
                                 ws.close()
+                                setWs(null)
                                 // ws.onclose(() => )
                             }
                             setCart([])

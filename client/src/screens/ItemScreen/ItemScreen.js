@@ -32,15 +32,12 @@ const ItemScreen = ({route, navigation}) => {
 
   ws.onopen = () => {
     console.log("opening ws in item screen")
-    setServerState('Connected to the server')
   };
   ws.onclose = (e) => {
     console.log(e)
-    setServerState('Disconnected. Check internet or server.')
   };
   ws.onerror = (e) => {
     console.log('got here')
-    setServerState(e.message);
   };
   ws.onmessage = ({data}) => {
     console.log(JSON.parse(data))
