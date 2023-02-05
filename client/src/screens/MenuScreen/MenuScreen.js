@@ -3,9 +3,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 
 import MenuCategoryButton from '../../components/MenuCategoryButton'
-import MenuItem from '../../components/MenuItem'
 import CustomButton from '../../components/CustomButton'
-import HeaderBar from '../../components/HeaderBar'
 import { Context } from '../../globalContext/globalContext'
 import MenuItemsCarousel from '../../components/MenuItemsCarousel'
 import MenuHeader from '../../components/MenuHeader/MenuHeader'
@@ -25,15 +23,15 @@ const MenuScreen = ({route, navigation}) => {
   
     const [serverState, setServerState] = useState('Loading...');
   
-  ws.onclose = (e) => {
-    console.log(e)
-    setServerState('Disconnected. Check internet or server.')
-    // setDisableButton(true);
-  };
-  ws.onerror = (e) => {
-    console.log('got here')
-    setServerState(e.message);
-  };
+  // ws.onclose = (e) => {
+  //   console.log(e)
+  //   setServerState('Disconnected. Check internet or server.')
+  //   // setDisableButton(true);
+  // };
+  // ws.onerror = (e) => {
+  //   console.log('got here')
+  //   setServerState(e.message);
+  // };
   ws.onmessage = ({data}) => {
     console.log("ACQUIRING MESSAGE IN MENU")
     console.log(data)

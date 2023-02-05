@@ -3,6 +3,7 @@ import React, {useEffect, useState, useContext}  from 'react'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import xicon from '../../../assets/icons/xicon.png'
 import { Context } from '../../globalContext/globalContext'
+import { set } from 'mongoose'
 
 const CameraScreen = ({navigation}) => {
 
@@ -10,13 +11,46 @@ const CameraScreen = ({navigation}) => {
     const [scanned, setScanned] = useState(false);
     const [table, setTable] = useState(null)
     const [restaurant, setRestaurant] = useState(null)
+    const [calledOnce, setCalledOnce] = useState(false)
+
+    // let calledOnce = false
 
     const globalContext = useContext(Context)
-    const { ws } = globalContext
+    const { ws, setWs } = globalContext
 
-    // ws.onmessage = ({data}) => {
-    //     console.log("ACQUIRING MESSAGE IN CAMERA")
-    //   };
+    const connectWs = async () => {
+        console.log(calledOnce)
+        if (!calledOnce) {
+
+            var wsTemp = new WebSocket('wss://dutch-pay-ws.herokuapp.com/');
+
+            wsTemp.onopen = () => {
+                console.log('opening ws in camera')
+                setWs(wsTemp)
+                // wsTemp.send(JSON.stringify({table_id: table.id, cart: [], flag: true}))
+            };
+            
+            wsTemp.onclose = (e) => {
+                console.log('Disconnected. Check internet or server.')
+                console.log(e.message)
+            };
+            
+            wsTemp.onerror = (e) => {
+                console.log('error')
+                console.log(e.message);
+            };
+
+            console.log('got here')
+
+            setCalledOnce(true)
+        }
+
+        // wsTemp.onmessage = ({data}) => {
+        //     console.log("receiving message in camera screen")
+        //     console.log(data)
+        // }
+        
+    }
 
     const getRestaurantsFromApi = async (id) => {
         return fetch('https://dutch-pay-test.herokuapp.com/restaurants/' + id)
@@ -33,8 +67,6 @@ const CameraScreen = ({navigation}) => {
         return fetch('https://dutch-pay-test.herokuapp.com/tables/' + id)
           .then(response => response.json())
           .then(json => {
-            console.log('hello')
-            console.log(json)
             setTable(json)
           })
           .catch(error => {
@@ -58,19 +90,25 @@ const CameraScreen = ({navigation}) => {
             const restaurant_id = restaurant["id"]
             const restaurant_name = restaurant["name"]
 
-            navigation.navigate('Menu', {subtotal: 0, restaurant_id : restaurant_id, name: restaurant_name, table_id: table.id})
-            ws.send(JSON.stringify({table_id: table.id, cart: [], flag: true}))
+            console.log("User sending intial message with table_id: " + table.id)
+
+            if(ws) {
+                console.log("navigating to menu")
+                navigation.navigate('Menu', {subtotal: 0, restaurant_id : restaurant_id, name: restaurant_name, table_id: table.id})
+                ws.send(JSON.stringify({table_id: table.id, cart: [], flag: true}))
+
+            } else {
+                connectWs()
+            }
         }
 
-    }, [table])
+    }, [table, ws])
+
 
     const handleBarCodeScanned = (result) => {
         (async()=> {
             const id = JSON.stringify(result.data).replace(/['"]+/g, '')
-            console.log(id)
             await getTableFromApi(id)
-            console.log('hey')
-            console.log(table)
             if(table) {
                 await getRestaurantsFromApi(table["restaurant"])
             }

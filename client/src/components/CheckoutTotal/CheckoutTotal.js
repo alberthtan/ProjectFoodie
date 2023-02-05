@@ -23,7 +23,7 @@ export default CheckoutTotal
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 20,
+        marginTop: 30,
     },
 
     name: {

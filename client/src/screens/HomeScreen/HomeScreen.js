@@ -13,7 +13,7 @@ LogBox.ignoreLogs(['expo-app-loading is deprecated in favor of expo-splash-scree
 
 const HomeScreen = ({route, navigation}) => {
   const [restaurantList, setRestaurantList] = useState([])
-  const [noReceipts, setNoReceipts] = useState(true)
+  const [noReceipts, setNoReceipts] = useState(false)
 
   // Fetch Call
   const getRestaurantsFromApi = () => {

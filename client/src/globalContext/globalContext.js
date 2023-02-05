@@ -4,21 +4,21 @@ import * as SecureStore from 'expo-secure-store'
 console.log("CALLING GLOBAL CONTEXT")
 // let controller = new WebsocketController();
 // var ws = controller.ws;
-var ws = new WebSocket('wss://dutch-pay-ws.herokuapp.com/');
+// var ws = new WebSocket('wss://dutch-pay-ws.herokuapp.com/');
 
-ws.onopen = () => {
-    console.log('opening ws')
-};
+// ws.onopen = () => {
+//     console.log('opening ws in global context')
+// };
 
-ws.onclose = (e) => {
-    console.log('Disconnected. Check internet or server.')
-    console.log(e.message)
-};
+// ws.onclose = (e) => {
+//     console.log('Disconnected in global context. Check internet or server.')
+//     console.log(e.message)
+// };
 
-ws.onerror = (e) => {
-    console.log('error')
-    console.log(e.message);
-};
+// ws.onerror = (e) => {
+//     console.log('error')
+//     console.log(e.message);
+// };
 
 const Context = createContext()
 
@@ -31,6 +31,7 @@ const Provider = ( { children } ) => {
         await SecureStore.setItemAsync('refresh', refresh)
         await SecureStore.setItemAsync('access', access)
     }
+    const [ws, setWs] = useState(null)
 
     const getToken = async (key) => {
         let result = await SecureStore.getItemAsync(key);
@@ -48,40 +49,10 @@ const Provider = ( { children } ) => {
         }
     }
 
-    // console.log("CALLING GLOBAL CONTEXT")
-    // let controller = new WebsocketController();
-    // var ws = controller.ws;
-
-    // function initAppSettings() {
-    //     fetch(`${domain}/app/settings`, {
-    //         method: 'GET'
-    //     })
-    //     .then(res => {
-    //         if (res.ok) {
-    //             return res.json()
-    //         } else {
-    //             throw res.json()
-    //         }
-    //     })
-    //     .then(json => {
-    //         console.log(json)
-    //         setAppSettings(json)
-    //     })
-    //     .catch(error => {
-    //         console.log(error)
-    //     })
-    // }
-
-    // useEffect(() => {
-    //     initAppSettings()
-    // }, [])
 
     const globalContext = {
-        // domain,
         isLoggedIn,
         setIsLoggedIn,
-        // appSettings,
-        // setAppSettings,
         userObj,
         cart,
         setCart,
@@ -89,7 +60,8 @@ const Provider = ( { children } ) => {
         setToken,
         getToken,
         deleteToken,
-        ws
+        ws,
+        setWs,
     }
 
     return <Context.Provider value={globalContext}>{children}</Context.Provider>

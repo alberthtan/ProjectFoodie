@@ -264,7 +264,6 @@ const styles = StyleSheet.create({
         padding: 12,
         borderRadius: 15,
         backgroundColor: '#3C6F37',
-        marginBottom: 10
     },
 
     addItemsText: {

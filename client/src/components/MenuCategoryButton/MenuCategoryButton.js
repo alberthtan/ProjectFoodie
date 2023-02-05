@@ -35,6 +35,8 @@ const styles = StyleSheet.create({
       padding: 10,
       // height: 50,
       alignSelf: 'flex-end',
+      borderTopEndRadius: 10,
+      borderTopStartRadius: 10
       // alignSelf: 'center',
       // justifyContent: 'center',
       // alignItems: 'center',
