@@ -21,7 +21,6 @@ const CheckoutScreen = ({route, navigation}) => {
   const {subtotal, restaurant_id, table_id, restaurant_name} = route.params
 
   const [subtotalValue, setSubtotalValue] = useState(subtotal)
-  const [serverState, setServerState] = useState('Loading...');
   const [users, setUsers] = useState([])
 
   const globalContext = useContext(Context)
@@ -50,16 +49,6 @@ const CheckoutScreen = ({route, navigation}) => {
     return false
   }
 
-ws.onopen = () => {
-    console.log('opening ws in checkout screen')
-    setServerState('Connected to the server')
-};
-ws.onclose = (e) => {
-    setServerState('Disconnected. Check internet or server.')
-};
-ws.onerror = (e) => {
-    setServerState(e.message);
-};
 ws.onmessage = ({data}) => {
     let message = JSON.parse(data)
     let temp = []

@@ -6,7 +6,6 @@ const TestScreen = () => {
     const [data, setData] = useState([])
     const serverMessagesList = [];
 
-    const [serverState, setServerState] = useState('Loading...');
   const [messageText, setMessageText] = useState('hello');
   const [disableButton, setDisableButton] = useState(true);
   const [inputFieldEmpty, setInputFieldEmpty] = useState(true);
@@ -19,21 +18,6 @@ const TestScreen = () => {
 
 
   useEffect(() => {
-    console.log(serverState)
-    ws.onopen = () => {
-      setServerState('Connected to the server')
-      // console.log(serverState)
-      setDisableButton(false);
-    };
-    ws.onclose = (e) => {
-      console.log(e)
-      setServerState('Disconnected. Check internet or server.')
-      setDisableButton(true);
-    };
-    ws.onerror = (e) => {
-      console.log('got here')
-      setServerState(e.message);
-    };
     ws.onmessage = ({data}) => {
       console.log({data})
       serverMessagesList.push({data});

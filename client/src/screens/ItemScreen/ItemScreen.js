@@ -27,18 +27,6 @@ const ItemScreen = ({route, navigation}) => {
     imageUrl: 'https://www.elmundoeats.com/wp-content/uploads/2021/02/FP-Quick-30-minutes-chicken-ramen.jpg'
   }
 
-
-  const [serverState, setServerState] = useState('Loading...');
-
-  ws.onopen = () => {
-    console.log("opening ws in item screen")
-  };
-  ws.onclose = (e) => {
-    console.log(e)
-  };
-  ws.onerror = (e) => {
-    console.log('got here')
-  };
   ws.onmessage = ({data}) => {
     console.log(JSON.parse(data))
     let message = JSON.parse(data)

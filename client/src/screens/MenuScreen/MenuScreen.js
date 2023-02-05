@@ -21,17 +21,7 @@ const MenuScreen = ({route, navigation}) => {
 
     const { userObj, ws, cart, setCart } = globalContext
   
-    const [serverState, setServerState] = useState('Loading...');
-  
-  // ws.onclose = (e) => {
-  //   console.log(e)
-  //   setServerState('Disconnected. Check internet or server.')
-  //   // setDisableButton(true);
-  // };
-  // ws.onerror = (e) => {
-  //   console.log('got here')
-  //   setServerState(e.message);
-  // };
+
   ws.onmessage = ({data}) => {
     console.log("ACQUIRING MESSAGE IN MENU")
     console.log(data)

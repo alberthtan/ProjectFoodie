@@ -18,7 +18,6 @@ const ReceiptScreen = ({route, navigation}) => {
   const {subtotal} = route.params
 
   const [subtotalValue, setSubtotalValue] = useState(subtotal)
-  const [serverState, setServerState] = useState('Loading...')
 
   const globalContext = useContext(Context)
   const { ws, userObj, cart, setCart } = globalContext
@@ -35,17 +34,6 @@ const ReceiptScreen = ({route, navigation}) => {
     setSubtotalValue(subtotal)
   }
 
-
-ws.onopen = () => {
-    console.log('opening ws in checkout screen')
-    setServerState('Connected to the server')
-};
-ws.onclose = (e) => {
-    setServerState('Disconnected. Check internet or server.')
-};
-ws.onerror = (e) => {
-    setServerState(e.message);
-};
 ws.onmessage = ({data}) => {
     let message = JSON.parse(data)
     let temp = []
