@@ -5,7 +5,6 @@ import { LogBox } from 'react-native';
 
 import CustomButton from '../../components/CustomButton'
 import CheckoutItem from '../../components/CheckoutItem'
-import AddItemsButton from '../../components/AddItemsButton'
 import CheckoutSubtotal from '../../components/CheckoutSubtotal'
 import CheckoutTaxes from '../../components/CheckoutTaxes'
 import CheckoutTotal from '../../components/CheckoutTotal/CheckoutTotal'
