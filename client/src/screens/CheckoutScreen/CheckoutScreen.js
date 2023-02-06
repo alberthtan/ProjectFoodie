@@ -84,7 +84,7 @@ const handleShared = (childData) => {
 }
 
 const handleDelete = (key) => {
-    ws.send(JSON.stringify({table_id: table_id, action: 'delete', id: key, item: item}))
+    ws.send(JSON.stringify({table_id: table_id, action: 'delete', id: key}))
 }
 
 useEffect(()=>{
