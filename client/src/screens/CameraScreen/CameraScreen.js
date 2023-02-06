@@ -95,7 +95,7 @@ const CameraScreen = ({navigation}) => {
             if(ws) {
                 console.log("navigating to menu")
                 navigation.navigate('Menu', {subtotal: 0, restaurant_id : restaurant_id, name: restaurant_name, table_id: table.id})
-                ws.send(JSON.stringify({table_id: table.id, cart: [], flag: true}))
+                ws.send(JSON.stringify({table_id: table.id, flag: true}))
 
             } else {
                 connectWs()

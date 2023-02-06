@@ -54,8 +54,8 @@ ws.onmessage = ({data}) => {
     let temp = []
     console.log('got here')
     
-    for (let i = 0; i < message.cart.length; i++) {
-      temp.push(message.cart[i])
+    for (let i = 0; i < message.length; i++) {
+      temp.push(message[i])
     }
     setCart(temp)
 };
@@ -73,7 +73,7 @@ const handleOrder = async () => {
             cart[i].isOrdered = true
         }       
     }
-    ws.send(JSON.stringify({table_id: table_id, cart: cart}))
+    ws.send(JSON.stringify({table_id: table_id, action: 'order', user: userObj['first_name']}))
     // ws.close()
     navigation.navigate('Receipt', {subtotal: subtotalValue})
 }
@@ -98,7 +98,7 @@ const handleDelete = (key) => {
     console.log('second cart')
     console.log(cart)
     setCart(cart)
-    ws.send(JSON.stringify({table_id: table_id, cart: cart}))
+    ws.send(JSON.stringify({table_id: table_id, action: 'delete', id: v4(), item: item}))
 }
 
 useEffect(()=>{

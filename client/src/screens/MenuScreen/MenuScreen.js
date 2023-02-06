@@ -26,11 +26,12 @@ const MenuScreen = ({route, navigation}) => {
     console.log("ACQUIRING MESSAGE IN MENU")
     console.log(data)
     let message = JSON.parse(data)
+    console.log(message)
     let temp = []
     
-    for (let i = 0; i < message.cart.length; i++) {
+    for (let i = 0; i < message.length; i++) {
       // console.log('got here')
-      temp.push(message.cart[i])
+      temp.push(message[i])
     }
     setCart(temp)
     // console.log(Cart)

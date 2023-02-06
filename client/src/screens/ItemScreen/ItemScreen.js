@@ -32,23 +32,24 @@ const ItemScreen = ({route, navigation}) => {
     let message = JSON.parse(data)
     let temp = []
     
-    for (let i = 0; i < message.cart.length; i++) {
-      temp.push(message.cart[i])
+    for (let i = 0; i < message.length; i++) {
+      temp.push(message[i])
     }
     setCart(temp)
   };
 
   const handleAddItem = async () => {
-    let temp = []
-    for (let i = 0; i < cart.length; i++) {
-      temp.push(cart[i])
-    }
+    // let temp = []
+    // for (let i = 0; i < cart.length; i++) {
+    //   temp.push(cart[i])
+    // }
     for (let i = 0; i < quantity; i++) {
-      temp.push({id: v4(), item: item, orderedBy: userObj['first_name'], sharedBy: [], isOrdered: false})
+      // temp.push({id: v4(), item: item, orderedBy: userObj['first_name'], sharedBy: [], isOrdered: false})
+      ws.send(JSON.stringify({table_id: table_id, action: 'add', id: v4(), item: item, user: userObj['first_name']}))
     }
-    setCart(temp)
-    console.log(JSON.stringify({table_id: table_id, cart: temp}))
-    ws.send(JSON.stringify({table_id: table_id, cart: temp}))
+    // setCart(temp)
+    // console.log(JSON.stringify({table_id: table_id, cart: temp}))
+    // ws.send(JSON.stringify({table_id: table_id, action: 'add', id: v4(), item: item}))
     navigation.navigate('Menu', {subtotal: subtotal + foodItem.price, restaurant_id: restaurant_id, table_id: table_id, name: restaurant_name})
   }
 
