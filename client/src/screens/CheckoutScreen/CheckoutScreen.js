@@ -84,21 +84,7 @@ const handleShared = (childData) => {
 }
 
 const handleDelete = (key) => {
-    let i = 0
-    console.log('first cart')
-    console.log(cart)
-    while(i < cart.length) {
-        if(cart[i].id == key) {
-            cart.splice(i, 1)
-            break
-        } else {
-            i++
-        }
-    }
-    console.log('second cart')
-    console.log(cart)
-    setCart(cart)
-    ws.send(JSON.stringify({table_id: table_id, action: 'delete', id: order.id, item: item}))
+    ws.send(JSON.stringify({table_id: table_id, action: 'delete', id: key, item: item}))
 }
 
 useEffect(()=>{
