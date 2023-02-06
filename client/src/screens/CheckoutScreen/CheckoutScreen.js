@@ -98,7 +98,7 @@ const handleDelete = (key) => {
     console.log('second cart')
     console.log(cart)
     setCart(cart)
-    ws.send(JSON.stringify({table_id: table_id, action: 'delete', id: v4(), item: item}))
+    ws.send(JSON.stringify({table_id: table_id, action: 'delete', id: order.id, item: item}))
 }
 
 useEffect(()=>{
