@@ -45,8 +45,8 @@ ws.onmessage = ({data}) => {
     let message = JSON.parse(data)
     let temp = []
     
-    for (let i = 0; i < message.cart.length; i++) {
-      temp.push(message.cart[i])
+    for (let i = 0; i < message.length; i++) {
+      temp.push(message[i])
     }
     setCart(temp)
 };
