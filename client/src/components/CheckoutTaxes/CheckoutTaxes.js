@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import React from 'react'
 import NumberFormat from 'react-number-format'
 
@@ -27,15 +27,15 @@ const styles = StyleSheet.create({
 },
 
 name: {
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: Dimensions.get('window').width * 0.05,
+    marginRight: Dimensions.get('window').width * 0.05,
     fontSize: 17,
 },
 
 subtotal: {
     right: 0,
     position: 'absolute',
-    marginRight: 20,
+    marginRight: Dimensions.get('window').width * 0.05,
     fontSize: 17,
     textAlign: 'right'
 }})

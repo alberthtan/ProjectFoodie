@@ -39,6 +39,7 @@ const Navigator = () => {
 
     const getUser = async () => {
         let token = await getToken('access')
+        console.log(token)
         authorization = "Bearer".concat(" ", token)
         return fetch('https://dutch-pay-test.herokuapp.com/get-user', {
           method: 'GET',

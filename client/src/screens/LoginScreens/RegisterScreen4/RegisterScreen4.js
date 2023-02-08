@@ -29,36 +29,37 @@ const RegisterScreen4 = ({navigation, route}) => {
     const globalContext = useContext(Context)
     const { setIsLoggedIn, setUserObj, setToken } = globalContext
 
-    const createUser = async () => {
-        return await fetch('https://dutch-pay-test.herokuapp.com/users/', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: emailParam,
-            first_name: firstName,
-            last_name: lastName,
-            username: emailParam,
-            phone_number: '+1' + phoneParam
-          }),
-        })
-        .then(response => response.json())
-        .then(json => {
-          console.log(json)
-            if (json["username"] === emailParam) {
-                setToken(json.token.refresh, json.token.access)
-                setUserObj(json)
-                setIsLoggedIn(true)
-                navigation.navigate('HomeTabs')
-            }
+    // const createUser = async () => {
+    //     return await fetch('https://dutch-pay-test.herokuapp.com/users/', {
+    //       method: 'POST',
+    //       headers: {
+    //         Accept: 'application/json',
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify({
+    //         email: emailParam,
+    //         first_name: firstName,
+    //         last_name: lastName,
+    //         username: emailParam,
+    //         phone_number: '+1' + phoneParam
+    //       }),
+    //     })
+    //     .then(response => response.json())
+    //     .then(json => {
+    //       console.log(json)
+    //         if (json["username"] === emailParam) {
+    //             setToken(json.token.refresh, json.token.access)
+    //             setUserObj(json)
+    //             setIsLoggedIn(true)
+    //             navigation.navigate('HomeTabs')
+    //         }
 
-        })
-          .catch(error => {
-            console.error(error);
-          });
-      }
+    //     })
+    //       .catch(error => {
+    //         console.error(error);
+    //       });
+    //   }
+
 
     const sendPhoneCode = () => {
         return fetch('https://dutch-pay-test.herokuapp.com/send-phone-code/', {
@@ -92,6 +93,9 @@ const RegisterScreen4 = ({navigation, route}) => {
           body: JSON.stringify({
             phone_number: '+1' + phoneParam,
             code: code,
+            email: emailParam,
+            first_name: firstName,
+            last_name: lastName,
             is_registration: true,
           }),
         })
@@ -100,9 +104,12 @@ const RegisterScreen4 = ({navigation, route}) => {
             console.log('success')
             console.log(phoneParam)
             console.log(json)
-            if (json['code'] === code) {
+            if (json['email'] === emailParam) {
                 setInvalid(false)
-                createUser()
+                setToken(json.token.refresh, json.token.access)
+                setUserObj(json)
+                setIsLoggedIn(true)
+                navigation.navigate('HomeTabs')
             } else {
                 setInvalidText('Code does not match')
                 setInvalid(true)
@@ -110,6 +117,7 @@ const RegisterScreen4 = ({navigation, route}) => {
             console.log(json['code'])
         })
         .catch(error => {
+            console.log('hello')
             console.error(error);
         });
       }

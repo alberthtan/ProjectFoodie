@@ -1,14 +1,15 @@
-import { StyleSheet, Text, View, Image, KeyboardAvoidingView, TouchableOpacity, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Image, KeyboardAvoidingView, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
 import React, { useState, useContext } from 'react'
 import profileIcon from '../../../../assets/icons/profileicon.png'
 import CustomInput from '../../../components/CustomInput'
 import HeaderBar from '../../../components/HeaderBar'
 import { Context } from '../../../globalContext/globalContext'
+import BackButton from '../../../components/BackButton'
 
 const EditProfileScreen = ({navigation}) => {
   const globalContext = useContext(Context)
 
-  const { userObj } = globalContext
+  const { userObj, getToken, setUserObj } = globalContext
 
   const [firstName, setFirstName] = useState(userObj['first_name'])
   const [lastName, setLastName] = useState(userObj['last_name'])
@@ -16,30 +17,67 @@ const EditProfileScreen = ({navigation}) => {
   const [phoneNumber, setPhoneNumber] = useState(userObj['phone_number'])
 
 
-  // const handleUpdateProfile = async () => {
-  //   return fetch('https://dutch-pay-test.herokuapp.com/update-profile/', {
-  //         method: 'PATCH',
-  //         headers: {
-  //           Accept: 'application/json',
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify({
-  //           email: emailParam,
-  //         }),
-  //       })
-  //       .then(console.log("success"))
-  //       .then(res => console.log(res.json()))
-  //       .catch(error => {
-  //         console.error(error);
-  //       });
-  // }
+  const handleUpdateProfile = async () => {
+    let token = await getToken('access')
+    console.log(token)
+    authorization = "Bearer".concat(" ", token)
+    return fetch('https://dutch-pay-test.herokuapp.com/update-user/', {
+          method: 'PATCH',
+          headers: {
+            Accept: '*/*',
+            'Accept-Encoding': 'gzip,deflate,br',
+            Connection: 'keep-alive',
+            'Content-Type': 'application/json',
+            Authorization: authorization
+          },
+          body: JSON.stringify({
+            first_name: firstName,
+            last_name: lastName,
+          }),
+        })
+        .then(res => res.json())
+        .then(json => {
+          console.log("setting user object")
+          console.log(json)
+          setUserObj(json)
+        })
+        .catch(error => {
+          console.error(error);
+        });
+  }
 
 
 
   return (
     // <ScrollView style ={{height: '100%', flex:}}>
     <View style={{flex: 1}}>
-      <HeaderBar name="Update Profile" navigation={navigation}/>
+      {/* <HeaderBar name="Update Profile" navigation={navigation}/> */}
+
+      <View style={styles.container}>
+
+      <View style={{flex: 1}}>
+          <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.goBack()}>
+              <BackButton/>
+          </TouchableOpacity>
+      </View>
+
+          
+      <Text style = {[styles.title, {flex: 2}]}>
+          Update Profile
+      </Text>
+
+      <View style={{flex: 1, justifyContent: 'center',}}>
+          <TouchableOpacity
+              style={{justifyContent: 'center', borderRadius: 10, width: '100%', height: '100%',}}
+              onPress={() => {handleUpdateProfile(), navigation.goBack()}}>
+                  <Text style={styles.closeText}>
+                      Done
+                  </Text>
+          </TouchableOpacity>
+      </View>
+      </View>
       
         <ScrollView style ={{height: '100%'}}>   
         <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={80}>
@@ -122,7 +160,56 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 10,
     opacity: 0.5
-  }
+  },
+
+
+
+  container: {
+    flexDirection: 'row', 
+
+    width: '100%',
+    height: Dimensions.get('window').height * 0.12,
+
+    paddingTop: Dimensions.get('window').height * 0.06,
+    paddingBottom: 5,
+
+    borderBottomWidth: 1,
+    borderBottomColor: '#D9D9D9',
+
+    shadowColor: '#171717',
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+    shadowOffset: {width: 0, height:10},
+
+    backgroundColor: '#f6f5f5',
+
+    
+},
+
+
+title: {
+    fontFamily: 'Roboto_700Bold',
+    fontSize: Dimensions.get('window').width * 0.05,
+    alignSelf: 'center',
+    textAlign: 'center',
+    // backgroundColor: 'red'
+},
+
+
+backButton: {
+    marginLeft: 20,
+    width: 50,
+    height: 50,
+
+    justifyContent: 'center',
+},
+
+closeText: {
+    fontWeight: 'bold',
+    color: '#3C6F37',
+    fontSize: 16,
+    textAlign: 'center',
+}
 })
 
 export default EditProfileScreen

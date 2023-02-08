@@ -55,11 +55,12 @@ useEffect(() => {
         
         <ScrollView showsVerticalScrollIndicator = {false}>
 
-            <Text style = {[styles.totals, {fontWeight: 'bold', fontSize: 18}]}>
-                Your Items
+            <Text style = {[styles.totals, {fontWeight: 'bold', fontSize: 20}]}>
+                My Items
             </Text>
 
-            {cart.map(order => (
+        <View style={{width: Dimensions.get('window').width * 0.95, alignSelf: 'center', marginLeft: Dimensions.get('window').width * 0.05}}>
+        {cart.map(order => (
                 (order.isOrdered && (userObj['first_name'] == order.orderedBy)) ?
                 <CheckoutItem
                     key = {order.id}
@@ -86,8 +87,9 @@ useEffect(() => {
                 /> :
                 <></>
             ))}
+        </View>
 
-            <View style = {{marginTop: 20}}>
+            <View style = {{marginTop: 20, borderTopWidth: 0.5, borderTopColor: '#E8E8E8'}}>
                 <CheckoutSubtotal
                     subtotal = {subtotalValue}/>
 

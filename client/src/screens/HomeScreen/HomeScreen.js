@@ -29,7 +29,6 @@ const HomeScreen = ({route, navigation}) => {
 
   useEffect(() => {
     getRestaurantsFromApi();
-    console.log(restaurantList)
   }, [])
 
   return (

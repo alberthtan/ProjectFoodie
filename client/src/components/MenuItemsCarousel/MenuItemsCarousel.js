@@ -41,11 +41,9 @@ const MenuItemsCarousel = ({isCarousel, data, subtotal, name, navigation, table_
 
         onSnapToItem={(slideIndex) => {
           parentCallback(slideIndex)
-          console.log("snapped")
         }}
         onScrollIndexChanged={(slideIndex) => {
           parentCallback(slideIndex)
-          console.log("scrolled")
         }}
         inactiveSlideOpacity={1}
         inactiveSlideScale={1}

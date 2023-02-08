@@ -8,6 +8,7 @@ import CheckoutItem from '../../components/CheckoutItem'
 import CheckoutSubtotal from '../../components/CheckoutSubtotal'
 import CheckoutTaxes from '../../components/CheckoutTaxes'
 import CheckoutTotal from '../../components/CheckoutTotal/CheckoutTotal'
+import CheckoutHeader from '../../components/CheckoutHeader'
 import HeaderBar from '../../components/HeaderBar'
 import SharedItem from '../../components/SharedItem'
 import SwipeBar from '../../components/SwipeBar';
@@ -40,9 +41,27 @@ const CheckoutScreen = ({route, navigation}) => {
     setSubtotalValue(subtotal)
   }
 
+  const checkInShared = () => {
+    for(let i=0; i < cart.length; i++) {
+        if(cart[i].sharedBy.indexOf(userObj['first_name']) != -1) {
+            return true
+        }
+    }
+    return false
+  }
+
   const checkInOrder = () => {
     for(let i=0; i < cart.length; i++) {
         if(!cart[i].isOrdered && cart[i].orderedBy == userObj['first_name']) {
+            return true
+        }
+    }
+    return false
+  }
+
+  const checkInReceipt = () => {
+    for(let i=0; i < cart.length; i++) {
+        if(cart[i].isOrdered && cart[i].orderedBy == userObj['first_name']) {
             return true
         }
     }
@@ -107,26 +126,32 @@ const handleTip = () => {
     navigation.navigate('TipScreen', {subtotal: subtotalValue})
 }
 
-let statusbar // based on updating database, true for now
-if (true) {
-  statusbar = 
-  <View>
-    <SwipeBar
-        onPress={() => navigation.navigate('Receipt', {subtotal: subtotalValue})}/>
-  </View>
-}
-
   return (
     <View style = {{flex: 1}}>
-      <HeaderBar name='Checkout' navigation= {navigation}>
-        </HeaderBar>
+        {checkInReceipt() ? 
+            <CheckoutHeader 
+                name='Checkout' 
+                navigation={navigation} 
+                destination="Receipt" 
+                subtotal={subtotalValue}
+            /> :
+            <HeaderBar 
+                name='Checkout' 
+                navigation={navigation} 
+            />
+        }
         
         <ScrollView showsVerticalScrollIndicator = {false}>
 
             <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
-                <Text style = {[styles.title, {fontSize: 20, width: Dimensions.get('window').width * 0.63}]}>
-                    My Items
-                </Text>
+                {checkInOrder() ? 
+                    <Text style = {[styles.title, {fontSize: 20, width: Dimensions.get('window').width * 0.63}]}>
+                        My Items
+                    </Text> :
+                    <Text style = {[styles.title, {fontSize: 20, width: Dimensions.get('window').width * 0.63}]}>
+                        Cart is empty
+                    </Text>
+                }               
                 
                 <TouchableOpacity
                     onPress = {() => {navigation.navigate('Menu', {subtotal: subtotalValue, table_id: table_id, restaurant_id: restaurant_id, name: restaurant_name}),
@@ -135,9 +160,9 @@ if (true) {
                     <Text style={styles.addItemsText}>+ Add Items</Text>
                 </TouchableOpacity>
 
-                
-
             </View>
+
+            
             
 
             {cart.map(order => (
@@ -198,6 +223,20 @@ if (true) {
                 <CheckoutTotal
                     subtotal={subtotalValue}
                     taxRate={0.08}/>
+
+                {checkInShared() ? 
+                    <Text style={[{
+                            marginHorizontal: 20,
+                            marginVertical: 30,
+                            fontSize: 13,
+                            width: Dimensions.get('window').width, 
+                            color: 'red',
+                        }]}>
+                        Checked items will process when ordered by owners.
+                    </Text> :
+                    <></>    
+                }
+               
             </View>
 
             <View style = {{marginTop: 30}}/>
