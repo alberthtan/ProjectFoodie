@@ -3,7 +3,7 @@ import React from 'react'
 import NumberFormat from 'react-number-format'
 import * as Haptics from 'expo-haptics'
 
-const MenuItem = ({navigation, item, name, price, description, subtotal, restaurant_id, active_menu, table_id, isOrdering, restaurant_name}) => {
+const MenuItem = ({navigation, item, subtotal, restaurant_id, active_menu, table_id, isOrdering, restaurant_name}) => {
   return (
     <TouchableHighlight
     style={{width: '100%', alignItems: 'center'}}
@@ -14,10 +14,10 @@ const MenuItem = ({navigation, item, name, price, description, subtotal, restaur
             
           <View style={styles.container}>
             <View style={{width: '75%'}}>
-              <Text style = {styles.itemName}>{name}</Text>
+              <Text style = {styles.itemName}>{item.name}</Text>
 
               <NumberFormat
-                    value = {price}
+                    value = {item.price}
                     displayType = "text"
                     thousandSeparator={true}
                     prefix = "$"
@@ -27,10 +27,10 @@ const MenuItem = ({navigation, item, name, price, description, subtotal, restaur
                 </NumberFormat>
 
               <Text style = {styles.itemDescription}>
-                {description}
+                {item.description}
               </Text>
             </View>
-            <Image style={styles.image} source={{uri: 'https://www.elmundoeats.com/wp-content/uploads/2021/02/FP-Quick-30-minutes-chicken-ramen.jpg'}}/>
+            <Image style={styles.image} source={{uri: item.itemImage}}/>
 
           </View>
       

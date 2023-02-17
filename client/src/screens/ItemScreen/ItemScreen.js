@@ -7,7 +7,6 @@ import { Context } from '../../globalContext/globalContext'
 import 'react-native-get-random-values'
 import { v4 } from 'uuid'
 import * as Haptics from 'expo-haptics'
-import key from 'weak-key'
 
 const ItemScreen = ({route, navigation}) => {
 
@@ -15,6 +14,8 @@ const ItemScreen = ({route, navigation}) => {
 
   const globalContext = useContext(Context)
   const { ws, userObj, cart, setCart } = globalContext
+  console.log("ITEM URL")
+  console.log(item.itemImage)
 
   const [quantity, setQuantity] = useState(1)
 
@@ -24,7 +25,7 @@ const ItemScreen = ({route, navigation}) => {
     calorieCount: '550',
     description: item.description,
     dietary: 'vegetarian',
-    imageUrl: 'https://www.elmundoeats.com/wp-content/uploads/2021/02/FP-Quick-30-minutes-chicken-ramen.jpg'
+    imageUrl: item.itemImage,
   }
 
   ws.onmessage = ({data}) => {
@@ -52,16 +53,6 @@ const ItemScreen = ({route, navigation}) => {
     // console.log(JSON.stringify({table_id: table_id, cart: temp}))
     // ws.send(JSON.stringify({table_id: table_id, action: 'add', id: v4(), item: item}))
     navigation.navigate('Menu', {subtotal: subtotal + foodItem.price, restaurant_id: restaurant_id, active_menu, table_id: table_id, name: restaurant_name})
-  }
-
-  var imageUrl;
-
-
-  if (item.name == 'Original Ramen') {
-    imageUrl = 'https://www.elmundoeats.com/wp-content/uploads/2021/02/FP-Quick-30-minutes-chicken-ramen.jpg'
-  } 
-  else if (item.name == 'Sauteed Edamame'){
-    imageUrl = 'https://media.istockphoto.com/id/945129060/photo/edamame.jpg?s=612x612&w=0&k=20&c=vGZXT_2KQnICyS8T883Pe-wRKDq1I9d3_Gb0CgUm6-s='
   }
 
   return (
