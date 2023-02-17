@@ -9,7 +9,7 @@ import MenuItemsList from './MenuItemsList'
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = Dimensions.get('window').width
 
-const MenuItemsCarousel = ({isCarousel, data, subtotal, name, navigation, table_id, restaurant_id, parentCallback}) => {
+const MenuItemsCarousel = ({isCarousel, data, subtotal, name, navigation, table_id, restaurant_id, active_menu, parentCallback}) => {
 
   const oneDish = ({item}) => (
     <MenuItem
@@ -21,6 +21,7 @@ const MenuItemsCarousel = ({isCarousel, data, subtotal, name, navigation, table_
         subtotal = {subtotal}
         table_id = {table_id}
         restaurant_id = {restaurant_id}
+        active_menu = {active_menu}
         restaurant_name = {name}
         isOrdering = {true}
     />

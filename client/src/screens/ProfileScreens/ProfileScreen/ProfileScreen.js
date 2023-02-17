@@ -23,6 +23,7 @@ const ProfileScreen = ({navigation}) => {
     let token = await getToken('access')
     console.log("IMAGEEEE")
     console.log(image)
+    console.log(typeof(image.uri))
     let formdata = new FormData();
     formdata.append("profile_picture", {
       uri: image.uri,

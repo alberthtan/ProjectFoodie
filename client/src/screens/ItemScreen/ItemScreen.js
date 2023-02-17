@@ -11,7 +11,7 @@ import key from 'weak-key'
 
 const ItemScreen = ({route, navigation}) => {
 
-  const { item, subtotal, restaurant_id, table_id, isOrdering, restaurant_name } = route.params;
+  const { item, subtotal, restaurant_id, table_id, active_menu, isOrdering, restaurant_name } = route.params;
 
   const globalContext = useContext(Context)
   const { ws, userObj, cart, setCart } = globalContext
@@ -45,12 +45,13 @@ const ItemScreen = ({route, navigation}) => {
     // }
     for (let i = 0; i < quantity; i++) {
       // temp.push({id: v4(), item: item, orderedBy: userObj['first_name'], sharedBy: [], isOrdered: false})
+      console.log("here")
       ws.send(JSON.stringify({table_id: table_id, action: 'add', id: v4(), item: item, user: userObj['first_name']}))
     }
     // setCart(temp)
     // console.log(JSON.stringify({table_id: table_id, cart: temp}))
     // ws.send(JSON.stringify({table_id: table_id, action: 'add', id: v4(), item: item}))
-    navigation.navigate('Menu', {subtotal: subtotal + foodItem.price, restaurant_id: restaurant_id, table_id: table_id, name: restaurant_name})
+    navigation.navigate('Menu', {subtotal: subtotal + foodItem.price, restaurant_id: restaurant_id, active_menu, table_id: table_id, name: restaurant_name})
   }
 
   var imageUrl;

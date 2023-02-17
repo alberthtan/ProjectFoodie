@@ -85,16 +85,17 @@ const CameraScreen = ({navigation}) => {
 
     useEffect(()=>{
         if(table && restaurant) {
-            console.log('fuasdfasdf')
             setScanned(true)
             const restaurant_id = restaurant["id"]
             const restaurant_name = restaurant["name"]
+            const active_menu = restaurant["active_menu"]
 
             console.log("User sending intial message with table_id: " + table.id)
 
             if(ws) {
                 console.log("navigating to menu")
-                navigation.navigate('Menu', {subtotal: 0, restaurant_id : restaurant_id, name: restaurant_name, table_id: table.id})
+                console.log(table.id)
+                navigation.navigate('Menu', {subtotal: 0, restaurant_id : restaurant_id, active_menu: active_menu, name: restaurant_name, table_id: table.id})
                 ws.send(JSON.stringify({table_id: table.id, flag: true}))
 
             } else {
@@ -107,7 +108,10 @@ const CameraScreen = ({navigation}) => {
 
     const handleBarCodeScanned = (result) => {
         (async()=> {
+            console.log(result.data)
             const id = JSON.stringify(result.data).replace(/['"]+/g, '')
+            console.log("THIS IS THE ID")
+            console.log(id + "whats up")
             await getTableFromApi(id)
             if(table) {
                 await getRestaurantsFromApi(table["restaurant"])

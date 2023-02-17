@@ -9,7 +9,7 @@ import MenuItemsCarousel from '../../components/MenuItemsCarousel'
 import MenuHeader from '../../components/MenuHeader/MenuHeader'
 
 const MenuScreen = ({route, navigation}) => {
-    const { restaurant_id, name, subtotal, table_id } = route.params
+    const { restaurant_id, active_menu, name, subtotal, table_id } = route.params
     const [destinationCategory, setDestinationCategory]= useState([])
     const [MenuCategories, setMenuCategories] = useState([])
     const [MenuItems, setMenuItems] = useState([])
@@ -47,13 +47,13 @@ const MenuScreen = ({route, navigation}) => {
     return length
   }
 
-    const getMenusFromApi = async (id) => {
-        return await fetch('https://dutch-pay-test.herokuapp.com/menus/?format=json')
+    const getMenusFromApi = async () => {
+        return await fetch('https://dutch-pay-test.herokuapp.com/menus/' + active_menu + '/?format=json')
           .then(response => response.json())
           .then(json => {
-            const result = json.filter(menu => menu["restaurant"] == id)
+            // const result = json.filter(menu => menu["restaurant"] == id)
             // setMenus(result)
-            getCategoriesFromApi(result[0].id)
+            getCategoriesFromApi(json.id)
           })
           .catch(error => {
             throw error;
@@ -118,7 +118,7 @@ const MenuScreen = ({route, navigation}) => {
 
 
     useEffect(() => {
-      getMenusFromApi(restaurant_id)
+      getMenusFromApi()
     }, [])
 
 
@@ -158,6 +158,7 @@ const MenuScreen = ({route, navigation}) => {
               navigation={navigation}
               table_id={table_id}
               restaurant_id={restaurant_id}
+              active_menu={active_menu}
               parentCallback={handleCallbackCarousel}
               />
         </View>
@@ -167,7 +168,7 @@ const MenuScreen = ({route, navigation}) => {
                 <CustomButton 
                     text={"View Order (" + calculateLength() + ")"}
                     style = {{bottom: 50, position: 'absolute'}}
-                    onPress = {() => {navigation.navigate('Checkout', {table_id: table_id, subtotal: subtotal, restaurant_name: name})}}
+                    onPress = {() => {navigation.navigate('Checkout', {table_id: table_id, subtotal: subtotal, restaurant_id: restaurant_id, restaurant_name: name, active_menu: active_menu})}}
                 />
             </View> : 
             <></>

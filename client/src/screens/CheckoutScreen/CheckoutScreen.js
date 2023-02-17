@@ -19,7 +19,7 @@ import { Context } from '../../globalContext/globalContext'
 LogBox.ignoreLogs(['Warning: Each child in a list should have a unique "key" prop.'])
 
 const CheckoutScreen = ({route, navigation}) => {
-  const {subtotal, restaurant_id, table_id, restaurant_name} = route.params
+  const {subtotal, restaurant_id, active_menu, table_id, restaurant_name} = route.params
 
   const [subtotalValue, setSubtotalValue] = useState(subtotal)
   const [users, setUsers] = useState([])
@@ -154,7 +154,7 @@ const handleTip = () => {
                 }               
                 
                 <TouchableOpacity
-                    onPress = {() => {navigation.navigate('Menu', {subtotal: subtotalValue, table_id: table_id, restaurant_id: restaurant_id, name: restaurant_name}),
+                    onPress = {() => {navigation.navigate('Menu', {subtotal: subtotalValue, table_id: table_id, restaurant_id: restaurant_id, active_menu, name: restaurant_name}),
                                         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}}
                     style={styles.addItemsButton}>
                     <Text style={styles.addItemsText}>+ Add Items</Text>

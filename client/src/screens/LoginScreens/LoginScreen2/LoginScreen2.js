@@ -78,7 +78,7 @@ const LoginScreen2 = ({navigation, route}) => {
                 console.log(json['code'])
                 setInvalidText('Code does not match')
                 setInvalid(true)
-            } else if (json['username'] === emailParam){
+            } else if (json['username'] === emailParam + '_CUSTOMER'){
                 setInvalid(false)
                 setToken(json.token.refresh, json.token.access)
                 setUserObj(json)
