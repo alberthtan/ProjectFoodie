@@ -17,13 +17,12 @@ const RestaurantCard = ({item, index}) => {
   const openMap = () => {
     let mapUrl = (Platform.OS === 'ios') ? ('maps://?q=' + restaurant.address) : ('http://maps.google.com/maps?q=' + restaurant.address)
     Linking.openURL(mapUrl)
-
-}
+  }
 
   
   return (
     <View style={[styles.card, {backgroundColor: CARD_COLORS[index%CARD_COLORS.length]}]} key={index}>
-        <Image style= {{width: '50%', height: '25%', borderRadius: 20}} source={{uri: restaurant.restaurantImage}}/>
+        <Image style= {{width: '50%', height: '25%', borderRadius: 20}} source={{uri: restaurant.restaurant_image}}/>
      
       <Text style={styles.restaurantName}>
             {restaurant.name}
