@@ -95,8 +95,11 @@ const CameraScreen = ({navigation}) => {
             if(ws) {
                 console.log("navigating to menu")
                 console.log(table.id)
-                navigation.navigate('Menu', {subtotal: 0, restaurant_id : restaurant_id, active_menu: active_menu, name: restaurant_name, table_id: table.id})
-                ws.send(JSON.stringify({table_id: table.id, flag: true}))
+                // if()
+                if(active_menu) {
+                    navigation.navigate('Menu', {subtotal: 0, restaurant_id : restaurant_id, active_menu: active_menu, name: restaurant_name, table_id: table.id})
+                    ws.send(JSON.stringify({table_id: table.id, flag: true}))
+                }
 
             } else {
                 connectWs()
