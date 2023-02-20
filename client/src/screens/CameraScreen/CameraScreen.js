@@ -98,6 +98,7 @@ const CameraScreen = ({navigation}) => {
 
                 if(active_menu) {
                     navigation.navigate('Menu', {subtotal: 0, restaurant_id : restaurant_id, active_menu: active_menu, name: restaurant_name, table_id: table.id})
+                    console.log(active_menu)
                     ws.send(JSON.stringify({table_id: table.id, flag: true}))
                 }
 

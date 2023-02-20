@@ -15,9 +15,6 @@ const MenuItemsCarousel = ({isCarousel, data, subtotal, name, navigation, table_
     <MenuItem
         navigation = {navigation}
         item = {item}
-        name = {item.name}
-        price = {item.price}
-        description = {item.description}
         subtotal = {subtotal}
         table_id = {table_id}
         restaurant_id = {restaurant_id}
