@@ -26,7 +26,7 @@ const MenuItem = ({navigation, item, subtotal, restaurant_id, active_menu, table
                     renderText={(value) => <Text style = {styles.itemPrice}>{value}</Text>}>
                 </NumberFormat>
 
-              <Text style = {styles.itemDescription}>
+              <Text style = {styles.itemDescription} numberOfLines={3}>
                 {item.description}
               </Text>
             </View>

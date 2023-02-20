@@ -4,6 +4,9 @@ import { BarCodeScanner } from 'expo-barcode-scanner'
 import xicon from '../../../assets/icons/xicon.png'
 import { Context } from '../../globalContext/globalContext'
 import { set } from 'mongoose'
+import { LogBox } from 'react-native'
+
+LogBox.ignoreLogs(['Warning: Each child in a list should have a unique "key" prop.'])
 
 const CameraScreen = ({navigation}) => {
 
