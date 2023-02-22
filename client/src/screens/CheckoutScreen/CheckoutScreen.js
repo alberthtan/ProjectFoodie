@@ -92,7 +92,7 @@ const handleOrder = async () => {
             cart[i].isOrdered = true
         }       
     }
-    ws.send(JSON.stringify({table_id: table_id, action: 'order', user: userObj['first_name']}))
+    ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'order', user: userObj['first_name']}))
     // ws.close()
     navigation.navigate('Receipt', {subtotal: subtotalValue})
 }
@@ -103,7 +103,7 @@ const handleShared = (childData) => {
 }
 
 const handleDelete = (key) => {
-    ws.send(JSON.stringify({table_id: table_id, action: 'delete', id: key}))
+    ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'delete', id: key}))
 }
 
 useEffect(()=>{
