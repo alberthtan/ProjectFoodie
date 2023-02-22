@@ -45,7 +45,6 @@ const ItemScreen = ({route, navigation}) => {
     //   temp.push(cart[i])
     // }
     for (let i = 0; i < quantity; i++) {
-      // temp.push({id: v4(), item: item, orderedBy: userObj['first_name'], sharedBy: [], isOrdered: false})
       console.log("here")
       ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'add', id: v4(), item: item, user: userObj['first_name']}))
     }

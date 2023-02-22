@@ -65,7 +65,7 @@ const MenuScreen = ({route, navigation}) => {
   const calculateLength = () => {
     let length = 0
     for(let i=0; i < cart.length; i++) {
-      if(!cart[i].isOrdered) {
+      if(cart[i].status == 'pending') {
         length += 1
       }
     }

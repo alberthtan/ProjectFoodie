@@ -30,7 +30,7 @@ const CheckoutScreen = ({route, navigation}) => {
   const calculateSubtotal = () => {
     let subtotal = 0
     for(let i=0; i < cart.length; i++) {
-        if(!cart[i].isOrdered) {
+        if(cart[i].status == 'pending') {
             if(cart[i].orderedBy == userObj['first_name'] || cart[i].sharedBy.indexOf(userObj['first_name']) != -1) {
                 
                 subtotal += cart[i].item.price / (cart[i].sharedBy.length + 1)
@@ -52,7 +52,7 @@ const CheckoutScreen = ({route, navigation}) => {
 
   const checkInOrder = () => {
     for(let i=0; i < cart.length; i++) {
-        if(!cart[i].isOrdered && cart[i].orderedBy == userObj['first_name']) {
+        if(cart[i].status == 'pending' && cart[i].orderedBy == userObj['first_name']) {
             return true
         }
     }
@@ -61,7 +61,7 @@ const CheckoutScreen = ({route, navigation}) => {
 
   const checkInReceipt = () => {
     for(let i=0; i < cart.length; i++) {
-        if(cart[i].isOrdered && cart[i].orderedBy == userObj['first_name']) {
+        if(cart[i].status != 'pending' && cart[i].orderedBy == userObj['first_name']) {
             return true
         }
     }
@@ -89,7 +89,7 @@ const handleOrder = async () => {
     for(let i=0; i < cart.length; i++) {
         if(cart[i].orderedBy == userObj['first_name']) {
             // cart.splice(i, 1)
-            cart[i].isOrdered = true
+            cart[i].status = 'ordered'
         }       
     }
     ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'order', user: userObj['first_name']}))
@@ -115,7 +115,7 @@ const getAllUsers = async () => {
     // console.log(userObj['name'])
     let temp = []
     for (let i = 0; i < cart.length; i++) {
-        if (!temp.includes(cart[i].orderedBy) && userObj['first_name'] != cart[i].orderedBy && !cart[i].isOrdered) {
+        if (!temp.includes(cart[i].orderedBy) && userObj['first_name'] != cart[i].orderedBy && cart[i].status == 'pending') {
             temp.push(cart[i]. orderedBy)
         }
     }
@@ -166,7 +166,7 @@ const handleTip = () => {
             
 
             {cart.map(order => (
-                (!order.isOrdered && userObj['first_name'] == order.orderedBy) ?
+                (order.status == 'pending' && userObj['first_name'] == order.orderedBy) ?
                 <CheckoutItem
                     key = {order.id}
                     id = {order.id}
@@ -191,7 +191,7 @@ const handleTip = () => {
                      {user}'s Items
                     </Text>
                     {cart.map(order => (
-                        (!order.isOrdered && user == order.orderedBy) ?
+                        (order.status == 'pending' && user == order.orderedBy) ?
                         <SharedItem
                             key = {order.id}
                             order = {order}

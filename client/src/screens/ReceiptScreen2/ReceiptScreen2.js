@@ -32,7 +32,7 @@ const ReceiptScreen2 = ({route, navigation}) => {
   const calculateSubtotal = () => {
     let subtotal = 0
     for(let i=0; i < cart.length; i++) {
-        if(cart[i].isOrdered) {
+        if(cart[i].status != 'pending') {
             if(cart[i].orderedBy == userObj['first_name'] || cart[i].sharedBy.indexOf(userObj['first_name']) != -1) {
                 subtotal += cart[i].item.price / (cart[i].sharedBy.length + 1)
             }
@@ -78,7 +78,7 @@ useEffect(() => {
             </Text>
 
             {cart.map(order => (
-                (order.isOrdered && (userObj['first_name'] == order.orderedBy)) ?
+                (order.status != 'pending' && (userObj['first_name'] == order.orderedBy)) ?
                 <CheckoutItem
                     key = {order.id}
                     id = {order.id}
@@ -92,7 +92,7 @@ useEffect(() => {
             ))}
 
             {cart.map(order => (
-                (order.isOrdered && order.sharedBy.indexOf(userObj['first_name']) != -1) ?
+                (order.status != 'pending' && order.sharedBy.indexOf(userObj['first_name']) != -1) ?
                 <CheckoutItem
                     key = {order.id}
                     id = {order.id}
