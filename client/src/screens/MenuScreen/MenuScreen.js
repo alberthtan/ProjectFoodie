@@ -19,22 +19,29 @@ const MenuScreen = ({route, navigation}) => {
 
     const globalContext = useContext(Context)
 
-    const { userObj, ws, cart, setCart } = globalContext
+    const { ws, cart, setCart, setWs } = globalContext
   
 
   ws.onmessage = ({data}) => {
     console.log("ACQUIRING MESSAGE IN MENU")
     console.log(data)
     let message = JSON.parse(data)
-    console.log(message)
-    let temp = []
-    
-    for (let i = 0; i < message.length; i++) {
-      // console.log('got here')
-      temp.push(message[i])
+
+    if('clear' in message) {
+      navigation.navigate('HomeTabs')
+      console.log("closing websocket from frontend")
+      ws.close()
+      setWs(null)
+    } else {
+      console.log(message)
+      let temp = []
+      
+      for (let i = 0; i < message.length; i++) {
+        // console.log('got here')
+        temp.push(message[i])
+      }
+      setCart(temp)
     }
-    setCart(temp)
-    // console.log(Cart)
   };
 
   const calculateLength = () => {

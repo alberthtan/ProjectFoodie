@@ -22,7 +22,6 @@ const MenuHeader = ({name, navigation, destination, MenuCategories, oneCategory,
                                 console.log("closing websocket from frontend")
                                 ws.close()
                                 setWs(null)
-                                // ws.onclose(() => )
                             }
                             setCart([])
                             navigation.navigate(destination)

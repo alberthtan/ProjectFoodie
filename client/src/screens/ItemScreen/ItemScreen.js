@@ -13,7 +13,7 @@ const ItemScreen = ({route, navigation}) => {
   const { item, subtotal, restaurant_id, table_id, active_menu, isOrdering, restaurant_name } = route.params;
 
   const globalContext = useContext(Context)
-  const { ws, userObj, cart, setCart } = globalContext
+  const { ws, userObj, setCart, setWs } = globalContext
   console.log("ITEM URL")
   console.log(item.itemImage)
 
@@ -31,12 +31,20 @@ const ItemScreen = ({route, navigation}) => {
   ws.onmessage = ({data}) => {
     console.log(JSON.parse(data))
     let message = JSON.parse(data)
-    let temp = []
+
+    if('clear' in message) {
+      navigation.navigate('HomeTabs')
+      console.log("closing websocket from frontend")
+      ws.close()
+      setWs(null)
+    } else {
+      let temp = []
     
-    for (let i = 0; i < message.length; i++) {
-      temp.push(message[i])
+      for (let i = 0; i < message.length; i++) {
+        temp.push(message[i])
+      }
+      setCart(temp)
     }
-    setCart(temp)
   };
 
   const handleAddItem = async () => {

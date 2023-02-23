@@ -25,7 +25,7 @@ const CheckoutScreen = ({route, navigation}) => {
   const [users, setUsers] = useState([])
 
   const globalContext = useContext(Context)
-  const { ws, userObj, cart, setCart } = globalContext
+  const { ws, userObj, cart, setCart, setWs } = globalContext
 
   const calculateSubtotal = () => {
     let subtotal = 0
@@ -70,13 +70,21 @@ const CheckoutScreen = ({route, navigation}) => {
 
 ws.onmessage = ({data}) => {
     let message = JSON.parse(data)
-    let temp = []
-    console.log('got here')
-    
-    for (let i = 0; i < message.length; i++) {
-      temp.push(message[i])
+    if('clear' in message) {
+        navigation.navigate('HomeTabs')
+        console.log("closing websocket from frontend")
+        ws.close()
+        setWs(null)
+    } else {
+        let temp = []
+        console.log('got here')
+        console.log(message)
+        
+        for (let i = 0; i < message.length; i++) {
+          temp.push(message[i])
+        }
+        setCart(temp)
     }
-    setCart(temp)
 };
 
 useEffect(() => {
@@ -87,10 +95,14 @@ useEffect(() => {
 
 const handleOrder = async () => {
     for(let i=0; i < cart.length; i++) {
-        if(cart[i].orderedBy == userObj['first_name']) {
+        console.log("CART STATUS")
+        
+        if(cart[i].orderedBy == userObj['first_name'] && cart[i].status === 'pending') {
             // cart.splice(i, 1)
+            console.log("CHANGING STATUS")
             cart[i].status = 'ordered'
-        }       
+        }    
+        console.log(cart[i])   
     }
     ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'order', user: userObj['first_name']}))
     // ws.close()
@@ -111,7 +123,7 @@ useEffect(()=>{
 }, [cart])
 
 const getAllUsers = async () => {
-    console.log(cart)
+    // console.log(cart)
     // console.log(userObj['name'])
     let temp = []
     for (let i = 0; i < cart.length; i++) {

@@ -19,7 +19,7 @@ const MenuScreen = ({route, navigation}) => {
 
     const globalContext = useContext(Context)
 
-    const { userObj, ws, cart, setCart } = globalContext
+    const { userObj, ws, cart, setCart, setWs } = globalContext
     // const [Cart, setCart] = useState(cart)
   
     const [serverState, setServerState] = useState('Loading...');
@@ -52,14 +52,20 @@ const MenuScreen = ({route, navigation}) => {
     console.log("ACQUIRING MESSAGE IN MENU")
     console.log(data)
     let message = JSON.parse(data)
-    let temp = []
-    
-    for (let i = 0; i < message.cart.length; i++) {
-      // console.log('got here')
-      temp.push(message.cart[i])
+
+    if('clear' in message) {
+      navigation.navigate('HomeTabs')
+      console.log("closing websocket from frontend")
+      ws.close()
+      setWs(null)
+    } else {
+      let temp = []
+      for (let i = 0; i < message.cart.length; i++) {
+        // console.log('got here')
+        temp.push(message.cart[i])
+      }
+      setCart(temp)
     }
-    setCart(temp)
-    // console.log(Cart)
   };
 
   const calculateLength = () => {

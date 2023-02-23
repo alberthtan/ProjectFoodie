@@ -20,7 +20,7 @@ const ReceiptScreen = ({route, navigation}) => {
   const [subtotalValue, setSubtotalValue] = useState(subtotal)
 
   const globalContext = useContext(Context)
-  const { ws, userObj, cart, setCart } = globalContext
+  const { ws, userObj, cart, setCart, setWs } = globalContext
 
   const calculateSubtotal = () => {
     let subtotal = 0
@@ -36,12 +36,20 @@ const ReceiptScreen = ({route, navigation}) => {
 
 ws.onmessage = ({data}) => {
     let message = JSON.parse(data)
-    let temp = []
+
+    if('clear' in message) {
+        navigation.navigate('HomeTabs')
+        console.log("closing websocket from frontend")
+        ws.close()
+        setWs(null)
+    } else {
+        let temp = []
     
-    for (let i = 0; i < message.length; i++) {
-      temp.push(message[i])
+        for (let i = 0; i < message.length; i++) {
+          temp.push(message[i])
+        }
+        setCart(temp)
     }
-    setCart(temp)
 };
 
 useEffect(() => {
