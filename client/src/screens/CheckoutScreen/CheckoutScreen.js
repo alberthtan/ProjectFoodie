@@ -31,7 +31,7 @@ const CheckoutScreen = ({route, navigation}) => {
     let subtotal = 0
     for(let i=0; i < cart.length; i++) {
         if(cart[i].status == 'pending') {
-            if(cart[i].orderedBy == userObj['first_name'] || cart[i].sharedBy.indexOf(userObj['first_name']) != -1) {
+            if(JSON.parse(cart[i].orderedBy)['username'] == userObj['username'] || cart[i].sharedBy.findIndex(obj => obj['username'] == userObj['username']) != -1) {
                 
                 subtotal += cart[i].item.price / (cart[i].sharedBy.length + 1)
                 console.log(subtotal)
@@ -43,7 +43,7 @@ const CheckoutScreen = ({route, navigation}) => {
 
   const checkInShared = () => {
     for(let i=0; i < cart.length; i++) {
-        if(cart[i].sharedBy.indexOf(userObj['first_name']) != -1) {
+        if(cart[i].sharedBy.findIndex(obj => obj['username'] == userObj['username']) != -1) {
             return true
         }
     }
@@ -52,7 +52,7 @@ const CheckoutScreen = ({route, navigation}) => {
 
   const checkInOrder = () => {
     for(let i=0; i < cart.length; i++) {
-        if(cart[i].status == 'pending' && cart[i].orderedBy == userObj['first_name']) {
+        if(cart[i].status == 'pending' && JSON.parse(cart[i].orderedBy)['username'] == userObj['username']) {
             return true
         }
     }
@@ -61,7 +61,7 @@ const CheckoutScreen = ({route, navigation}) => {
 
   const checkInReceipt = () => {
     for(let i=0; i < cart.length; i++) {
-        if(cart[i].status != 'pending' && cart[i].orderedBy == userObj['first_name']) {
+        if(cart[i].status != 'pending' && JSON.parse(cart[i].orderedBy)['username'] == userObj['username']) {
             return true
         }
     }
@@ -97,14 +97,20 @@ const handleOrder = async () => {
     for(let i=0; i < cart.length; i++) {
         console.log("CART STATUS")
         
-        if(cart[i].orderedBy == userObj['first_name'] && cart[i].status === 'pending') {
+        if(JSON.parse(cart[i].orderedBy)['username'] == userObj['username'] && cart[i].status === 'pending') {
             // cart.splice(i, 1)
             console.log("CHANGING STATUS")
             cart[i].status = 'ordered'
         }    
         console.log(cart[i])   
     }
-    ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'order', user: userObj['username']}))
+    ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'order',
+    user: 
+    JSON.stringify({"username": userObj['username'],
+    "first_name": userObj['first_name'],
+    "last_name": userObj['last_name'],
+    "id": userObj["id"]
+    })}))
     // ws.close()
     navigation.navigate('Receipt', {subtotal: subtotalValue})
 }
@@ -127,8 +133,11 @@ const getAllUsers = async () => {
     // console.log(userObj['name'])
     let temp = []
     for (let i = 0; i < cart.length; i++) {
-        if (!temp.includes(cart[i].orderedBy) && userObj['first_name'] != cart[i].orderedBy && cart[i].status == 'pending') {
-            temp.push(cart[i]. orderedBy)
+        if (!temp.includes(cart[i].orderedBy) && userObj['username'] != JSON.parse(cart[i].orderedBy)['username'] && cart[i].status == 'pending') {
+            // console.log("herereasdfre")
+            // console.log(userObj["username"])
+            // console.log(cart[i].orderedBy['username'])
+            temp.push(cart[i].orderedBy)
         }
     }
     setUsers(temp)
@@ -178,7 +187,7 @@ const handleTip = () => {
             
 
             {cart.map(order => (
-                (order.status == 'pending' && userObj['first_name'] == order.orderedBy) ?
+                (order.status == 'pending' && userObj['username'] == JSON.parse(order.orderedBy)['username']) ?
                 <CheckoutItem
                     key = {order.id}
                     id = {order.id}
@@ -200,7 +209,7 @@ const handleTip = () => {
             {users.map(user => (
                 <View style={{marginTop: Dimensions.get('window').height * 0.02}}>
                     <Text style= {[styles.title, {fontSize: 20}]}>
-                     {user}'s Items
+                     {JSON.parse(user).first_name}'s Items
                     </Text>
                     {cart.map(order => (
                         (order.status == 'pending' && user == order.orderedBy) ?

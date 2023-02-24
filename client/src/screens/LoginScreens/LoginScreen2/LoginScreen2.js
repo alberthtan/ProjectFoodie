@@ -81,6 +81,7 @@ const LoginScreen2 = ({navigation, route}) => {
             } else if (json['username'] === emailParam + '_CUSTOMER'){
                 setInvalid(false)
                 setToken(json.token.refresh, json.token.access)
+                console.log(json)
                 setUserObj(json)
                 setIsLoggedIn(true)
                 navigation.navigate('HomeTabs')  

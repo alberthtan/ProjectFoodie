@@ -6,6 +6,7 @@ import * as Haptics from 'expo-haptics'
 import trashIcon from '../../../assets/icons/trash.png'
 
 const CheckoutItem = ({navigation, sharedBy, id, name, price, handleDelete}) => {
+    console.log(sharedBy)
 
     return (
         <View style = {[styles.container, {flexDirection: 'row'}]}>
@@ -27,7 +28,7 @@ const CheckoutItem = ({navigation, sharedBy, id, name, price, handleDelete}) => 
                 </Text>
 
                 <Text style={[styles.sharedText, styles.faded, sharedBy.length == 0 ? styles.disappear: styles.appear]}>
-                    Shared with {sharedBy}
+                    Sharing with: {sharedBy.map(obj => JSON.parse(obj).first_name)}
                 </Text> 
 
             </View>

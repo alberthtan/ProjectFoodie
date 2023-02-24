@@ -54,7 +54,13 @@ const ItemScreen = ({route, navigation}) => {
     // }
     for (let i = 0; i < quantity; i++) {
       console.log("here")
-      ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'add', id: v4(), item: item, user: userObj['username']}))
+      ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'add', id: v4(), item: item, 
+        user: JSON.stringify({
+          "username": userObj['username'],
+          "first_name": userObj["first_name"],
+          "last_name": userObj["last_name"],
+          "id": userObj["id"]
+        })}))
     }
     // setCart(temp)
     // console.log(JSON.stringify({table_id: table_id, cart: temp}))

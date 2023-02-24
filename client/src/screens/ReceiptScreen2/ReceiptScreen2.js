@@ -33,7 +33,7 @@ const ReceiptScreen2 = ({route, navigation}) => {
     let subtotal = 0
     for(let i=0; i < cart.length; i++) {
         if(cart[i].status != 'pending') {
-            if(cart[i].orderedBy == userObj['first_name'] || cart[i].sharedBy.indexOf(userObj['first_name']) != -1) {
+            if(JSON.parse(cart[i].orderedBy)['username'] == userObj['username'] || cart[i].sharedBy.findIndex(obj => obj['username'] == userObj['username']) != -1) {
                 subtotal += cart[i].item.price / (cart[i].sharedBy.length + 1)
             }
         }
@@ -86,7 +86,7 @@ useEffect(() => {
             </Text>
 
             {cart.map(order => (
-                (order.status != 'pending' && (userObj['first_name'] == order.orderedBy)) ?
+                (order.status != 'pending' && (userObj['username'] == order.orderedBy['username'])) ?
                 <CheckoutItem
                     key = {order.id}
                     id = {order.id}
@@ -100,7 +100,7 @@ useEffect(() => {
             ))}
 
             {cart.map(order => (
-                (order.status != 'pending' && order.sharedBy.indexOf(userObj['first_name']) != -1) ?
+                (order.status != 'pending' && order.sharedBy.findIndex(obj => obj['username'] == userObj['username']) != -1) ?
                 <CheckoutItem
                     key = {order.id}
                     id = {order.id}

@@ -9,7 +9,17 @@ const SharedItem = ({ table_id, order, orderedBy, sharedBy, parentCallback}) => 
     const globalContext = useContext(Context)
     const { ws, userObj, cart } = globalContext
 
-    const [checked, setChecked] = useState(sharedBy.indexOf(userObj['first_name']) != -1)
+    const [checked, setChecked] = useState(sharedBy.indexOf(JSON.stringify({
+        "username": userObj['username'],
+        "first_name": userObj["first_name"],
+        "last_name": userObj["last_name"]
+    })) != -1)
+
+    // .indexOf({
+    //     "username": userObj['username'],
+    //     "first_name": userObj["first_name"],
+    //     "last_name": userObj["last_name"]
+    // })
     
 
   return (
@@ -19,22 +29,36 @@ const SharedItem = ({ table_id, order, orderedBy, sharedBy, parentCallback}) => 
             console.log("cart index")
             console.log(index)
             console.log(cart[index])
-            let index_of_name = cart[index]['sharedBy'].indexOf(userObj['first_name'])
+            let index_of_name = cart[index]['sharedBy'].indexOf(JSON.stringify({
+                "username": userObj['username'],
+                "first_name": userObj["first_name"],
+                "last_name": userObj["last_name"]
+            }))
 
             // If user wants to share item and they are not in shared list, add user
             if(!checked && index_of_name == -1) {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-                // cart[index]['sharedBy'].push(userObj['first_name'])
-                // console.log('sharedBy')
-                // console.log(cart[index]['sharedBy'])
-                ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'share', id: order.id, user: userObj['username']}))
+                ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'share', id: order.id, 
+                user: JSON.stringify({
+                    "username": userObj["username"],
+                    "first_name": userObj["first_name"],
+                    "last_name": userObj["last_name"],
+                    "id": userObj["id"]
+                })
+                }))
 
-                // ws.send(JSON.stringify({table_id: table_id, cart: cart}))
             } 
             // If user wants to remove from shared list and name is in list, remove user
             else if(checked && index_of_name != -1) {
                 // cart[index]['sharedBy'].splice(index_of_name, 1)
-                ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'unshare', id: order.id, user: userObj['username']}))
+                ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'unshare', id: order.id, 
+                user: JSON.stringify({
+                    "username": userObj["username"],
+                    "first_name": userObj["first_name"],
+                    "last_name": userObj["last_name"],
+                    "id": userObj["id"]
+                })
+            }))
                 // ws.send(JSON.stringify({table_id: table_id, cart: cart}))
             }
             
@@ -84,15 +108,15 @@ const SharedItem = ({ table_id, order, orderedBy, sharedBy, parentCallback}) => 
             
             {checked ? 
                 <Text style = {[styles.description, styles.faded]}>
-                    {"Sharing with: " + sharedBy}
+                    Sharing with: {sharedBy.map(obj => JSON.parse(obj).first_name)}
                 </Text> : 
                 <>
                     {order.sharedBy.length != 0 ? 
                         <Text style = {[styles.description, styles.faded]}>
-                            {"Shared with: " + sharedBy}
+                            Shared with: {sharedBy.map(obj => JSON.parse(obj).first_name)}
                         </Text> :
                         <Text style = {[styles.description, {opacity: 0}]}>
-                            {"Shared with: " + sharedBy}
+                            {"Shared with: "}
                         </Text>
                         }
                 </>
