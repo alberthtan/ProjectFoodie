@@ -104,7 +104,7 @@ const handleOrder = async () => {
         }    
         console.log(cart[i])   
     }
-    ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'order', user: userObj['first_name']}))
+    ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'order', user: userObj['username']}))
     // ws.close()
     navigation.navigate('Receipt', {subtotal: subtotalValue})
 }
