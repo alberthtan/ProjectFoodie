@@ -1,26 +1,66 @@
 import { StyleSheet, Text, View, Pressable, TouchableOpacity, Image, TouchableHighlight, Dimensions} from 'react-native'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import NumberFormat from 'react-number-format'
 
-const PastOrderItem = ({navigation, restaurantName, transactionDate, sharedBy, restaurantImage}) => {
+const PastOrderItem = ({navigation, user, timestamp, restaurant_id, cart_string}) => {
+    const [restaurant, setRestaurant] = useState(null)
+
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"];
+    const daySuffix = ["st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th",
+                    "th", "th", "th", "th", "th", "th", "th", "th", "th", "th",
+                    "st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th",
+                    "st"];
+    const date = new Date(timestamp);
+    const month = monthNames[date.getMonth()];
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const dayWithSuffix = day + daySuffix[day - 1];
+    const formattedDate = `${month} ${dayWithSuffix}, ${year}`;
+
+
+
+    const getRestaurant = async () => {
+        return fetch('https://dutch-pay-test.herokuapp.com/restaurants/' + restaurant_id + '/')
+      .then(response => response.json())
+      .then(json => {
+        setRestaurant(json)
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    }
+    
+    useEffect(()=>{
+        getRestaurant()
+    },[])
+
   return (
     <TouchableHighlight
         style = {styles.container}
         // onPress = {() => navigation.navigate('RestaurantScreen')}>
         underlayColor='#E5EFE3'
-        onPress = {() => navigation.navigate('Receipt2', {subtotal: 0})}>
+        onPress = {() => navigation.navigate('Receipt2', {restaurant: restaurant, cart_string: cart_string, timestamp: timestamp})}>
         <View style={{flexDirection: 'row', width: '100%', alignItems: 'center'}}>
             
             <View style={{width: '20%', borderRadius: 30, left: 10}}>
-                <Image style= {{width: 78, height: 60, borderRadius: 10}} source={{uri: restaurantImage}}/>
+                {restaurant && 
+                    <Image style= {{width: 78, height: 60, borderRadius: 10}} 
+                        source={{uri: restaurant.restaurant_image}}/>
+                }
             </View>
             <View style = {{width: '65%', marginLeft: '5%'}}>
-                <Text style = {styles.restaurantName}>{restaurantName}</Text>
+                {restaurant && 
+                    <Text style = {styles.restaurantName}>
+                        {restaurant.name}
+                    </Text>
+                }
+                
                 <Text style = {styles.transactionDate}>
-                    {transactionDate}
+                    {formattedDate}
                 </Text>
                 <Text style = {styles.sharedBy}>
-                    <Text style={{fontWeight: 'normal'}}>Shared with </Text>{sharedBy}
+                    <Text style={{fontWeight: 'normal'}}> MY CART </Text>
                 </Text>
             </View>
             {/* <TouchableOpacity style={styles.receipt} onPress={() => console.log("receipt pressed")}>

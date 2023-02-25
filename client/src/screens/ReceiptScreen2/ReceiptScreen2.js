@@ -20,14 +20,52 @@ import { Context } from '../../globalContext/globalContext'
 LogBox.ignoreLogs(['Warning: Each child in a list should have a unique "key" prop.'])
 
 const ReceiptScreen2 = ({route, navigation}) => {
-  const {subtotal} = route.params
+  const {subtotal, restaurant, cart_string, timestamp} = route.params
 
   const [subtotalValue, setSubtotalValue] = useState(subtotal)
   const [orderStatus, setOrderStatus] = useState('Order Complete')
-  const [timestamp, setTimestamp] = useState('Nov 11, 2022 at 12:59 pm')
+  const itemList = JSON.parse(cart_string)
+//   const [timestamp, setTimestamp] = useState('Nov 11, 2022 at 12:59 pm')
 
   const globalContext = useContext(Context)
-  const { ws, userObj, cart, setCart, setWs } = globalContext
+  const { userObj, cart, } = globalContext
+
+
+    
+
+
+    const getFormattedDate = (timestamp) => {
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+        const daySuffix = ["st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th",
+            "th", "th", "th", "th", "th", "th", "th", "th", "th", "th",
+            "st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th",
+            "st"];
+        const date = new Date(timestamp);
+        const month = monthNames[date.getMonth()];
+        const day = date.getDate();
+        const year = date.getFullYear();
+        const dayWithSuffix = day + daySuffix[day - 1];
+        const formattedDate = `${month} ${dayWithSuffix}, ${year}`;
+        return formattedDate
+    }
+    
+    const getFormattedTime = (timestamp) => {
+        const date = new Date(timestamp);
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        
+        // Convert the hours from a 24-hour format to a 12-hour format
+        const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+        
+        // Determine whether it's AM or PM
+        const amOrPm = hours < 12 ? "am" : "pm";
+        
+        const formattedTime = `${formattedHours}:${minutes.toString().padStart(2, "0")} ${amOrPm}`;
+        return formattedTime
+    }
+
+
 
   const calculateSubtotal = () => {
     let subtotal = 0
@@ -41,28 +79,13 @@ const ReceiptScreen2 = ({route, navigation}) => {
     setSubtotalValue(subtotal)
   }
 
-ws.onmessage = ({data}) => {
-    let message = JSON.parse(data)
-
-    if('clear' in message) {
-        navigation.navigate('HomeTabs')
-        console.log("closing websocket from frontend")
-        ws.close()
-        setWs(null)
-    } else {
-        let temp = []
-    
-        for (let i = 0; i < message.length; i++) {
-          temp.push(message[i])
-        }
-        setCart(temp)
-    }
-};
+console.log(cart_string)
 
 useEffect(() => {
     calculateSubtotal()
     }
 , [])
+
 
   return (
     <View style = {{flex: 1}}>
@@ -70,11 +93,11 @@ useEffect(() => {
         
         <ScrollView showsVerticalScrollIndicator = {false}>
 
-            <Image source={{uri: 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg'}} style={styles.headerImage}/>
+            <Image source={{uri: restaurant.restaurant_image}} style={styles.headerImage}/>
             
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style = {[styles.restaurantName, {fontWeight: 'bold', fontSize: Dimensions.get('window').height * 0.025}]}>
-                    Jack's Wife Freda
+                    {restaurant.name}
                 </Text>
                 <Text style={styles.orderStatus}>
                     {orderStatus}
