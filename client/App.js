@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, TextInput, Text } from 'react-native';
 import React, {Component, useEffect, useState} from 'react';
+// import { NavigationContainer } from '@react-navigation/native';
 import { NavigationContainer } from '@react-navigation/native';
 import {Provider} from './src/globalContext/globalContext.js'
-import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
-import * as SplashScreen from 'expo-splash-screen'
+// import * as SplashScreen from 'expo-splash-screen'
 // import useFonts from './src/globalContext/useFonts';
 import {useFonts, Jost_400Regular,  Jost_700Bold,} from '@expo-google-fonts/jost'
 import {Roboto_700Bold,} from '@expo-google-fonts/roboto'
