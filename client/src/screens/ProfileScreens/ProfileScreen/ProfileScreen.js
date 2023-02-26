@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
     borderRadius: 50,
-    backgroundColor: 'red',
+    backgroundColor: '#B2B2B2',
     marginTop: Dimensions.get('window').height * 0.07,
     alignSelf: 'center'
   },
@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
   profileName: {
     fontSize: 20,
     fontWeight: 'bold',
+    marginTop: Dimensions.get('window').height * 0.03,
     marginBottom: 30
     // marginVertical: 10
   },
