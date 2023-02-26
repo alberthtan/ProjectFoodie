@@ -26,17 +26,21 @@ const SharedItem = ({ table_id, order, orderedBy, sharedBy, parentCallback}) => 
     <Pressable style = {[styles.container, {flex: 1, flexDirection: 'row'}]}
         onPress={() => {
             let index = cart.indexOf(order)
-            console.log("cart index")
-            console.log(index)
-            console.log(cart[index])
+            // console.log("cart index")
+            // console.log(index)
+            // console.log(cart[index])
             let index_of_name = cart[index]['sharedBy'].indexOf(JSON.stringify({
                 "username": userObj['username'],
                 "first_name": userObj["first_name"],
-                "last_name": userObj["last_name"]
+                "last_name": userObj["last_name"],
+                "id": userObj["id"]
             }))
 
+            console.log("HERE")
+            console.log(index_of_name)
             // If user wants to share item and they are not in shared list, add user
             if(!checked && index_of_name == -1) {
+                console.log("SHARE")
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
                 ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'share', id: order.id, 
                 user: JSON.stringify({
@@ -50,6 +54,7 @@ const SharedItem = ({ table_id, order, orderedBy, sharedBy, parentCallback}) => 
             } 
             // If user wants to remove from shared list and name is in list, remove user
             else if(checked && index_of_name != -1) {
+                console.log("UNSHARE")
                 // cart[index]['sharedBy'].splice(index_of_name, 1)
                 ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'unshare', id: order.id, 
                 user: JSON.stringify({
@@ -64,7 +69,6 @@ const SharedItem = ({ table_id, order, orderedBy, sharedBy, parentCallback}) => 
             
 
         
-            console.log(checked)
             setChecked(!checked)
             if(!checked) { 
                 parentCallback(order.item.price/2) 
@@ -108,15 +112,25 @@ const SharedItem = ({ table_id, order, orderedBy, sharedBy, parentCallback}) => 
             
             {checked ? 
                 <Text style = {[styles.description, styles.faded]}>
-                    Sharing with: {sharedBy.map(obj => JSON.parse(obj).first_name)}
+                    Sharing with: {sharedBy.map(obj => {
+                        if(JSON.parse(obj).id == userObj['id']) {
+                            return "Me"
+                        }
+                        return JSON.parse(obj).first_name
+                    })}
                 </Text> : 
                 <>
                     {order.sharedBy.length != 0 ? 
                         <Text style = {[styles.description, styles.faded]}>
-                            Shared with: {sharedBy.map(obj => JSON.parse(obj).first_name)}
+                            Sharing with: {sharedBy.map(obj => {
+                                if(JSON.parse(obj).id == userObj['id']) {
+                                    return "Me"
+                                }
+                                return JSON.parse(obj).first_name
+                            })}
                         </Text> :
-                        <Text style = {[styles.description, {opacity: 0}]}>
-                            {"Shared with: "}
+                        <Text style = {[styles.description, styles.faded, {opacity: 0}]}>
+                            {"Sharing with: "}
                         </Text>
                         }
                 </>
