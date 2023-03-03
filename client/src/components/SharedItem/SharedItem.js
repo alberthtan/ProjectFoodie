@@ -5,30 +5,23 @@ import checkIcon from '../../../assets/icons/checkmark.png';
 import { Context } from '../../globalContext/globalContext';
 import * as Haptics from 'expo-haptics'
 
-const SharedItem = ({ table_id, order, orderedBy, sharedBy, parentCallback}) => {
+const SharedItem = ({ table_id, order, orderedBy, sharedBy, parentCallback, subtotalValue, setSubtotalValue}) => {
     const globalContext = useContext(Context)
     const { ws, userObj, cart } = globalContext
+    const {sharedByValue, setSharedByValue} = useState(sharedBy)
 
     const [checked, setChecked] = useState(sharedBy.indexOf(JSON.stringify({
         "username": userObj['username'],
         "first_name": userObj["first_name"],
-        "last_name": userObj["last_name"]
+        "last_name": userObj["last_name"],
+        "id": userObj["id"]
     })) != -1)
-
-    // .indexOf({
-    //     "username": userObj['username'],
-    //     "first_name": userObj["first_name"],
-    //     "last_name": userObj["last_name"]
-    // })
     
 
   return (
     <Pressable style = {[styles.container, {flex: 1, flexDirection: 'row'}]}
         onPress={() => {
             let index = cart.indexOf(order)
-            // console.log("cart index")
-            // console.log(index)
-            // console.log(cart[index])
             let index_of_name = cart[index]['sharedBy'].indexOf(JSON.stringify({
                 "username": userObj['username'],
                 "first_name": userObj["first_name"],
@@ -37,7 +30,7 @@ const SharedItem = ({ table_id, order, orderedBy, sharedBy, parentCallback}) => 
             }))
 
             console.log("HERE")
-            console.log(index_of_name)
+            // console.log(index_of_name)
             // If user wants to share item and they are not in shared list, add user
             if(!checked && index_of_name == -1) {
                 console.log("SHARE")
@@ -70,11 +63,17 @@ const SharedItem = ({ table_id, order, orderedBy, sharedBy, parentCallback}) => 
 
         
             setChecked(!checked)
-            if(!checked) { 
-                parentCallback(order.item.price/2) 
-            } else { 
-                parentCallback(-1 * order.item.price/2) 
+
+            if(checked) {
+
+                setSubtotalValue(subtotalValue - order.item.price / (sharedBy.length + 1))
             }
+            else {
+                console.log("HEYYY")
+                console.log(subtotalValue)
+                setSubtotalValue(subtotalValue + order.item.price / (sharedBy.length + 2))
+            }
+            // parentCallback(cart)
     }}>
             
             {checked ? 
@@ -140,7 +139,7 @@ const SharedItem = ({ table_id, order, orderedBy, sharedBy, parentCallback}) => 
         {checked ? 
         <View style={styles.price}>
             <NumberFormat
-                value = {order.item.price/ (order.sharedBy.length + 1)}
+                value = {order.item.price / (sharedBy.length + 1)}
                 displayType = "text"
                 thousandSeparator={true}
                 prefix = "$"

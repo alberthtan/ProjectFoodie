@@ -29,7 +29,7 @@ const ItemScreen = ({route, navigation}) => {
   }
 
   ws.onmessage = ({data}) => {
-    console.log(JSON.parse(data))
+    // console.log(JSON.parse(data))
     let message = JSON.parse(data)
 
     if('clear' in message) {

@@ -21,23 +21,29 @@ LogBox.ignoreLogs(['Warning: Each child in a list should have a unique "key" pro
 const CheckoutScreen = ({route, navigation}) => {
   const {subtotal, restaurant_id, active_menu, table_id, restaurant_name} = route.params
 
-  const [subtotalValue, setSubtotalValue] = useState(subtotal)
+  const [subtotalValue, setSubtotalValue] = useState(0)
   const [users, setUsers] = useState([])
 
   const globalContext = useContext(Context)
   const { ws, userObj, cart, setCart, setWs } = globalContext
 
-  const calculateSubtotal = () => {
+  const calculateSubtotal = (cart) => {
     let subtotal = 0
     for(let i=0; i < cart.length; i++) {
         if(cart[i].status == 'pending') {
-            if(JSON.parse(cart[i].orderedBy)['username'] == userObj['username'] || cart[i].sharedBy.findIndex(obj => obj['username'] == userObj['username']) != -1) {
+            if(JSON.parse(cart[i].orderedBy)['username'] == userObj['username'] || cart[i].sharedBy.indexOf(JSON.stringify({
+                "username": userObj['username'],
+                "first_name": userObj["first_name"],
+                "last_name": userObj["last_name"],
+                "id": userObj["id"]
+            })) != -1) {
                 
                 subtotal += cart[i].item.price / (cart[i].sharedBy.length + 1)
-                console.log(subtotal)
             }
         }
     }
+    console.log("SUBTOTAL")
+    console.log(subtotal)
     setSubtotalValue(subtotal)
   }
 
@@ -77,20 +83,23 @@ ws.onmessage = ({data}) => {
         setWs(null)
     } else {
         let temp = []
-        console.log('got here')
-        console.log(message)
+        console.log('got here asdfasdf')
+        // console.log(message)
         
         for (let i = 0; i < message.length; i++) {
           temp.push(message[i])
         }
+        calculateSubtotal(temp)
         setCart(temp)
     }
 };
 
 useEffect(() => {
-    calculateSubtotal()
+    calculateSubtotal(cart)
+    console.log('heeeree')
+    console.log(subtotalValue)
     }
-, [cart])
+, [])
 
 
 const handleOrder = async () => {
@@ -102,7 +111,7 @@ const handleOrder = async () => {
             console.log("CHANGING STATUS")
             cart[i].status = 'ordered'
         }    
-        console.log(cart[i])   
+        // console.log(cart[i])   
     }
     ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'order',
     user: 
@@ -121,6 +130,14 @@ const handleShared = (childData) => {
 }
 
 const handleDelete = (key) => {
+    for(let i = 0; i < cart.length; i++) {
+        if(cart[i].id == key) {
+            console.log(cart[i])
+            cart.splice(i, 1)
+            // console.log(cart)
+            break
+        }
+    }
     ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'delete', id: key}))
 }
 
@@ -218,7 +235,9 @@ const handleTip = () => {
                             order = {order}
                             table_id = {table_id}
                             sharedBy = {order.sharedBy}
-                            parentCallback = {handleShared}
+                            parentCallback = {calculateSubtotal}
+                            subtotalValue = {subtotalValue}
+                            setSubtotalValue = {setSubtotalValue}
                         /> :
                         <></>
                     ))

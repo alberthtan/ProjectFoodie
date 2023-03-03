@@ -19,7 +19,7 @@ const TestScreen = () => {
 
   useEffect(() => {
     ws.onmessage = ({data}) => {
-      console.log({data})
+      // console.log({data})
       serverMessagesList.push({data});
       console.log(serverMessagesList)
       setServerMessages(serverMessagesList)

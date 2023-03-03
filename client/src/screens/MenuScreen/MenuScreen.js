@@ -24,7 +24,7 @@ const MenuScreen = ({route, navigation}) => {
 
   ws.onmessage = ({data}) => {
     console.log("ACQUIRING MESSAGE IN MENU")
-    console.log(data)
+    // console.log(data)
     let message = JSON.parse(data)
 
     if('clear' in message) {
@@ -33,7 +33,7 @@ const MenuScreen = ({route, navigation}) => {
       ws.close()
       setWs(null)
     } else {
-      console.log(message)
+      // console.log(message)
       let temp = []
       
       for (let i = 0; i < message.length; i++) {
