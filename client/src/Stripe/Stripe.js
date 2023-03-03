@@ -9,55 +9,20 @@ const Stripe = () => {
 
     const { userObj, getToken } = globalContext
 
-    // const {createToken} = useStripe();
     const [loading, setLoading] = useState(false);
     const [cardDetails, setCardDetails] = useState(CardFieldInput | null);
-    const [stripeCustomerId, setStripeCustomerId] = useState(null);
 
-    useEffect(() => {
-      getToken("access").then((accessToken) => {
-        fetch('https://dutch-pay-test.herokuapp.com/stripe-customers', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }).then(response => response.json())
-      .then(json => {
-        console.log(json)
-        setStripeCustomerId(json[0]['id'])
-      }
-      )
-    })}, [])
 
-    // const [cardDetails, setCardDetails] = useState({
-    //     complete: false,
-    //     error: null,
-    //   });
-    
-      const handleCardDetailsChange = (details) => {
-        console.log("fuck")
-        setCardDetails(details);
-        console.log(cardDetails)
-      };
+    const handleCardDetailsChange = (details) => {
+      setCardDetails(details);
+      console.log(cardDetails)
+    };
 
 
     const handleCreatePaymentMethod = async () => {
         setLoading(true);
         console.log(cardDetails.last4)
         const { token, error: tokenError } = await createToken({
-            // bankAccount: cardDetails.bankAccount,
-            // "bankAccount": null, 
-            // "card": {"address": null, 
-            // "brand": "MasterCard", 
-            // "country": "US", 
-            // "currency": null, 
-            // "expMonth": 6, 
-            // "expYear": 2024, 
-            // "funding": "Credit", 
-            // "id": "card_1MhPbgFsXLeRVzOVeh7L1ovz", 
-            // "last4": "0413", 
-            // "name": null}, "created": "1677815312000", "id": "tok_1MhPbgFsXLeRVzOVavmznBPB", "livemode": true, "type": "Card",
             ...cardDetails,
             type: 'Card',
           });
@@ -77,7 +42,6 @@ const Stripe = () => {
         console.log(accessToken)
 
         console.log("STRIPE")
-        console.log(stripeCustomerId)
         console.log(token["card"]["id"])
         fetch('https://dutch-pay-test.herokuapp.com/add-card/', {
           method: 'POST',
@@ -86,8 +50,6 @@ const Stripe = () => {
             Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
-            // payment_method_id: paymentMethodId,
-            // stripe_customer_id: stripeCustomerId,
             token: token["id"],
           }),
         });
