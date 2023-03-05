@@ -6,17 +6,16 @@ import trashIcon from '../../../assets/icons/trash.png'
 import { Context } from '../../globalContext/globalContext'
 import * as Haptics from 'expo-haptics'
 
-const PaymentMethodItem = ({navigation, id, cardEndDigits, defaultPaymentMethodID, cardType, cardCompany, bankCompany, handleDelete}) => {
+const PaymentMethodItem = ({id, cardEndDigits, defaultPaymentMethodID, setDefaultPaymentMethodID, cardCompany, handleDelete}) => {
 
     const globalContext = useContext(Context)
-    const { userObj, getToken } = globalContext
+    const { getToken } = globalContext
 
     const setDefaultPayment = async() => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
         let token = await getToken('access')
         authorization = "Bearer".concat(" ", token)
         console.log("SET DEFAULT")
-        console.log(id)
         return fetch('https://dutch-pay-test.herokuapp.com/update_default_payment_method/', {
             method: 'POST',
             headers: {
@@ -24,13 +23,13 @@ const PaymentMethodItem = ({navigation, id, cardEndDigits, defaultPaymentMethodI
                 'Content-Type': 'application/json',
                 Authorization: authorization,
             },
-            body: {
-                'pk': id
-            }
+            body: JSON.stringify({
+                pk: id
+            })
           })
           .then(response => response.json())
           .then(
-            console.log("UPDATED")
+            setDefaultPaymentMethodID(id)
           )
           .catch(error => {
               console.error(error);

@@ -72,10 +72,8 @@ const PaymentScreen = ({navigation}) => {
           console.log(json)
           for(let i=0; i < json.length; i++) {
             let paymentMethod = {
-              cardType: 'Debit',
               cardEndDigits: json[i]["last4"],
               cardCompany: json[i]["brand"],
-              bankCompany: 'Chase',
               id: json[i]['id']
             }
             paymentMethodsTemp.push(paymentMethod)
@@ -98,13 +96,12 @@ const PaymentScreen = ({navigation}) => {
     const onePaymentMethod = ({item}) => (
       <PaymentMethodItem
           navigation = {navigation}
-          cardType = {item.cardType}
           cardEndDigits= {item.cardEndDigits}
-          bankCompany = {item.bankCompany}
           cardCompany = {item.cardCompany}
           id = {item.id}
           handleDelete = {handleDelete}
           defaultPaymentMethodID = {defaultPaymentMethodID}
+          setDefaultPaymentMethodID = {setDefaultPaymentMethodID}
       />
     )
 
