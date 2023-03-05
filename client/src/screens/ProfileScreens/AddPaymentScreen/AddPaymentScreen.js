@@ -34,51 +34,7 @@ const AddPaymentScreen = ({navigation}) => {
             </Text>
         </View>
 
-        <Stripe></Stripe>
-        <View style={{flex: 1, alignItems:'center'}}>
-
-            <CustomInput 
-                placeholder="Card number"
-                value={cardNumber} 
-                setValue={setCardNumber}
-                keyboardType="number-pad"
-                autoFocus={true}
-            />
-
-            <View style={{flexDirection: 'row', width: '95%'}}>
-                <View style={{flex: 1}}>
-                <CustomInput 
-                    placeholder="Expiration Date"
-                    value={expirationDate} 
-                    setValue={setExpirationDate}
-                    keyboardType="number-pad"
-                />
-                </View>
-
-                <View style={{flex: 1}}>
-                    <CustomInput 
-                        placeholder="CVC"
-                        value={cvc} 
-                        setValue={setCvc}
-                        keyboardType="number-pad"
-                    />
-                </View>
-
-            </View>
-
-            <CustomInput 
-                placeholder="Zipcode"
-                value={zipcode} 
-                setValue={setZipCode}
-                keyboardType="number-pad"
-            />
-            <View style={{alignItems: 'center', width: '100%', marginTop: '30%'}}>
-            <CustomButton
-                text = "Use This Card"
-                onPress = {() => {navigation.navigate("Payments"), console.log("using this card")}}
-                />
-            </View>
-        </View>
+        <Stripe navigation={navigation} />
     </View>
   )
 }

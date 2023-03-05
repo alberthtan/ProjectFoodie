@@ -3,7 +3,7 @@ import React, { useEffect, useContext, useState } from 'react'
 import {CardField, CardFieldInput, StripeProvider, useStripe, createToken, confirmPayment} from '@stripe/stripe-react-native'
 import { Context } from '../globalContext/globalContext'
 
-const Stripe = () => {
+const Stripe = ({navigation}) => {
 
     const globalContext = useContext(Context)
 
@@ -32,17 +32,8 @@ const Stripe = () => {
             return;
           }
 
-        console.log(token)
-        console.log(token["livemode"])
-        // delete token["card"]
-        console.log(token["id"])
-
-        // const paymentMethodId = paymentMethod.id;
         const accessToken = await getToken("access");
-        console.log(accessToken)
 
-        console.log("STRIPE")
-        console.log(token["card"]["id"])
         fetch('https://dutch-pay-test.herokuapp.com/add-card/', {
           method: 'POST',
           headers: {
@@ -54,6 +45,7 @@ const Stripe = () => {
           }),
         });
         setLoading(false);
+        navigation.goBack()
     };
 
   return (
@@ -68,11 +60,12 @@ const Stripe = () => {
                 postalCodeEnabled={false}
                 style={{
                     height: 50,
-                    width: '100%'
+                    width: '100%', 
+                    
                 }}
                 onCardChange={handleCardDetailsChange}
                 />
-                <Button title="Pay Now" onPress={handleCreatePaymentMethod} disabled={loading}/>
+                <Button title="Add Payment" onPress={handleCreatePaymentMethod} disabled={loading}/>
             </View>
         </SafeAreaView>
 

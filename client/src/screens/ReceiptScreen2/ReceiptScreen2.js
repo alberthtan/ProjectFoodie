@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     headerImage: {
         width: '100%',
         height: Dimensions.get('window').height * 0.25,
-        backgroundColor: 'blue'
+        // backgroundColor: 'blue'
     },
 
     orderButton:{

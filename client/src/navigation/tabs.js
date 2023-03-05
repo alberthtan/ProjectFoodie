@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/HomeScreen';
 import CameraScreen from '../screens/CameraScreen';
 import ProfileScreen from '../screens/ProfileScreens/ProfileScreen';
+import PastOrdersScreen from '../screens/ProfileScreens/PastOrdersScreen';
 
 import TestScreen from '../screens/TestScreen';
 
@@ -18,10 +19,10 @@ const Tabs = () => {
     // const { count } = route.params
     return(
         <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false}}
-                        initialRouteName="Home">
+                        initialRouteName="PastOrders">
             <Tab.Screen 
-                name="Home" 
-                component={HomeScreen}
+                name="PastOrders" 
+                component={PastOrdersScreen}
                 options={{
                     tabBarIcon: ({focused}) => (
                         <View style = {{alignItems:'center', justifyContent: 'center', top: 10}}>

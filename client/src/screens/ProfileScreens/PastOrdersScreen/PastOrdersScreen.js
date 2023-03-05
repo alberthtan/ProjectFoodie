@@ -1,10 +1,11 @@
-import { Dimensions, View, StyleSheet} from 'react-native'
+import { Dimensions, View, StyleSheet, Text} from 'react-native'
 import React, {useContext, useState, useEffect}  from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 
 import PastOrderItem from '../../../components/PastOrderItem'
 import HeaderBar from '../../../components/HeaderBar'
 import { Context } from '../../../globalContext/globalContext'
+import { useIsFocused } from '@react-navigation/native'
 
 
 const PastOrdersScreen = ({navigation}) => {
@@ -14,6 +15,8 @@ const PastOrdersScreen = ({navigation}) => {
   const globalContext = useContext(Context)
 
   const { userObj } = globalContext
+
+  const isFocused = useIsFocused();
 
 
   const getReceipts = async () => {
@@ -29,8 +32,10 @@ const PastOrdersScreen = ({navigation}) => {
   };
 
   useEffect(() => {
-    getReceipts()
-  }, [])
+    if(isFocused) {
+      getReceipts()
+    }
+  }, [isFocused])
   
 const oneOrder = ({item}) => (
   <PastOrderItem
@@ -44,14 +49,54 @@ const oneOrder = ({item}) => (
 
   return (
     <View style = {styles.container}>
-      <HeaderBar name="Past Orders" navigation={navigation}/>
-      <View style={{flex: 1}}>
+      {/* <HeaderBar name="Past Orders" navigation={navigation}/> */}
+      {pastOrderList.length != 0 ?
+      <>
+        <View style = {styles.title2}>
+          <Text style={styles.text}>  DutchPay </Text>
+        </View>
+      <View style={{flex: 5}}>
         <FlatList
           data={pastOrderList}
           renderItem={oneOrder}
           showsHorizontalScrollIndicator = {false}
         />
       </View>
+      </>
+      :
+      <>
+        <View style={styles.titleContainer}>
+          <Text style = {styles.title}>
+            Welcome to <Text style={{color: '#3C6F37'}}>DutchPay</Text>
+          </Text>
+        </View>
+        
+
+        <View style = {styles.subtitleContainer}>
+          <Text style = {styles.subtitle}>
+            When you order at restaurants with the
+          </Text>
+          <Text style = {styles.subtitle}>
+            DutchPay camera, you'll see your orders and the 
+          </Text>
+          <Text style = {styles.subtitle}>
+            people you shared them with!
+          </Text>
+        </View>
+      </>
+
+      
+      }
+      {/* <View style = {styles.title2}>
+        <Text style={styles.text}>  DutchPay </Text>
+      </View>
+      <View style={{flex: 5}}>
+        <FlatList
+          data={pastOrderList}
+          renderItem={oneOrder}
+          showsHorizontalScrollIndicator = {false}
+        />
+      </View> */}
     </View>
   )
 }
@@ -61,17 +106,17 @@ const styles = StyleSheet.create({
         flex: 1, 
     },
 
-    backButton: {
-        height: 30,
-        marginTop: Dimensions.get('window').height * 0.07,
-        marginLeft: 0,
-        alignSelf: 'flex-start'
-    },
+    // backButton: {
+    //     height: 30,
+    //     marginTop: Dimensions.get('window').height * 0.07,
+    //     marginLeft: 0,
+    //     alignSelf: 'flex-start'
+    // },
 
-    title: {
-        fontSize: 25,
-        fontWeight: 'bold',
-      },
+    // title: {
+    //     fontSize: 25,
+    //     fontWeight: 'bold',
+    //   },
 
 //     title: {
 //       fontSize: 30,
@@ -81,12 +126,67 @@ const styles = StyleSheet.create({
 //       marginTop: Dimensions.get('window').height * 0.07,
 //   },
 
-    filter: {
-      height: 15,
-      width: 15,
-      padding: 12,
-      justifyContent: 'center',
-      marginLeft: 15
+  //   filter: {
+  //     height: 15,
+  //     width: 15,
+  //     padding: 12,
+  //     justifyContent: 'center',
+  //     marginLeft: 15
+  // },
+
+  title2: {
+    // justifyContent: 'center',
+    // position: 'absolute',
+    flex: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: '#D9D9D9',
+
+    shadowColor: '#171717',
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+    shadowOffset: {width: 0, height:10},
+    backgroundColor: '#f6f5f5',
+    // backgroundColor: 'blue',
+    // top: Dimensions.get('window').height * 0.08,
+    // left: Dimensions.get('window').width * 0.05
+  },
+
+  text: {
+    fontSize: Dimensions.get('window').width * 0.075, 
+    fontWeight: 'bold',
+    fontFamily: 'Roboto_700Bold',
+    color: '#3C6F37',
+    bottom: Dimensions.get('window').height * 0.03,
+    position: 'absolute'
+  },
+
+  titleContainer: {
+    flex: 1,
+    // backgroundColor: 'red',
+    // justifyContent: 'center'
+  },
+
+  title: {
+    alignSelf: 'center', 
+    fontSize: Dimensions.get('window').width * 0.075, 
+    fontWeight: 'bold',
+    fontFamily: 'Roboto_700Bold',
+    position: 'absolute',
+    bottom: Dimensions.get('window').width * 0.05,
+  },
+  subtitleContainer: {
+    flex: 1,
+    // justifyContent: 'center',
+  },
+  
+  subtitle: {
+    alignSelf: 'center',
+    fontFamily: 'Jost_400Regular',
+    fontSize: Dimensions.get('window').width * 0.04,
+    marginVertical: 5,
+    textAlign: 'center',
+    // position: "absolute",
+    top: Dimensions.get('window').width * 0.05
   },
 })
 

@@ -143,7 +143,7 @@ const ProfileScreen = ({navigation}) => {
       <ScrollView style ={{height: '100%', flex: 1}} showsVerticalScrollIndicator = {true}>
         <View style={styles.profileBody}>
           <ProfileButton name="Update Profile" onPress={() => navigation.navigate('EditProfile')} imageSource={profileIcon2}/>
-          <ProfileButton name="Past Orders" onPress={() => navigation.navigate('PastOrders')} imageSource={pastorders}/>
+          {/* <ProfileButton name="Past Orders" onPress={() => navigation.navigate('PastOrders')} imageSource={pastorders}/> */}
           <ProfileButton name="Payment Methods" onPress={() => navigation.navigate('Payments')} imageSource={payment}/>
         </View>
         <View style={styles.profileFooter}>

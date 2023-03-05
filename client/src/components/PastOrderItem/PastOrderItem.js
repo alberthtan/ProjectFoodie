@@ -39,7 +39,7 @@ const PastOrderItem = ({navigation, user, timestamp, restaurant_id, cart_string}
     <TouchableHighlight
         style = {styles.container}
         // onPress = {() => navigation.navigate('RestaurantScreen')}>
-        underlayColor='#E5EFE3'
+        underlayColor='#DCDCDC'
         onPress = {() => navigation.navigate('Receipt2', {restaurant: restaurant, cart_string: cart_string, timestamp: timestamp})}>
         <View style={{flexDirection: 'row', width: '100%', alignItems: 'center'}}>
             
