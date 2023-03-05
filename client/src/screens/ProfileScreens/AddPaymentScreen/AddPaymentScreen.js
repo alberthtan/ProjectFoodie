@@ -3,16 +3,10 @@ import React, {useState}  from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 
 import xIcon from '../../../../assets/icons/xicon.png'
-import CustomButton from '../../../components/CustomButton'
-import CustomInput from '../../../components/CustomInput'
 import Stripe from '../../../Stripe/Stripe'
 
 
 const AddPaymentScreen = ({navigation}) => {
-    const [cardNumber, setCardNumber] = useState('')
-    const [expirationDate, setExpirationDate] = useState('')
-    const [cvc, setCvc] = useState('')
-    const [zipcode, setZipCode] = useState('')
 
   return (
     <View style = {styles.container}>

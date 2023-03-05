@@ -87,9 +87,13 @@ const PaymentScreen = ({navigation}) => {
     }
 
     useEffect(() => {
+      console.log("is focused?")
       if(isFocused) {
-        getPaymentMethods()
+        getPaymentMethods();
         getDefaultPaymentMethod()
+        setTimeout(() => {
+          getPaymentMethods()
+        }, 1000);
       }
     }, [isFocused])
 
