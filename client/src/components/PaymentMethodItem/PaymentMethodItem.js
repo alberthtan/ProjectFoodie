@@ -4,13 +4,41 @@ import NumberFormat from 'react-number-format'
 import trashIcon from '../../../assets/icons/trash.png'
 
 import { Context } from '../../globalContext/globalContext'
+import * as Haptics from 'expo-haptics'
 
-const PaymentMethodItem = ({navigation, id, cardEndDigits, cardType, cardCompany, bankCompany, handleDelete}) => {
+const PaymentMethodItem = ({navigation, id, cardEndDigits, defaultPaymentMethodID, cardType, cardCompany, bankCompany, handleDelete}) => {
 
     const globalContext = useContext(Context)
     const { userObj, getToken } = globalContext
 
+    const setDefaultPayment = async() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+        let token = await getToken('access')
+        authorization = "Bearer".concat(" ", token)
+        console.log("SET DEFAULT")
+        console.log(id)
+        return fetch('https://dutch-pay-test.herokuapp.com/update_default_payment_method/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: authorization,
+            },
+            body: {
+                'pk': id
+            }
+          })
+          .then(response => response.json())
+          .then(
+            console.log("UPDATED")
+          )
+          .catch(error => {
+              console.error(error);
+          });
+    }
+
     const deletePayment = async () => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
         let token = await getToken('access')
         authorization = "Bearer".concat(" ", token)
         return fetch('https://dutch-pay-test.herokuapp.com/delete-card/' + id + '/', {
@@ -34,16 +62,29 @@ const PaymentMethodItem = ({navigation, id, cardEndDigits, cardType, cardCompany
     return (
         <View style = {styles.container}>
             <View style={{flexDirection: 'row', width: '100%', alignItems: 'center'}}>
-                <View style={{width: '20%', borderRadius: 30,}}>
+                <View style={{flex: 1, borderRadius: 30}}>
                     <Image style= {{width: 65, height: 50, borderRadius: 10}} source={{uri: 'https://1000logos.net/wp-content/uploads/2017/06/VISA-Logo-1992.png'}}/>
                 </View>
-                <View style = {{width: '63%'}}>
+                <View style = {{flex: 2}}>
                     {/* <Text style = {{fontWeight: 'bold'}}>{bankCompany}</Text> */}
                     <Text style = {styles.cardType}>
-                         ....{cardEndDigits}
+                         ....{cardEndDigits} 
                     </Text>
                 </View>
-                <TouchableOpacity
+                {(id !== defaultPaymentMethodID) ? 
+                    <TouchableOpacity style={{flex: 1}}
+                        onPress={setDefaultPayment}>
+                        <Text style = {[styles.nondefault]}>
+                            SET 
+                        </Text>
+                    </TouchableOpacity> : 
+                    <View style={{flex: 1}}>
+                        <Text style = {[styles.default]}>
+                            DEFAULT 
+                        </Text>
+                    </View>
+                }
+                <TouchableOpacity style={{flex: 1}}
                     onPress={deletePayment}>
                     <Image source={trashIcon} resizeMode="contain" style={styles.trash}/>
                 </TouchableOpacity>
@@ -55,7 +96,7 @@ const PaymentMethodItem = ({navigation, id, cardEndDigits, cardType, cardCompany
 const styles = StyleSheet.create({
     container: {
         marginVertical: 10,
-        marginLeft: 20,
+        paddingLeft: 20,
         width: '100%',
         justifyContent: 'center',
         height: 60,
@@ -77,7 +118,7 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
         alignSelf:'center',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         tintColor: '#000000',
     },
     
@@ -87,6 +128,20 @@ const styles = StyleSheet.create({
         padding: 10,
         textAlign: 'center',
         alignSelf: 'center'
+    },
+
+    default: {
+        color: 'green',
+        fontWeight: 'bold',
+        fontSize: 16,
+        textAlign: 'center'
+    },
+
+    nondefault: {
+        color: 'gray',
+        fontWeight: 'bold',
+        fontSize: 16,
+        textAlign: 'center'
     }
 })
 

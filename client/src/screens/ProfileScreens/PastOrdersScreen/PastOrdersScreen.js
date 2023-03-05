@@ -12,6 +12,7 @@ const PastOrdersScreen = ({navigation}) => {
 
   // const [tableid, setTableID] = useState('')
   const [pastOrderList, setPastOrderList] = useState([])
+  const [loaded, setLoaded] = useState(null)
   const globalContext = useContext(Context)
 
   const { userObj } = globalContext
@@ -20,11 +21,14 @@ const PastOrdersScreen = ({navigation}) => {
 
 
   const getReceipts = async () => {
+    // setLoaded(!loaded)
+    console.log(isFocused)
     return fetch('https://dutch-pay-test.herokuapp.com/receipts/?format=json')
       .then(response => response.json())
       .then(json => {
         let result = json.filter(order => order.user === userObj['id'])
         setPastOrderList(result)
+        setLoaded(true)
       })
       .catch(error => {
         console.error(error);
@@ -32,10 +36,8 @@ const PastOrdersScreen = ({navigation}) => {
   };
 
   useEffect(() => {
-    if(isFocused) {
-      getReceipts()
-    }
-  }, [isFocused])
+    getReceipts()
+  }, [isFocused, loaded])
   
 const oneOrder = ({item}) => (
   <PastOrderItem
@@ -49,8 +51,9 @@ const oneOrder = ({item}) => (
 
   return (
     <View style = {styles.container}>
-      {/* <HeaderBar name="Past Orders" navigation={navigation}/> */}
-      {pastOrderList.length != 0 ?
+
+    {
+      pastOrderList.length != 0 ?
       <>
         <View style = {styles.title2}>
           <Text style={styles.text}>  DutchPay </Text>
@@ -84,8 +87,6 @@ const oneOrder = ({item}) => (
           </Text>
         </View>
       </>
-
-      
       }
       {/* <View style = {styles.title2}>
         <Text style={styles.text}>  DutchPay </Text>

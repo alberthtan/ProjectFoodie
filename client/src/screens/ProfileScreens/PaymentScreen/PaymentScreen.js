@@ -9,27 +9,48 @@ import HeaderBar from '../../../components/HeaderBar'
 
 import { Context } from '../../../globalContext/globalContext'
 
-const paymentMethodList = [
-  {
-    id: 1,
-    cardType: 'Debit',
-    cardEndDigits: '1234',
-    cardCompany: 'Visa',
-    bankCompany: 'Chase',
-  },
-]
-
 const PaymentScreen = ({navigation}) => {
 
     const globalContext = useContext(Context)
     const { getToken } = globalContext
 
     const [paymentMethods, setPaymentMethods] = useState([])
+    const [defaultPaymentMethodID, setDefaultPaymentMethodID] = useState(null)
     const isFocused = useIsFocused();
 
     const handleDelete = (id) => {
         let temp = paymentMethods.filter(paymentMethod => paymentMethod.id !== id);
         setPaymentMethods(temp)
+    }
+
+    const getDefaultPaymentMethod = async () => {
+      let token = await getToken('access')
+      authorization = "Bearer".concat(" ", token)
+      console.log("getting authorization")
+      console.log("YOOOO")
+      console.log(authorization)
+      console.log(isFocused)
+      return fetch('https://dutch-pay-test.herokuapp.com/get_default_payment_method', {
+          method: 'GET',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              Authorization: authorization,
+          },
+        })
+        .then(response => response.json())
+        .then(json => {
+          console.log("DEFAULT")
+          if('default' in json) {
+            setDefaultPaymentMethodID(json['default'])
+          } else {
+            console.log("no default payment method")
+          }
+          
+        })
+        .catch(error => {
+            console.error(error);
+        });
     }
 
     const getPaymentMethods = async () => {
@@ -70,6 +91,7 @@ const PaymentScreen = ({navigation}) => {
     useEffect(() => {
       if(isFocused) {
         getPaymentMethods()
+        getDefaultPaymentMethod()
       }
     }, [isFocused])
 
@@ -82,6 +104,7 @@ const PaymentScreen = ({navigation}) => {
           cardCompany = {item.cardCompany}
           id = {item.id}
           handleDelete = {handleDelete}
+          defaultPaymentMethodID = {defaultPaymentMethodID}
       />
     )
 
@@ -101,7 +124,6 @@ const PaymentScreen = ({navigation}) => {
                 onPress = {() => navigation.navigate("AddPayment")}
                 />
           </View>
-          
         </View>
       </View>
     )
