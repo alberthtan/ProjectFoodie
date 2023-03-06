@@ -11,8 +11,8 @@ import { useIsFocused } from '@react-navigation/native'
 const PastOrdersScreen = ({navigation}) => {
 
   // const [tableid, setTableID] = useState('')
-  const [pastOrderList, setPastOrderList] = useState([])
-  const [loaded, setLoaded] = useState(null)
+  const [pastOrderList, setPastOrderList] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
   const globalContext = useContext(Context)
 
   const { userObj } = globalContext
@@ -26,9 +26,26 @@ const PastOrdersScreen = ({navigation}) => {
     return fetch('https://dutch-pay-test.herokuapp.com/receipts/?format=json')
       .then(response => response.json())
       .then(json => {
+        console.log(json)
+        console.log(json.length)
         let result = json.filter(order => order.user === userObj['id'])
+        // let result = []
+        // for(let i = 0; i < json.length; i++) {
+        //   console.log("outside")
+        //   console.log(json[i].user)
+        //   console.log(typeof userObj)
+        //   if (json[i].user === userObj['id'] ) {
+        //     console.log("inside")
+        //     console.log(json[i])
+        //     result.push(json[i])
+        //   }
+        // }
+        console.log(result)
+        // console.log(json)
+        console.log("here")
         setPastOrderList(result)
-        setLoaded(true)
+        // setLoaded(true)
+        setIsLoading(false)
       })
       .catch(error => {
         console.error(error);
@@ -36,8 +53,17 @@ const PastOrdersScreen = ({navigation}) => {
   };
 
   useEffect(() => {
+    // console.log(userObj)
+    // while(true) {
+    //   console.log("here")
+    //   if(userObj) { break }
+    //   setTimeout(() => {
+    //     console.log(userObj)
+    //   }, 1000);
+    // }
     getReceipts()
-  }, [isFocused, loaded])
+  }, [userObj])
+  
   
 const oneOrder = ({item}) => (
   <PastOrderItem
@@ -49,11 +75,19 @@ const oneOrder = ({item}) => (
   />
 )
 
+if (isLoading || pastOrderList == null || userObj == false) {
+  console.log(pastOrderList)
+  return(<><Text>Loading</Text></>)
+}
+
   return (
+    console.log("PasO"),
+    console.log(pastOrderList),
+    // getReceipts(),
     <View style = {styles.container}>
 
-    {
-      pastOrderList.length != 0 ?
+    {userObj != false ?
+      pastOrderList != [] ?
       <>
         <View style = {styles.title2}>
           <Text style={styles.text}>  DutchPay </Text>
@@ -87,6 +121,8 @@ const oneOrder = ({item}) => (
           </Text>
         </View>
       </>
+      :
+      <></>
       }
       {/* <View style = {styles.title2}>
         <Text style={styles.text}>  DutchPay </Text>

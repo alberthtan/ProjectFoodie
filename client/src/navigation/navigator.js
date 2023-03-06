@@ -38,6 +38,7 @@ const Navigator = () => {
     const [isLoading, setIsLoading] = useState(true)
 
     const getUser = async () => {
+      console.log("FETCHING LSDKFJSLDKFJSDLKFJSLDFKJSDLFKJSDLKFJ")
         let token = await getToken('access')
         console.log(token)
         authorization = "Bearer".concat(" ", token)
@@ -54,6 +55,7 @@ const Navigator = () => {
         .then(response => response.json())
         .then(json => {
           setUserObj(json)
+          console.log("SETTTTTING")
         })
         .catch(error => {
             console.error(error);

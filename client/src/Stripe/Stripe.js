@@ -50,14 +50,14 @@ const Stripe = ({navigation}) => {
 
   return (
     <StripeProvider
-        publishableKey="pk_test_51Mg3eiFsXLeRVzOVO5KIPsOT13pU8MbJss8HLpEeUmyEkqKazhvDwFRoKbq8qIMzgZ8O2ngX793aPY1UqywLPdXa00d0M1qARt"
+        publishableKey="pk_live_51Mg3eiFsXLeRVzOVijgZAOahtncfYOPii0G3aA4W5QMAeQb4dw0Pl1FazfIwZzfYCjNjbU7iDydGVVC8DLCJf5O800lrWkkMUq"
         // merchantIdentifier='merchant.identifier'
     >
         <SafeAreaView>
             <View>
                 <CardField
                 autofocus={true}
-                postalCodeEnabled={false}
+                postalCodeEnabled={true}
                 style={{
                     height: 50,
                     width: '100%', 

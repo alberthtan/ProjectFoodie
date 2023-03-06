@@ -1,25 +1,6 @@
 import React, { useState, useEffect, useRef, createContext} from "react";
 import * as SecureStore from 'expo-secure-store'
 
-console.log("CALLING GLOBAL CONTEXT")
-// let controller = new WebsocketController();
-// var ws = controller.ws;
-// var ws = new WebSocket('wss://dutch-pay-ws.herokuapp.com/');
-
-// ws.onopen = () => {
-//     console.log('opening ws in global context')
-// };
-
-// ws.onclose = (e) => {
-//     console.log('Disconnected in global context. Check internet or server.')
-//     console.log(e.message)
-// };
-
-// ws.onerror = (e) => {
-//     console.log('error')
-//     console.log(e.message);
-// };
-
 const Context = createContext()
 
 const Provider = ( { children } ) => {
