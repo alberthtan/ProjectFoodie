@@ -2,7 +2,6 @@ import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity, TextInput}
 import React, {useState} from 'react'
 import CustomInput from '../../../components/CustomInput'
 import CustomButton from '../../../components/CustomButton'
-import PhoneInput from "react-native-phone-number-input";
 import usFlag from '../../../../assets/icons/united-states.png'
 
 import LoginHeader from '../../../components/LoginHeader';
