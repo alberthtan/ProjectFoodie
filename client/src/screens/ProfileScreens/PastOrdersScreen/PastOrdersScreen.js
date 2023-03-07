@@ -117,10 +117,10 @@ if (isLoading || pastOrderList == null || userObj == false) {
 
           <View style = {styles.subtitleContainer}>
             <Text style = {styles.subtitle}>
-              When you order at restaurants with the
+              When you dine at restaurants with
             </Text>
             <Text style = {styles.subtitle}>
-              DutchPay camera, you'll see your orders and the 
+              DutchPay, you'll see your orders and the 
             </Text>
             <Text style = {styles.subtitle}>
               people you shared them with!

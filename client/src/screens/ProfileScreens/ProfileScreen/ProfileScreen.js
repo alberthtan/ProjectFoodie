@@ -74,10 +74,12 @@ const ProfileScreen = ({navigation}) => {
     // console.log(result.data)
   
     if(!result.canceled) {
-      setImage(result.uri)
+      // console.log('here')
+      // console.log(result.assets[0].uri)
+      setImage(result.assets[0].uri)
       // console.log(result.assets[0].uri)
       let newUserObj = userObj
-      newUserObj.profile_picture = result.uri
+      newUserObj.profile_picture = result.assets[0].uri
       setUserObj(newUserObj)
 
       // const response = await fetch(result.uri);
@@ -85,7 +87,7 @@ const ProfileScreen = ({navigation}) => {
       // console.log("BLOB")
       // console.log(blob)
       // console.log("BLOB END")
-      handleUpdateProfilePicture({uri: result.uri, type: 'image/jpg'})
+      handleUpdateProfilePicture({uri: result.assets[0].uri, type: 'image/jpg'})
     }
   }
 
