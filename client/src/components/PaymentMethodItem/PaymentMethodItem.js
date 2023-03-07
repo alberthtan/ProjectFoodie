@@ -62,8 +62,8 @@ const PaymentMethodItem = ({id, cardEndDigits, defaultPaymentMethodID, setDefaul
     return (
         <View style = {styles.container}>
             <View style={{flexDirection: 'row', width: '100%', alignItems: 'center'}}>
-                <View style={{flex: 2, flexDirection: 'row'}}>
-                <View style={{ borderRadius: 30}}>
+                <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
+                <View style={{ borderRadius: 30, marginLeft: 10}}>
                     <Image style= {{width: 25, height: 25}} source={cardIcon}/>
                 </View>
                 <View style = {{paddingLeft: 15,  justifyContent: 'center'}}>
@@ -80,7 +80,7 @@ const PaymentMethodItem = ({id, cardEndDigits, defaultPaymentMethodID, setDefaul
                             SET 
                         </Text>
                     </TouchableOpacity> : 
-                    <View style={{flex: 1}}>
+                    <View style={{flex: 3}}>
                         <Text style = {[styles.default]}>
                             DEFAULT 
                         </Text>
@@ -98,7 +98,6 @@ const PaymentMethodItem = ({id, cardEndDigits, defaultPaymentMethodID, setDefaul
 const styles = StyleSheet.create({
     container: {
         marginVertical: 10,
-        paddingLeft: 20,
         width: '100%',
         justifyContent: 'center',
         height: 60,
@@ -136,14 +135,16 @@ const styles = StyleSheet.create({
         color: 'green',
         fontWeight: 'bold',
         fontSize: 16,
-        textAlign: 'center'
+        textAlign: 'center',
+        marginLeft: '50%'
     },
 
     nondefault: {
         color: 'gray',
         fontWeight: 'bold',
         fontSize: 16,
-        textAlign: 'center'
+        textAlign: 'center',
+        marginLeft: '50%'
     },
     cardType: {
         fontWeight: 'bold'

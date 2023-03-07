@@ -88,7 +88,7 @@ const Navigator = () => {
         {(!isLoggedIn)?
         <>
           <Stack.Screen
-            options={{headerShown: false}}
+            options={{headerShown: false, gestureDirection: 'horizontal'}}
             name="LoginHome"
             component={LoginHomeScreen}/>
           <Stack.Screen

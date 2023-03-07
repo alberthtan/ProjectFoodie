@@ -50,7 +50,7 @@ const Stripe = ({navigation}) => {
 
   return (
     <StripeProvider
-        publishableKey="pk_test_51MiXZ5Gm1KJ3T3rGwmjYZV0tDN20lAOZJRWaK1YXcMJGykBkuXlcHpP8GLK7EaJCHmJADGr3dwNAPk3jMVxeO8Bv00qeBgh7C8"
+        publishableKey="pk_test_51Mg3eiFsXLeRVzOVO5KIPsOT13pU8MbJss8HLpEeUmyEkqKazhvDwFRoKbq8qIMzgZ8O2ngX793aPY1UqywLPdXa00d0M1qARt"
         // merchantIdentifier='merchant.identifier'
     >
         <SafeAreaView>

@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Dimensions} from 'react-native'
+import { View, StyleSheet, Text, Dimensions, TextInput} from 'react-native'
 import React, { useEffect, useRef, useState, useContext } from 'react'
 import CustomButton from '../../../components/CustomButton'
 import { Context } from '../../../globalContext/globalContext';
@@ -7,24 +7,24 @@ import OTPInput from '../../../components/OTPInput';
 
 const RegisterScreen4 = ({navigation, route}) => {
     const { emailParam, firstName, lastName, phoneParam } = route.params;
-    const subtitleString = "Sent to +1" + phoneParam
 
     const [invalid, setInvalid] = useState(false)
     const [invalidText, setInvalidText] = useState('')
+    const [code, setCode] = useState('')
 
-    const [num1, setNum1] = useState('')
-    const [num2, setNum2] = useState('')
-    const [num3, setNum3] = useState('')
-    const [num4, setNum4] = useState('')
-    const [num5, setNum5] = useState('')
-    const [num6, setNum6] = useState('')
+    // const [num1, setNum1] = useState('')
+    // const [num2, setNum2] = useState('')
+    // const [num3, setNum3] = useState('')
+    // const [num4, setNum4] = useState('')
+    // const [num5, setNum5] = useState('')
+    // const [num6, setNum6] = useState('')
 
-    const num1Ref = useRef()
-    const num2Ref = useRef()
-    const num3Ref = useRef()
-    const num4Ref = useRef()
-    const num5Ref = useRef()
-    const num6Ref = useRef()
+    // const num1Ref = useRef()
+    // const num2Ref = useRef()
+    // const num3Ref = useRef()
+    // const num4Ref = useRef()
+    // const num5Ref = useRef()
+    // const num6Ref = useRef()
 
     const globalContext = useContext(Context)
     const { setIsLoggedIn, setUserObj, setToken } = globalContext
@@ -59,6 +59,17 @@ const RegisterScreen4 = ({navigation, route}) => {
     //         console.error(error);
     //       });
     //   }
+
+    const formatPhoneNumber = (phoneNumberString) => {
+        const cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+        const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+        if (match) {
+          return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+        }
+        return null;
+      };
+
+    const subtitleString = "Sent to " + formatPhoneNumber(phoneParam)
 
 
     const sendPhoneCode = () => {
@@ -123,15 +134,21 @@ const RegisterScreen4 = ({navigation, route}) => {
       }
 
       const handleSignUp = () => {
-        let code = num1 + num2 + num3 + num4 + num5 + num6
+        // let code = num1 + num2 + num3 + num4 + num5 + num6
         if(code.length == 6) {
             verifyPhoneCode(code)
         }
     }
 
+    // useEffect(() => {
+    //     handleSignUp()
+    // }, [num6])
+
     useEffect(() => {
-        handleSignUp()
-    }, [num6])
+        if(code.length == 6) {
+            handleSignUp()
+        }
+    }, [code])
 
 
     return (
@@ -143,7 +160,18 @@ const RegisterScreen4 = ({navigation, route}) => {
                 subtitle = {subtitleString}
             />
 
-            <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'center', marginTop: Dimensions.get('window').height * 0.02}}>
+            <View style={[ styles.input, {alignSelf: 'center'}]}>
+                <TextInput
+                    autoFocus={true}
+                    style={{fontSize: 24, letterSpacing: (Dimensions.get('window').width * 0.95 - 40) * 0.103}}
+                    value={code}
+                    onChangeText={setCode}
+                    keyboardType="number-pad"
+                    maxLength={6}
+                />
+            </View>
+
+            {/* <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'center', marginTop: Dimensions.get('window').height * 0.02}}>
 
                 
             <OTPInput
@@ -250,7 +278,7 @@ const RegisterScreen4 = ({navigation, route}) => {
                         autoFocus={false}
                         keyboardType="number-pad"
                     />
-            </View>
+            </View> */}
 
             <Text
                 style={styles.hyperlinkStyle}
@@ -273,7 +301,8 @@ const RegisterScreen4 = ({navigation, route}) => {
                 <CustomButton
                     text="Continue"
                     onPress={handleSignUp}
-                    disabled={(num1 == '' || num2 == '' || num3 == '' || num4 == '' || num5 == '' || num6 == '')}
+                    disabled={(code.length != 6)}
+                    // disabled={(num1 == '' || num2 == '' || num3 == '' || num4 == '' || num5 == '' || num6 == '')}
                 />
             </View>
             
@@ -301,6 +330,19 @@ const styles = StyleSheet.create({
         color: 'red',
         right: Dimensions.get('window').width * 0.095,
         top: Dimensions.get('window').height * 0.33,
+    },
+    input: {
+        backgroundColor: '#EEEEEE', 
+        width: '95%',
+        height: Dimensions.get('window').height * 0.055,
+
+        borderRadius: 10,
+        borderColor: 'e8e8e8',
+
+        paddingLeft: 35,
+        marginVertical: 12,
+        justifyContent: 'center'
+        
     },
 })
 

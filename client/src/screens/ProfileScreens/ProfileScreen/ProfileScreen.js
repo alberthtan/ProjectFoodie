@@ -73,7 +73,7 @@ const ProfileScreen = ({navigation}) => {
     // console.log(result)
     // console.log(result.data)
   
-    if(!result.cancelled) {
+    if(!result.canceled) {
       setImage(result.uri)
       // console.log(result.assets[0].uri)
       let newUserObj = userObj

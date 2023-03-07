@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, KeyboardAvoidingView, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Image, KeyboardAvoidingView, TouchableOpacity, Dimensions, ScrollView, TextInput } from 'react-native'
 import React, { useState, useContext } from 'react'
 import profileIcon from '../../../../assets/icons/profileicon.png'
 import CustomInput from '../../../components/CustomInput'
@@ -15,6 +15,23 @@ const EditProfileScreen = ({navigation}) => {
   const [lastName, setLastName] = useState(userObj['last_name'])
   const [email, setEmail] = useState(userObj['email'])
   const [phoneNumber, setPhoneNumber] = useState(userObj['phone_number'])
+
+  const formatPhoneNumber = (phoneNumberString) => {
+    let cleaned = ('' + phoneNumberString.slice(2)).replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+      return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+    }
+  };
+
+  const [formattedPhoneNumber, setFormattedPhoneNumber]= useState(formatPhoneNumber(userObj['phone_number']))
+
+  const handleChange = (value) => {
+    setPhoneNumber(value)
+    console.log(value)
+    const formattedPhoneNumber = formatPhoneNumber(value);
+    setFormattedPhoneNumber(formattedPhoneNumber);
+  };
 
 
   const handleUpdateProfile = async () => {
@@ -113,10 +130,26 @@ const EditProfileScreen = ({navigation}) => {
                       
                   <Text style={styles.text}>Phone Number</Text>
                   
-                  <CustomInput
+                  {/* <CustomInput
                       value={phoneNumber} 
                       setValue={setPhoneNumber}
-                      keyboardType='phone-pad'/>
+                      keyboardType='phone-pad'/> */}
+
+                  <View style={styles.input}>
+                        {/* <Image source={usFlag} style={{position: 'absolute', left: 15, width: 20, height: 20, zIndex: 1}} /> */}
+                        <TextInput
+                            keyboardType="phone-pad"
+                            // returnKeyType="go"
+                            // autoFocus={true}
+                            // onSubmitEditing={() => handleSignUp()}
+                            onChangeText={handleChange}
+                            value={formattedPhoneNumber}
+                            style={{ marginLeft: 5, height: '100%', letterSpacing: 1, fontSize: 15}}
+                            maxLength={10}
+                            // style={{fontSize: 20, borderWidth: 1, borderColor: 'gray', padding: 10}}
+                        />
+                    </View>
+
                       
               </View>
               </KeyboardAvoidingView>
@@ -209,7 +242,20 @@ closeText: {
     color: '#3C6F37',
     fontSize: 16,
     textAlign: 'center',
-}
+},
+input: {
+  backgroundColor: '#EEEEEE', 
+  width: '95%',
+  height: Dimensions.get('window').height * 0.055,
+
+  borderRadius: 10,
+  borderColor: 'e8e8e8',
+
+  paddingHorizontal: 10,
+  marginVertical: 12,
+  justifyContent: 'center'
+  
+},
 })
 
 export default EditProfileScreen

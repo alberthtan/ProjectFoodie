@@ -1,34 +1,40 @@
 import { StyleSheet, Text, View, Pressable, Image, Dimensions, Vibration, Platform } from 'react-native'
-import React from 'react'
+import React, {useContext} from 'react'
 import NumberFormat from 'react-number-format'
-import * as Haptics from 'expo-haptics'
 
-import trashIcon from '../../../assets/icons/trash.png'
+import { Context } from '../../globalContext/globalContext'
 
-const CheckoutItem = ({navigation, sharedBy, id, name, price, handleDelete}) => {
+const ReceiptItem = ({navigation, sharedBy, id, name, price, order}) => {
     console.log(sharedBy)
+    const globalContext = useContext(Context)
+    const { userObj } = globalContext
 
     return (
         <View style = {[styles.container, {flexDirection: 'row'}]}>
-            {handleDelete ? 
 
-                <Pressable
-                    style={[styles.trashButton, {flex: 1}]}
-                    onPress={() => {handleDelete(id), Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light) }}>
-                        <Image source={trashIcon} resizeMode="contain" style={[styles.trashIcon, {flex: 1}]}/>
-                </Pressable> :
-
-                <></>
-            }
-
-            <View style={{flex: 9, alignSelf: 'flex-end'}}>
+            <View style={{ alignSelf: 'flex-end', marginLeft: '5%'}}>
 
                 <Text style = {styles.itemName}>
                     {name}
                 </Text>
 
                 <Text style={[styles.sharedText, styles.faded, sharedBy.length == 0 ? styles.disappear: styles.appear]}>
-                    Sharing with: {sharedBy.map(obj => JSON.parse(obj).first_name)}
+                    Shared with:
+
+                    {JSON.parse(order.orderedBy).id != userObj['id'] ? 
+                        ' ' + JSON.parse(order.orderedBy).first_name :
+                            <></>
+                    }
+                    
+                    {sharedBy.map(obj => {
+
+                        if (JSON.parse(obj).id == userObj['id']) {
+                            return
+                        }
+
+                        return ' ' + JSON.parse(obj).first_name
+                    }
+                        )}
                 </Text> 
 
             </View>
@@ -90,14 +96,14 @@ const CheckoutItem = ({navigation, sharedBy, id, name, price, handleDelete}) => 
     )
 }
 
-export default CheckoutItem
+export default ReceiptItem
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 10,
         height: 64,
-        alignItems: 'center',
+        alignItems: 'center'
     },
 
     trashButton: {

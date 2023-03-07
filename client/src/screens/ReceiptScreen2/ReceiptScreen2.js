@@ -10,6 +10,7 @@ import CheckoutTaxes from '../../components/CheckoutTaxes'
 import CheckoutTotal from '../../components/CheckoutTotal/CheckoutTotal'
 import ReceiptHeader from '../../components/ReceiptHeader'
 import HeaderBar from '../../components/HeaderBar'
+import ReceiptItem from '../../components/ReceiptItem';
 
 import EmailIcon from '../../../assets/icons/email.png'
 import DownloadIcon from '../../../assets/icons/downloadReceipt.png'
@@ -30,7 +31,25 @@ const ReceiptScreen2 = ({route, navigation}) => {
   const globalContext = useContext(Context)
   const { userObj, cart, } = globalContext
 
-
+    const calculateSubtotal = (cart) => {
+    let subtotal = 0
+    console.log('here')
+    console.log(cart[0])
+    for(let i=0; i < cart.length; i++) {
+        if(JSON.parse(cart[i].orderedBy)['username'] == userObj['username'] || cart[i].sharedBy.indexOf(JSON.stringify({
+            "username": userObj['username'],
+            "first_name": userObj["first_name"],
+            "last_name": userObj["last_name"],
+            "id": userObj["id"]
+        })) != -1) {
+            
+            subtotal += cart[i].item.price / (cart[i].sharedBy.length + 1)
+        }
+    }
+    console.log("SUBTOTAL")
+    console.log(subtotal)
+    setSubtotalValue(subtotal)
+  }
     
 
 
@@ -67,22 +86,22 @@ const ReceiptScreen2 = ({route, navigation}) => {
 
 
 
-  const calculateSubtotal = () => {
-    let subtotal = 0
-    for(let i=0; i < cart.length; i++) {
-        if(cart[i].status != 'pending') {
-            if(JSON.parse(cart[i].orderedBy)['username'] == userObj['username'] || cart[i].sharedBy.findIndex(obj => obj['username'] == userObj['username']) != -1) {
-                subtotal += cart[i].item.price / (cart[i].sharedBy.length + 1)
-            }
-        }
-    }
-    setSubtotalValue(subtotal)
-  }
+//   const calculateSubtotal = () => {
+//     let subtotal = 0
+//     for(let i=0; i < cart.length; i++) {
+//         if(cart[i].status != 'pending') {
+//             if(JSON.parse(cart[i].orderedBy)['username'] == userObj['username'] || cart[i].sharedBy.findIndex(obj => obj['username'] == userObj['username']) != -1) {
+//                 subtotal += cart[i].item.price / (cart[i].sharedBy.length + 1)
+//             }
+//         }
+//     }
+//     setSubtotalValue(subtotal)
+//   }
 
-console.log(cart_string)
+console.log(itemList)
 
 useEffect(() => {
-    calculateSubtotal()
+    calculateSubtotal(itemList)
     }
 , [])
 
@@ -105,24 +124,28 @@ useEffect(() => {
             </View>
 
             <Text style = {[styles.date, {fontSize: Dimensions.get('window').height * 0.017}]}>
-                {timestamp}
+                {getFormattedDate(timestamp)} at {getFormattedTime(timestamp)}
             </Text>
 
-            {cart.map(order => (
-                (order.status != 'pending' && (userObj['username'] == order.orderedBy['username'])) ?
-                <CheckoutItem
+            {itemList.map(order => (
+                console.log("fuc,"),
+                console.log(order.sharedBy),
+                console.log(order.sharedBy[0]),
+                // console.log(JSON.parse(order.sharedBy)),
+                ((userObj['username'] == JSON.parse(order.orderedBy)['username'])) || order.sharedBy.findIndex(obj => JSON.parse(obj)['username'] == userObj['username']) != -1  ?
+
+                <ReceiptItem
                     key = {order.id}
                     id = {order.id}
-                    navigation = {navigation}
                     name = {order.item.name}
                     price = {order.item.price}
                     sharedBy = {order.sharedBy}
-                    parentCallback = {null}
+                    order = {order}
                 /> :
                 <></>
             ))}
 
-            {cart.map(order => (
+            {/* {cart.map(order => (
                 (order.status != 'pending' && order.sharedBy.findIndex(obj => obj['username'] == userObj['username']) != -1) ?
                 <CheckoutItem
                     key = {order.id}
@@ -134,7 +157,7 @@ useEffect(() => {
                     parentCallback = {null}
                 /> :
                 <></>
-            ))}
+            ))} */}
 
             <View style = {{marginTop: 20}}>
                 <CheckoutSubtotal

@@ -1,4 +1,4 @@
-import { Dimensions, View, StyleSheet, Text} from 'react-native'
+import { Dimensions, View, StyleSheet, Text, ScrollView} from 'react-native'
 import React, {useContext, useState, useEffect}  from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 
@@ -102,24 +102,33 @@ if (isLoading || pastOrderList == null || userObj == false) {
       </>
       :
       <>
-        <View style={styles.titleContainer}>
-          <Text style = {styles.title}>
-            Welcome to <Text style={{color: '#3C6F37'}}>DutchPay</Text>
-          </Text>
+      <View style = {styles.title2}>
+          <Text style={styles.text}>  DutchPay</Text>
         </View>
-        
+      <View style={{flex: 5}}>
+      <ScrollView contentContainerStyle= {{justifyContent: 'center', height: '100%'}}>
+        <View style={{bottom: Dimensions.get('window').height * 0.1}}>
+          <View style={styles.titleContainer}>
+            <Text style = {styles.title}>
+              Welcome to <Text style={{color: '#3C6F37'}}>DutchPay</Text>
+            </Text>
+          </View>
+          
 
-        <View style = {styles.subtitleContainer}>
-          <Text style = {styles.subtitle}>
-            When you order at restaurants with the
-          </Text>
-          <Text style = {styles.subtitle}>
-            DutchPay camera, you'll see your orders and the 
-          </Text>
-          <Text style = {styles.subtitle}>
-            people you shared them with!
-          </Text>
+          <View style = {styles.subtitleContainer}>
+            <Text style = {styles.subtitle}>
+              When you order at restaurants with the
+            </Text>
+            <Text style = {styles.subtitle}>
+              DutchPay camera, you'll see your orders and the 
+            </Text>
+            <Text style = {styles.subtitle}>
+              people you shared them with!
+            </Text>
+          </View>
         </View>
+      </ScrollView>
+      </View>
       </>
       :
       <></>
@@ -140,7 +149,8 @@ if (isLoading || pastOrderList == null || userObj == false) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
+        flex: 1,
+        // justifyContent: 'center'
     },
 
     // backButton: {
@@ -198,7 +208,7 @@ const styles = StyleSheet.create({
   },
 
   titleContainer: {
-    flex: 1,
+    // flex: 1,
     // backgroundColor: 'red',
     // justifyContent: 'center'
   },
@@ -207,23 +217,23 @@ const styles = StyleSheet.create({
     alignSelf: 'center', 
     fontSize: Dimensions.get('window').width * 0.075, 
     fontWeight: 'bold',
-    fontFamily: 'Roboto_700Bold',
-    position: 'absolute',
+    // fontFamily: 'Roboto_700Bold',
+    // position: 'absolute',
     bottom: Dimensions.get('window').width * 0.05,
   },
   subtitleContainer: {
-    flex: 1,
+    // flex: 1,
     // justifyContent: 'center',
   },
   
   subtitle: {
     alignSelf: 'center',
-    fontFamily: 'Jost_400Regular',
+    // fontFamily: 'Jost_400Regular',
     fontSize: Dimensions.get('window').width * 0.04,
     marginVertical: 5,
     textAlign: 'center',
     // position: "absolute",
-    top: Dimensions.get('window').width * 0.05
+    // top: Dimensions.get('window').width * 0.05
   },
 })
 

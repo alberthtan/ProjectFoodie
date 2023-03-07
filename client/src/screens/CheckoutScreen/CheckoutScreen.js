@@ -75,6 +75,7 @@ const CheckoutScreen = ({route, navigation}) => {
   }
 
 ws.onmessage = ({data}) => {
+    console.log("RECEIVING MESSAGE")
     let message = JSON.parse(data)
     if('clear' in message) {
         navigation.navigate('HomeTabs')
@@ -83,43 +84,47 @@ ws.onmessage = ({data}) => {
         setWs(null)
     } else {
         let temp = []
-        console.log('got here asdfasdf')
+        // console.log('got here asdfasdf')
         // console.log(message)
         
         for (let i = 0; i < message.length; i++) {
           temp.push(message[i])
         }
         calculateSubtotal(temp)
+        // console.log(temp)
         setCart(temp)
     }
 };
 
 useEffect(() => {
     calculateSubtotal(cart)
-    console.log('heeeree')
-    console.log(subtotalValue)
+    // console.log('heeeree')
+    // console.log(subtotalValue)
     }
 , [])
 
 
 const handleOrder = async () => {
+    console.log("HANDLING ORDER PRESS")
+    console.log(cart)
     for(let i=0; i < cart.length; i++) {
         console.log("CART STATUS")
         
         if(JSON.parse(cart[i].orderedBy)['username'] == userObj['username'] && cart[i].status === 'pending') {
             // cart.splice(i, 1)
-            console.log("CHANGING STATUS")
+            // console.log("CHANGING STATUS")
             cart[i].status = 'ordered'
         }    
         // console.log(cart[i])   
     }
+    console.log("SENDING MESSAGE")
     ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'order',
-    user: 
-    JSON.stringify({"username": userObj['username'],
-    "first_name": userObj['first_name'],
-    "last_name": userObj['last_name'],
-    "id": userObj["id"]
-    })}))
+        user: 
+        JSON.stringify({"username": userObj['username'],
+        "first_name": userObj['first_name'],
+        "last_name": userObj['last_name'],
+        "id": userObj["id"]
+        })}))
     // ws.close()
     navigation.navigate('Receipt', {subtotal: subtotalValue})
 }

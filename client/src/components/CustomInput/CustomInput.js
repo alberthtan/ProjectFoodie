@@ -45,7 +45,10 @@ const styles = StyleSheet.create({
 
     custom: {
         marginLeft: 5, 
-        height: '100%'
+        height: '100%',
+        fontSize: 15,
+        letterSpacing: 1
+        // fontFamily: 'Jost_400Regular'
     }
 })
 
