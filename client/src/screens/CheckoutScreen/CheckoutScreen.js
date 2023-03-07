@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity} from 'react-native'
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Image, TouchableHighlight} from 'react-native'
 import React, {useState, useEffect, useContext}  from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import { LogBox } from 'react-native';
@@ -13,8 +13,10 @@ import HeaderBar from '../../components/HeaderBar'
 import SharedItem from '../../components/SharedItem'
 import SwipeBar from '../../components/SwipeBar';
 import * as Haptics from 'expo-haptics'
+import cardIcon from '../../../assets/icons/payment.png'
 
 import { Context } from '../../globalContext/globalContext'
+import { useIsFocused } from '@react-navigation/native'
 
 LogBox.ignoreLogs(['Warning: Each child in a list should have a unique "key" prop.'])
 
@@ -22,10 +24,75 @@ const CheckoutScreen = ({route, navigation}) => {
   const {subtotal, restaurant_id, active_menu, table_id, restaurant_name} = route.params
 
   const [subtotalValue, setSubtotalValue] = useState(0)
+  const [defaultPaymentMethodID, setDefaultPaymentMethodID] = useState(null)
+  const [paymentMethods, setPaymentMethods] = useState([])
   const [users, setUsers] = useState([])
 
   const globalContext = useContext(Context)
-  const { ws, userObj, cart, setCart, setWs } = globalContext
+  const { ws, userObj, cart, setCart, getToken, setWs } = globalContext
+
+  const isFocused = useIsFocused();
+
+
+  const getDefaultPaymentMethod = async () => {
+    let token = await getToken('access')
+    authorization = "Bearer".concat(" ", token)
+    return fetch('https://dutch-pay-test.herokuapp.com/get_default_payment_method', {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: authorization,
+        },
+      })
+      .then(response => response.json())
+      .then(json => {
+        console.log("DEFAULT")
+        console.log(json)
+        if('default' in json) {
+          setDefaultPaymentMethodID(json['default'])
+        } else {
+          console.log("no default payment method")
+        }
+        
+      })
+      .catch(error => {
+          console.error(error);
+      });
+  }
+
+  const getPaymentMethods = async () => {
+    let token = await getToken('access')
+    authorization = "Bearer".concat(" ", token)
+    return fetch('https://dutch-pay-test.herokuapp.com/get-cards', {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: authorization,
+        },
+      })
+      .then(response => response.json())
+      .then(json => {
+        console.log("PAYMENT METHODS")
+        // console.log(json)
+        let paymentMethodsTemp = []
+        // console.log(json)
+        for(let i=0; i < json.length; i++) {
+          let paymentMethod = {
+            cardEndDigits: json[i]["last4"],
+            cardCompany: json[i]["brand"],
+            id: json[i]['id']
+          }
+          paymentMethodsTemp.push(paymentMethod)
+          console.log(paymentMethod)
+        }
+        setPaymentMethods(paymentMethodsTemp)
+      })
+      .catch(error => {
+          console.error(error);
+      });
+  }
 
   const calculateSubtotal = (cart) => {
     let subtotal = 0
@@ -42,8 +109,6 @@ const CheckoutScreen = ({route, navigation}) => {
             }
         }
     }
-    console.log("SUBTOTAL")
-    console.log(subtotal)
     setSubtotalValue(subtotal)
   }
 
@@ -84,40 +149,22 @@ ws.onmessage = ({data}) => {
         setWs(null)
     } else {
         let temp = []
-        // console.log('got here asdfasdf')
-        // console.log(message)
         
         for (let i = 0; i < message.length; i++) {
           temp.push(message[i])
         }
         calculateSubtotal(temp)
-        // console.log(temp)
         setCart(temp)
     }
 };
 
-useEffect(() => {
-    calculateSubtotal(cart)
-    // console.log('heeeree')
-    // console.log(subtotalValue)
-    }
-, [])
-
 
 const handleOrder = async () => {
-    console.log("HANDLING ORDER PRESS")
-    console.log(cart)
     for(let i=0; i < cart.length; i++) {
-        console.log("CART STATUS")
-        
         if(JSON.parse(cart[i].orderedBy)['username'] == userObj['username'] && cart[i].status === 'pending') {
-            // cart.splice(i, 1)
-            // console.log("CHANGING STATUS")
             cart[i].status = 'ordered'
         }    
-        // console.log(cart[i])   
     }
-    console.log("SENDING MESSAGE")
     ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'order',
         user: 
         JSON.stringify({"username": userObj['username'],
@@ -125,7 +172,6 @@ const handleOrder = async () => {
         "last_name": userObj['last_name'],
         "id": userObj["id"]
         })}))
-    // ws.close()
     navigation.navigate('Receipt', {subtotal: subtotalValue})
 }
 
@@ -137,28 +183,17 @@ const handleShared = (childData) => {
 const handleDelete = (key) => {
     for(let i = 0; i < cart.length; i++) {
         if(cart[i].id == key) {
-            console.log(cart[i])
             cart.splice(i, 1)
-            // console.log(cart)
             break
         }
     }
     ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'delete', id: key}))
 }
 
-useEffect(()=>{
-    getAllUsers()
-}, [cart])
-
 const getAllUsers = async () => {
-    // console.log(cart)
-    // console.log(userObj['name'])
     let temp = []
     for (let i = 0; i < cart.length; i++) {
         if (!temp.includes(cart[i].orderedBy) && userObj['username'] != JSON.parse(cart[i].orderedBy)['username'] && cart[i].status == 'pending') {
-            // console.log("herereasdfre")
-            // console.log(userObj["username"])
-            // console.log(cart[i].orderedBy['username'])
             temp.push(cart[i].orderedBy)
         }
     }
@@ -168,6 +203,26 @@ const getAllUsers = async () => {
 const handleTip = () => {
     navigation.navigate('TipScreen', {subtotal: subtotalValue})
 }
+
+    // useEffect(() => {
+    //     calculateSubtotal(cart)
+    //     getDefaultPaymentMethod()
+    //     getPaymentMethods()
+    //     }
+    // , [])
+
+    useEffect(() => {
+        console.log("is focused?")
+        if(isFocused) {
+          getPaymentMethods();
+          getDefaultPaymentMethod()
+          calculateSubtotal(cart)
+        }
+      }, [isFocused])
+
+    useEffect(()=>{
+        getAllUsers()
+    }, [cart])
 
   return (
     <View style = {{flex: 1}}>
@@ -281,18 +336,75 @@ const handleTip = () => {
                     </Text> :
                     <></>    
                 }
+                <View style={{backgroundColor: '#E8E8E8', height: 10, marginTop: 20}}/>
+
+                {(defaultPaymentMethodID && paymentMethods.find(payment => payment.id===defaultPaymentMethodID)) ? 
+                    <View style = {styles.container}>
+                        
+                        <View style={{flexDirection: 'row', width: '100%', alignItems: 'center'}}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
+                            <View style={{ borderRadius: 30,
+                                marginLeft: Dimensions.get('window').width * 0.05,
+                                }}>
+                                <Image style= {{width: 25, height: 25}} source={cardIcon}/>
+                            </View>
+                            <View style = {{paddingLeft: 15,  
+                                justifyContent: 'center',
+                                marginRight: Dimensions.get('window').width * 0.05,}}>
+                                <Text style = {{fontWeight: 'bold'}}>
+                                    ••••{paymentMethods.find(payment => payment.id===defaultPaymentMethodID)["cardEndDigits"]} 
+                                </Text>
+                            </View>
+                            </View>
+                            <View style={{
+                                position: 'absolute',
+                                right: 0,
+                                marginRight: Dimensions.get('window').width * 0.05,
+                                }}>
+                            <TouchableOpacity
+                                onPress = {() => {navigation.navigate('Payments'),
+                                                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}}
+                                style={styles.editPaymentButton}>
+                                <Text style={styles.addItemsText}>Edit</Text>
+                            </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                    
+                    :
+                    <View style = {styles.container}>
+                        
+                        <View style={{flexDirection: 'row', width: '100%', alignItems: 'center'}}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
+                            <View style={{ borderRadius: 30,
+                                marginLeft: Dimensions.get('window').width * 0.05,
+                                }}>
+                               <Text>No saved payment methods</Text>
+                            </View>
+                            
+                            </View>
+                            <View style={{
+                                position: 'absolute',
+                                right: 0,
+                                marginRight: Dimensions.get('window').width * 0.05,
+                                }}>
+                            <TouchableOpacity
+                                onPress = {() => {navigation.navigate('Payments'),
+                                                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}}
+                                style={styles.editPaymentButton}>
+                                <Text style={styles.addItemsText}>Add</Text>
+                            </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                }
                
             </View>
 
+            <View style={{backgroundColor: '#E8E8E8', height: 10, marginTop: 0}}/>
+
             <View style = {{marginTop: 30}}/>
         </ScrollView>
-
-        {/* <View style = {[styles.orderButton]}>
-            <CustomButton
-                text = "Go to Tip Page"
-                onPress = {() => handleTip()}
-            /> 
-        </View> */}
 
         <View style = {styles.orderButton}>
             {checkInOrder() ? 
@@ -319,15 +431,33 @@ export default CheckoutScreen
 
 const styles = StyleSheet.create({
 
+    container: {
+        // marginVertical: 10,
+        // backgroundColor: 'green',
+        width: '100%',
+        justifyContent: 'center',
+        height: 60,
+        flex: 1
+    },
+
     addItemsButton: {
         padding: 12,
         borderRadius: 15,
         backgroundColor: '#3C6F37',
     },
 
+    editPaymentButton: {
+        padding: 10,
+        borderRadius: 10,
+        width: 60,
+        justifyContent: 'center',
+        backgroundColor: '#3C6F37',
+    },
+
     addItemsText: {
         fontWeight: 'bold',
         color: 'white',
+        textAlign: 'center',
     },
 
     title: {
