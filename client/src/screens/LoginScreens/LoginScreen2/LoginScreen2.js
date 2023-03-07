@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity} from 'react-native'
+import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity, TextInput} from 'react-native'
 import React, { useState, useContext, useRef, useEffect} from 'react'
 import { Context } from "../../../globalContext/globalContext.js"
 import CustomInput from '../../../components/CustomInput'
@@ -14,6 +14,8 @@ const LoginScreen2 = ({navigation, route}) => {
     const { emailParam } = route.params
     const subtitleString = "Sent to " + emailParam
     const { setIsLoggedIn, setUserObj, setToken } = globalContext
+
+    const [code, setCode] = useState('')
 
     const [invalid, setInvalid] = useState(false)
     const [invalidText, setInvalidText] = useState('')
@@ -94,15 +96,21 @@ const LoginScreen2 = ({navigation, route}) => {
     }
 
     const handleLogin = () => {
-        let code = num1 + num2 + num3 + num4 + num5 + num6
+        // let code = num1 + num2 + num3 + num4 + num5 + num6
         if(code.length == 6) {
             verifyEmailCode(code)
         }
     }
 
+    // useEffect(() => {
+    //     handleLogin()
+    // }, [num6])
+
     useEffect(() => {
-        handleLogin()
-    }, [num6])
+        if(code.length == 6) {
+            handleLogin()
+        }
+    }, [code])
 
     return (
         <View style= {styles.root}>
@@ -112,8 +120,19 @@ const LoginScreen2 = ({navigation, route}) => {
                 title = "Enter your 6 digit code"
                 subtitle = {subtitleString}
             />
+
+            <View style={[ styles.input, {alignSelf: 'center'}]}>
+                <TextInput
+                    autoFocus={true}
+                    style={{fontSize: 24, letterSpacing: (Dimensions.get('window').width * 0.95 - 40) * 0.103}}
+                    value={code}
+                    onChangeText={setCode}
+                    keyboardType="number-pad"
+                    maxLength={6}
+                />
+            </View>
             
-            <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'center', marginTop: Dimensions.get('window').height * 0.02}}>
+            {/* <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'center', marginTop: Dimensions.get('window').height * 0.02}}>
                     <OTPInput
                         ref={num1Ref}
                         value={num1} 
@@ -221,7 +240,7 @@ const LoginScreen2 = ({navigation, route}) => {
                         autoFocus={false}
                         keyboardType="number-pad"
                     />
-            </View>
+            </View> */}
             <Text
                 style={styles.hyperlinkStyle}
                 onPress={() => {
@@ -241,7 +260,8 @@ const LoginScreen2 = ({navigation, route}) => {
                 <CustomButton
                     text="Continue"
                     onPress={handleLogin}
-                    disabled={(num1 == '' || num2 == '' || num3 == '' || num4 == '' || num5 == '' || num6 == '')}
+                    // disabled={(num1 == '' || num2 == '' || num3 == '' || num4 == '' || num5 == '' || num6 == '')}
+                    disabled={(code.length != 6)}
                 />
             </View>
             
@@ -269,6 +289,20 @@ const styles = StyleSheet.create({
         color: 'red',
         right: Dimensions.get('window').width * 0.095,
         top: Dimensions.get('window').height * 0.33,
+    },
+
+    input: {
+        backgroundColor: '#EEEEEE', 
+        width: '95%',
+        height: Dimensions.get('window').height * 0.055,
+
+        borderRadius: 10,
+        borderColor: 'e8e8e8',
+
+        paddingLeft: 35,
+        marginVertical: 12,
+        justifyContent: 'center'
+        
     },
 })
 
