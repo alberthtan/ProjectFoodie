@@ -62,7 +62,7 @@ const PastOrdersScreen = ({navigation}) => {
     //   }, 1000);
     // }
     getReceipts()
-  }, [userObj])
+  }, [userObj, isFocused])
   
   
 const oneOrder = ({item}) => (
@@ -87,10 +87,10 @@ if (isLoading || pastOrderList == null || userObj == false) {
     <View style = {styles.container}>
 
     {userObj != false ?
-      pastOrderList != [] ?
+      pastOrderList.length != 0 ?
       <>
         <View style = {styles.title2}>
-          <Text style={styles.text}>  DutchPay </Text>
+          <Text style={styles.text}>  DutchPay</Text>
         </View>
       <View style={{flex: 5}}>
         <FlatList

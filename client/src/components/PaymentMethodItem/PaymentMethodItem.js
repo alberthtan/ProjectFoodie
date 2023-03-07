@@ -5,6 +5,7 @@ import trashIcon from '../../../assets/icons/trash.png'
 
 import { Context } from '../../globalContext/globalContext'
 import * as Haptics from 'expo-haptics'
+import cardIcon from '../../../assets/icons/payment.png'
 
 const PaymentMethodItem = ({id, cardEndDigits, defaultPaymentMethodID, setDefaultPaymentMethodID, cardCompany, handleDelete}) => {
 
@@ -61,17 +62,19 @@ const PaymentMethodItem = ({id, cardEndDigits, defaultPaymentMethodID, setDefaul
     return (
         <View style = {styles.container}>
             <View style={{flexDirection: 'row', width: '100%', alignItems: 'center'}}>
-                <View style={{flex: 1, borderRadius: 30}}>
-                    <Image style= {{width: 65, height: 50, borderRadius: 10}} source={{uri: 'https://1000logos.net/wp-content/uploads/2017/06/VISA-Logo-1992.png'}}/>
+                <View style={{flex: 2, flexDirection: 'row'}}>
+                <View style={{ borderRadius: 30}}>
+                    <Image style= {{width: 25, height: 25}} source={cardIcon}/>
                 </View>
-                <View style = {{flex: 2}}>
+                <View style = {{paddingLeft: 15,  justifyContent: 'center'}}>
                     {/* <Text style = {{fontWeight: 'bold'}}>{bankCompany}</Text> */}
                     <Text style = {styles.cardType}>
-                         ....{cardEndDigits} 
+                         ••••{cardEndDigits} 
                     </Text>
                 </View>
+                </View>
                 {(id !== defaultPaymentMethodID) ? 
-                    <TouchableOpacity style={{flex: 1}}
+                    <TouchableOpacity style={{flex: 3}}
                         onPress={setDefaultPayment}>
                         <Text style = {[styles.nondefault]}>
                             SET 
@@ -141,6 +144,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 16,
         textAlign: 'center'
+    },
+    cardType: {
+        fontWeight: 'bold'
     }
 })
 

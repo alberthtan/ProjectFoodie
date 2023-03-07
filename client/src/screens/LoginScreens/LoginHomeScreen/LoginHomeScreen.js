@@ -25,16 +25,20 @@ const LoginHomeScreen = ({navigation}) => {
             </Text>
         </View>
         <View style={styles.container}>
-            <CustomButton
-                text="Register"
-                onPress={() => navigation.navigate('Register1')}
-            />
+            <View style={{marginBottom: 15, width: '100%', alignItems: 'center'}}>
+                <CustomButton
+                    text="Register"
+                    onPress={() => navigation.navigate('Register1')}
+                />
+            </View>
 
-            <CustomButton
-                text="Login"
-                type='LOGIN'
-                onPress={() => navigation.navigate('Login1')}
-            />
+            <View style={{marginBottom: 15, width: '100%', alignItems: 'center'}}>
+                <CustomButton
+                    text="Login"
+                    type='LOGIN'
+                    onPress={() => navigation.navigate('Login1')}
+                />
+            </View>
             
             <Text style={styles.textStyle} numberOfLines={2}>
                 By continuing, you agree to our{'\n'}

@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
 
     orderButton:{
         height: Dimensions.get('window').height * 0.12,
-        paddingTop: 5,
+        padding: 15,
         justifyContent: 'flex-start',
         alignItems: 'center',
         borderTopWidth: 1,

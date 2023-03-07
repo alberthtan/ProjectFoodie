@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start', 
     backgroundColor: 'white', 
     height: Dimensions.get('window').height * 0.12, 
-    paddingTop: 5,
+    padding: 15,
     borderWidth: 1, 
     borderColor: '#D9D9D9', 
   },
