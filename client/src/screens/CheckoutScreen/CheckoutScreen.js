@@ -217,6 +217,10 @@ const handleTip = () => {
           getPaymentMethods();
           getDefaultPaymentMethod()
           calculateSubtotal(cart)
+          setTimeout(() => {
+            getDefaultPaymentMethod()
+            getPaymentMethods()
+          }, 1000);
         }
       }, [isFocused])
 
@@ -362,8 +366,10 @@ const handleTip = () => {
                                 marginRight: Dimensions.get('window').width * 0.05,
                                 }}>
                             <TouchableOpacity
-                                onPress = {() => {navigation.navigate('Payments'),
-                                                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}}
+                                onPress = {() => {
+                                    navigation.navigate("Payments")
+                                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+                                }}
                                 style={styles.editPaymentButton}>
                                 <Text style={styles.addItemsText}>Edit</Text>
                             </TouchableOpacity>
@@ -389,8 +395,17 @@ const handleTip = () => {
                                 marginRight: Dimensions.get('window').width * 0.05,
                                 }}>
                             <TouchableOpacity
-                                onPress = {() => {navigation.navigate('Payments'),
-                                                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}}
+                                onPress = {() => {
+                                    console.log("HEREHR")
+                                    console.log(paymentMethods)
+                                    console.log(paymentMethods.length)
+                                    if(paymentMethods.length == 0) {
+                                        navigation.navigate("AddPayment")
+                                    } else {
+                                        navigation.navigate('Payments')
+                                    }
+                                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+                                }}
                                 style={styles.editPaymentButton}>
                                 <Text style={styles.addItemsText}>Add</Text>
                             </TouchableOpacity>

@@ -45,7 +45,7 @@ const Stripe = ({navigation}) => {
           }),
         });
         setLoading(false);
-        navigation.navigate("Payments")
+        navigation.goBack()
     };
 
   return (
