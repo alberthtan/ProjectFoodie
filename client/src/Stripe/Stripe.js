@@ -2,6 +2,7 @@ import { SafeAreaView, StyleSheet, Button, View } from 'react-native'
 import React, { useEffect, useContext, useState } from 'react'
 import {CardField, CardFieldInput, StripeProvider, useStripe, createToken, confirmPayment} from '@stripe/stripe-react-native'
 import { Context } from '../globalContext/globalContext'
+import CustomButton from '../components/CustomButton'
 
 const Stripe = ({navigation}) => {
 
@@ -61,11 +62,16 @@ const Stripe = ({navigation}) => {
                 style={{
                     height: 50,
                     width: '100%', 
-                    
+                    padding: 80,
+                    alignItems: 'center'
+                    // flexWrap: 'wrap-reverse'
                 }}
                 onCardChange={handleCardDetailsChange}
                 />
-                <Button title="Add Payment" onPress={handleCreatePaymentMethod} disabled={loading}/>
+                <View style={{width: '100%', alignItems: 'center', padding: 15}}>
+                  <CustomButton text='Add Payment' onPress={handleCreatePaymentMethod}/>
+                </View>
+                {/* <Button style={{marginTop: 100}} title="Add Payment" onPress={handleCreatePaymentMethod} disabled={loading}/> */}
             </View>
         </SafeAreaView>
 

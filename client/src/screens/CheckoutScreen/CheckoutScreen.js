@@ -32,6 +32,55 @@ const CheckoutScreen = ({route, navigation}) => {
   const { ws, userObj, cart, setCart, getToken, setWs } = globalContext
 
   const isFocused = useIsFocused();
+  const token = getToken('access')
+//   const authorization = "Bearer".concat(" ", token)
+
+  const checkPaymentMethod = async () => {
+    let token = await getToken('access')
+    authorization = "Bearer".concat(" ", token)
+    // console.log("FUCKER")
+    
+    let amount = calculateSubtotal(cart)
+    console.log(amount)
+    return fetch('https://dutch-pay-test.herokuapp.com/check_default_payment_method', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: authorization,
+        },
+        body: JSON.stringify({
+          amount: amount * 100,
+        }),
+      })
+      .then(response => response.json())
+      .then(json => {
+            console.log("FUCKER")
+            console.log(json)
+            // console.log(response.status)
+            if ('success' in json) {
+                for(let i=0; i < cart.length; i++) {
+                    if(JSON.parse(cart[i].orderedBy)['username'] == userObj['username'] && cart[i].status === 'pending') {
+                        cart[i].status = 'ordered'
+                    }    
+                }
+                ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'order',
+                    user: 
+                    JSON.stringify({"username": userObj['username'],
+                    "first_name": userObj['first_name'],
+                    "last_name": userObj['last_name'],
+                    "id": userObj["id"]
+                    },),
+                    payment_intent: json['success']
+                }))
+            }
+            else {
+                console.log('payment invalid')
+            }
+        console.log(json)
+        // ws.send(JSON.stringify({payment_intent: []}))
+        navigation.navigate('Receipt', {subtotal: subtotalValue})
+      })
+  }
 
 
   const getDefaultPaymentMethod = async () => {
@@ -110,6 +159,7 @@ const CheckoutScreen = ({route, navigation}) => {
         }
     }
     setSubtotalValue(subtotal)
+    return subtotal
   }
 
   const checkInShared = () => {
@@ -160,19 +210,7 @@ ws.onmessage = ({data}) => {
 
 
 const handleOrder = async () => {
-    for(let i=0; i < cart.length; i++) {
-        if(JSON.parse(cart[i].orderedBy)['username'] == userObj['username'] && cart[i].status === 'pending') {
-            cart[i].status = 'ordered'
-        }    
-    }
-    ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'order',
-        user: 
-        JSON.stringify({"username": userObj['username'],
-        "first_name": userObj['first_name'],
-        "last_name": userObj['last_name'],
-        "id": userObj["id"]
-        })}))
-    navigation.navigate('Receipt', {subtotal: subtotalValue})
+    checkPaymentMethod()
 }
 
 

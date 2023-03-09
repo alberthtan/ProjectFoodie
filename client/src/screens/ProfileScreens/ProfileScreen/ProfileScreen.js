@@ -31,6 +31,8 @@ const ProfileScreen = ({navigation}) => {
       type: image.type
   })
 
+  console.log(image.uri)
+
     authorization = "Bearer".concat(" ", token)
     return fetch('https://dutch-pay-test.herokuapp.com/update-user/', {
           method: 'PATCH',
