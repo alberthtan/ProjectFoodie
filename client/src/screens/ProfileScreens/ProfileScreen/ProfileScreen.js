@@ -22,7 +22,7 @@ const ProfileScreen = ({navigation}) => {
   const handleUpdateProfilePicture = async (image) => {
     let token = await getToken('access')
     console.log("IMAGEEEE")
-    console.log(image)
+    console.log(console.log(image.type))
     console.log(typeof(image.uri))
     let formdata = new FormData();
     formdata.append("profile_picture", {
