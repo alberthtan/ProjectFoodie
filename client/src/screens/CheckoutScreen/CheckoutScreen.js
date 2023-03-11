@@ -14,6 +14,7 @@ import SharedItem from '../../components/SharedItem'
 import SwipeBar from '../../components/SwipeBar';
 import * as Haptics from 'expo-haptics'
 import cardIcon from '../../../assets/icons/payment.png'
+import CustomInput from '../../components/CustomInput';
 
 import { Context } from '../../globalContext/globalContext'
 import { useIsFocused } from '@react-navigation/native'
@@ -21,12 +22,13 @@ import { useIsFocused } from '@react-navigation/native'
 LogBox.ignoreLogs(['Warning: Each child in a list should have a unique "key" prop.'])
 
 const CheckoutScreen = ({route, navigation}) => {
-  const {subtotal, restaurant_id, active_menu, table_id, restaurant_name} = route.params
+  const {restaurant_id, active_menu, table_id, restaurant_name} = route.params
 
   const [subtotalValue, setSubtotalValue] = useState(0)
   const [defaultPaymentMethodID, setDefaultPaymentMethodID] = useState(null)
   const [paymentMethods, setPaymentMethods] = useState([])
   const [users, setUsers] = useState([])
+  const [tipAmount, setTipAmount] = useState(0)
 
   const globalContext = useContext(Context)
   const { ws, userObj, cart, setCart, getToken, setWs } = globalContext
@@ -63,14 +65,18 @@ const CheckoutScreen = ({route, navigation}) => {
                         cart[i].status = 'ordered'
                     }    
                 }
-                ws.send(JSON.stringify({flag: false, table_id: table_id, action: 'order',
+                ws.send(JSON.stringify({
+                    flag: false, 
+                    table_id: table_id, 
+                    action: 'order',
                     user: 
-                    JSON.stringify({"username": userObj['username'],
-                    "first_name": userObj['first_name'],
-                    "last_name": userObj['last_name'],
-                    "id": userObj["id"]
-                    },),
-                    payment_intent: json['success']
+                        JSON.stringify({"username": userObj['username'],
+                        "first_name": userObj['first_name'], // not used?
+                        "last_name": userObj['last_name'], // not used?
+                        "id": userObj["id"],
+                        },),
+                    payment_intent: json['success'],
+                    tip: tipAmount,
                 }))
             }
             else {
@@ -379,6 +385,33 @@ const handleTip = () => {
                     <></>    
                 }
                 <View style={{backgroundColor: '#E8E8E8', height: 10, marginTop: 20}}/>
+
+                <View style={[styles.container, {paddingTop: 5, paddingBottom: 5}]}>
+                    <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={{
+                            marginLeft: Dimensions.get('window').width * 0.05,
+                            marginRight: Dimensions.get('window').width * 0.05,
+                            fontSize: 17,
+                        }}>
+                            Add Tip: 
+                        </Text>
+                        <View style={{
+                            width: 270,
+                            
+                            // backgroundColor: 'green',
+                            // marginRight: 20,
+                        }}>
+                            <CustomInput
+                                keyboardType='numeric'
+                                placeholder = 'Enter Amount'
+                                setValue= {(amount) => {setTipAmount(amount)}}
+                                returnKeyType={ 'done' }
+                            />
+                        </View>    
+                    </View>
+                </View>
+
+                <View style={{backgroundColor: '#E8E8E8', height: 10, marginTop: 0}}/>
 
                 {(defaultPaymentMethodID && paymentMethods.find(payment => payment.id===defaultPaymentMethodID)) ? 
                     <View style = {styles.container}>
