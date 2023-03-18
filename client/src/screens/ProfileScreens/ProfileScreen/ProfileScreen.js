@@ -10,6 +10,8 @@ import { Context } from '../../../globalContext/globalContext'
 // import {Avatar} from '../../../components/Avatar';
 import * as ImagePicker from 'expo-image-picker'
 import base64 from 'react-native-base64'
+import { Alert } from 'react-native';
+
 
 const ProfileScreen = ({navigation}) => {
   const globalContext = useContext(Context)
@@ -104,15 +106,50 @@ const ProfileScreen = ({navigation}) => {
   const handleSignOut = async () => {
       await deleteToken("access")
       await deleteToken("refresh")
-      let token = await getToken('access')
       setIsLoggedIn(false)
-      console.log(token)
-
-        
-        // navigation.goBack('LoginHome')
-        // navigation.navigate("LoginHome")
-      // navigation.navigate("LoginHome")
   }
+
+  const handleDeleteAccount = async () => {
+    let token = await getToken('access')
+    const authorization = "Bearer".concat(" ", token)
+    Alert.alert(
+      "Delete Account",
+      "Are you sure you want to delete your account? All your data will be erased.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete Account",
+          onPress: () => {
+            return fetch('https://dutch-pay-test.herokuapp.com/delete-user/', {
+              method: 'DELETE',
+              headers: {
+                Accept: '*/*',
+                'Accept-Encoding': 'gzip,deflate,br',
+                Connection: 'keep-alive',
+                'Content-Type': 'multipart/form-data',
+                Authorization: authorization
+              },
+            })
+              .then(res => res.json())
+              .then(async (json) => {
+                console.log(json)
+                await deleteToken("access")
+                await deleteToken("refresh")
+                setIsLoggedIn(false)
+              })
+              .catch(error => {
+                console.error(error);
+              });
+          }
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+  
 
   return (
     <>
@@ -154,6 +191,10 @@ const ProfileScreen = ({navigation}) => {
           <TouchableOpacity
               onPress={handleSignOut}>
             <Text style={styles.signOut}>Sign Out</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+              onPress={handleDeleteAccount}>
+            <Text style={styles.deleteAccount}>Delete Account</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -231,6 +272,11 @@ const styles = StyleSheet.create({
   },
   signOut: {
     color: '#327CEC',
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
+  deleteAccount: {
+    color: 'red',
     fontSize: 17,
     fontWeight: 'bold',
   }
