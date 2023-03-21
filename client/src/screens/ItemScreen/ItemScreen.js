@@ -99,9 +99,9 @@ const ItemScreen = ({route, navigation}) => {
                         renderText={(value) => <Text style = {styles.price}>{value}</Text>}>
                     </NumberFormat>
 
-                    <Text style={styles.calorieCount}>
+                    {/* <Text style={styles.calorieCount}>
                       {foodItem.calorieCount + ' cal.'}
-                    </Text>
+                    </Text> */}
 
                     <Text style = {styles.description}>{foodItem.description} </Text>
 

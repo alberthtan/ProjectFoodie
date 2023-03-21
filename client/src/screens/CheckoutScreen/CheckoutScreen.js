@@ -51,7 +51,7 @@ const CheckoutScreen = ({route, navigation}) => {
           Authorization: authorization,
         },
         body: JSON.stringify({
-          amount: amount * 100,
+          amount: Math.round(amount * 100),
         }),
       })
       .then(response => response.json())
