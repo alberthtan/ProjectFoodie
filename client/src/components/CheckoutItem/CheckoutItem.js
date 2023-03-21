@@ -114,7 +114,9 @@ const styles = StyleSheet.create({
     },
 
     itemName: {
-        fontSize: 17
+        fontSize: 17,
+        marginRight: 70,
+        // backgroundColor: 'green'
     },
 
     sharedText: {
