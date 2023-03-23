@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Linking } from 'react-native'
 import React, {useState, useEffect, useContext} from 'react'
 import CustomInput from '../../../components/CustomInput'
 import CustomButton from '../../../components/CustomButton'
@@ -45,7 +45,7 @@ const LoginHomeScreen = ({navigation}) => {
                 <Text
                     style={styles.hyperlinkStyle}
                     onPress={() => {
-                        console.log("opening terms of use")
+                        Linking.openURL('https://dutch-pay-website.herokuapp.com/terms-of-use');
                     }}>
                     terms of use
                 </Text>
@@ -53,7 +53,7 @@ const LoginHomeScreen = ({navigation}) => {
                 <Text
                     style={styles.hyperlinkStyle}
                     onPress={() => {
-                        console.log("opening privacy policy")
+                        Linking.openURL('https://dutch-pay-website.herokuapp.com/privacy-policy');
                     }}>
                     privacy policy
                 </Text>
