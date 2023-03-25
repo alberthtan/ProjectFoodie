@@ -54,7 +54,7 @@ const RegisterScreen2 = ({navigation, route}) => {
       }
 
       const verifyEmailCode = async (code) => {
-        return fetch('https://dutch-pay-test.herokuapp.com/verify-email-code/', {
+        return fetch('https://dutch-pay-test.herokuapp.com/register-verify-email-code/', {
           method: 'PATCH',
           headers: {
             Accept: 'application/json',

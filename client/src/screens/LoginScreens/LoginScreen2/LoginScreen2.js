@@ -35,7 +35,7 @@ const LoginScreen2 = ({navigation, route}) => {
     const num6Ref = useRef()
     
     const sendEmailCode = () => {
-        return fetch('https://dutch-pay-test.herokuapp.com/send-email-code/', {
+        return fetch('https://dutch-pay-test.herokuapp.com/login-send-email-code/', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -61,7 +61,7 @@ const LoginScreen2 = ({navigation, route}) => {
     }
 
     const verifyEmailCode = async (code) => {
-        return await fetch('https://dutch-pay-test.herokuapp.com/verify-email-code/', {
+        return await fetch('https://dutch-pay-test.herokuapp.com/login-verify-email-code/', {
             method: 'PATCH',
             headers: {
             Accept: 'application/json',

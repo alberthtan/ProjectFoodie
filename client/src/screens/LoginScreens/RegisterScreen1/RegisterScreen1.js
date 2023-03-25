@@ -25,7 +25,7 @@ const RegisterScreen1 = ({navigation}) => {
         console.log("here")
 
         if(validateEmailFormat(email)) {
-            return fetch('https://dutch-pay-test.herokuapp.com/send-email-code/', {
+            return fetch('https://dutch-pay-test.herokuapp.com/register-send-email-code/', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

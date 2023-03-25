@@ -16,7 +16,7 @@ const LoginScreen1 = ({navigation}) => {
 
     const sendEmailCode = () => {
         if(validateEmailFormat(email)) {
-            return fetch('https://dutch-pay-test.herokuapp.com/send-email-code/', {
+            return fetch('https://dutch-pay-test.herokuapp.com/login-send-email-code/', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -24,7 +24,6 @@ const LoginScreen1 = ({navigation}) => {
                 },
                 body: JSON.stringify({
                     email: email.toLowerCase(),
-                    is_register: false
                 }),
                 })
                 .then(response => {
