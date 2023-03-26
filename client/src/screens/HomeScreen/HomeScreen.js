@@ -31,6 +31,58 @@ const HomeScreen = ({route, navigation}) => {
     getRestaurantsFromApi();
   }, [])
 
+  const data = [
+    {
+      // id: 0,
+      name: 'Jack\'s Wife Freda',
+      mainImage: 'https://jackswifefreda.com/wp-content/uploads/2021/06/1_HCH_8344_1280x720-1170x658.jpg',
+      address: '50+Carmine+St+New+York+NY+10014+United+States',
+      dish1: 'Yogurt Parfait',
+      dish2: 'Omelette',
+      dish3: 'Jack\'s Breakfast',
+      points: 9
+    },
+    {
+      // id: 1,
+      name: 'Sherkaan',
+      mainImage: 'https://images.squarespace-cdn.com/content/v1/5c5c3833840b161566b02a76/1554140515685-SA6JFOU3IJRJI6ZR9L71/social+share-01.jpg',
+      address: '50+Carmine+St+New+York+NY+10014+United+States',
+      dish1: 'Mango Lassi',
+      dish2: 'House Salad',
+      dish3: 'Butter Chicken',
+      points: 7
+    },
+    {
+      // id: 1,
+      name: 'Laree Ada',
+      mainImage: 'https://jerseydigs.com/wp-content/uploads/2020/05/Laree-Adda-287-Grove-Street-jersey-city-pakistani-restaurant.jpg',
+      address: '50+Carmine+St+New+York+NY+10014+United+States',
+      dish1: 'Mango Lassi',
+      dish2: 'Garlic Naan',
+      dish3: 'Chicken Biryani',
+      points: 5
+    },
+    {
+      // id: 1,
+      name: 'Ippudo',
+      mainImage: 'https://cdn.vox-cdn.com/thumbor/IUiqHJ6R5L1S3L768esRV9yMOvg=/0x0:1150x765/1200x800/filters:focal(511x361:695x545)/cdn.vox-cdn.com/uploads/chorus_image/image/56562025/menu_02.0.jpg',
+      address: '50+Carmine+St+New+York+NY+10014+United+States',
+      dish1: 'Edamame',
+      dish2: 'Gyoza',
+      dish3: 'Ippudo Ramen',
+      points: 4
+    },{
+      // id: 1,
+      name: 'Kuro Shiro',
+      mainImage: 'https://d1ralsognjng37.cloudfront.net/9712875e-0784-4676-8cbb-4c9e791748b9',
+      address: '50+Carmine+St+New+York+NY+10014+United+States',
+      dish1: 'Gyoza',
+      dish2: 'Fried Rice',
+      dish3: 'Shoyu Ramen',
+      points: 2
+    }
+  ]
+
   return (
     <View style = {styles.container}>
 
@@ -56,12 +108,12 @@ const HomeScreen = ({route, navigation}) => {
         </View>
       </> :
       <>
-          <Text style = {styles.title2}>
-            <Text style={{color: '#3C6F37'}}>DutchPay</Text>
-          </Text>
-        <View style={styles.dutchCard}>
+          <View style = {styles.title2}>
+            <Text style={styles.text}>DutchPay</Text>
+          </View>
+        {/* <View style={styles.dutchCard}>
           <DutchCard onPress={() => {navigation.navigate('PastOrders')}}/>
-        </View>
+        </View> */}
       </>
       }
 
@@ -69,7 +121,7 @@ const HomeScreen = ({route, navigation}) => {
 
       <View style = {styles.cardContainer}>
 
-          <CarouselCards data={restaurantList}/>
+          <CarouselCards data={data}/>
       </View>
     </View>
   )
@@ -115,13 +167,32 @@ const styles = StyleSheet.create({
 
 
     title2: {
-      justifyContent: 'center',
+      // justifyContent: 'center',
+      // fontSize: Dimensions.get('window').width * 0.075, 
+      // fontWeight: 'bold',
+      // fontFamily: 'Roboto_700Bold',
+      // position: 'absolute',
+
+      // top: Dimensions.get('window').height * 0.08,
+      // left: Dimensions.get('window').width * 0.05,
+      flex: 1,
+      borderBottomWidth: 1,
+      borderBottomColor: '#D9D9D9',
+
+      shadowColor: '#171717',
+      shadowOpacity: 0.05,
+      shadowRadius: 6,
+      shadowOffset: {width: 0, height:10},
+      backgroundColor: '#f6f5f5',
+    },
+
+    text: {
       fontSize: Dimensions.get('window').width * 0.075, 
       fontWeight: 'bold',
-      fontFamily: 'Roboto_700Bold',
+      // fontFamily: 'Roboto_700Bold',
+      color: '#3C6F37',
+      bottom: Dimensions.get('window').height * 0.03,
       position: 'absolute',
-
-      top: Dimensions.get('window').height * 0.08,
       left: Dimensions.get('window').width * 0.05,
     },
 

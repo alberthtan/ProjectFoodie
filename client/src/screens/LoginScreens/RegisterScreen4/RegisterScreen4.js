@@ -94,44 +94,42 @@ const RegisterScreen4 = ({navigation, route}) => {
           });
       }
 
-      const verifyPhoneCode = (code) => {
-        return fetch('https://dutch-pay-test.herokuapp.com/verify-phone-code/', {
-          method: 'PATCH',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            phone_number: '+1' + phoneParam,
-            code: code,
-            email: emailParam,
-            first_name: firstName,
-            last_name: lastName,
-            is_registration: true,
-          }),
-        })
-        .then(response => response.json())
-        .then(json => {
-            console.log('success')
-            console.log(phoneParam)
-            console.log(json)
+      const verifyPhoneCode = async (code) => {
+        try {
+            const response = await fetch('https://dutch-pay-test.herokuapp.com/verify-phone-code/', {
+                method: 'PATCH',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    phone_number: '+1' + phoneParam,
+                    code: code,
+                    email: emailParam,
+                    first_name: firstName,
+                    last_name: lastName,
+                    is_registration: true,
+                }),
+            });
+            const json = await response.json();
+            console.log('success');
+            console.log(phoneParam);
             if (json['email'] === emailParam) {
-                setInvalid(false)
-                setToken(json.token.refresh, json.token.access)
-                setUserObj(json)
-                setIsLoggedIn(true)
-                navigation.navigate('HomeTabs')
+                setInvalid(false);
+                await setToken(json.token.refresh, json.token.access);
+                setUserObj(json);
+                setIsLoggedIn(true);
+                await navigation.navigate('HomeTabs'); // wait for setToken to complete
             } else {
-                setInvalidText('Code does not match')
-                setInvalid(true)
+                setInvalidText('Code does not match');
+                setInvalid(true);
             }
-            console.log(json['code'])
-        })
-        .catch(error => {
-            console.log('hello')
+            console.log(json['code']);
+        } catch (error) {
+            console.log('hello');
             console.error(error);
-        });
-      }
+        }
+    }
 
       const handleSignUp = () => {
         // let code = num1 + num2 + num3 + num4 + num5 + num6

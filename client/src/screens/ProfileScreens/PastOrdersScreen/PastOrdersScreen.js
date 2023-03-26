@@ -15,20 +15,41 @@ const PastOrdersScreen = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(true)
   const globalContext = useContext(Context)
 
-  const { userObj } = globalContext
+  const { userObj, getToken } = globalContext
+
+  const [token, setToken] = useState(getToken("access"))
 
   const isFocused = useIsFocused();
 
 
   const getReceipts = async () => {
     // setLoaded(!loaded)
-    console.log(isFocused)
-    return fetch('https://dutch-pay-test.herokuapp.com/receipts/?format=json')
+    // console.log(isFocused)
+    let token = await getToken('access')
+    authorization = "Bearer".concat(" ", token)
+    console.log("HEADER")
+    console.log(authorization)
+    return fetch('https://dutch-pay-test.herokuapp.com/get-receipts/?format=json', {
+      method: 'GET',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: authorization,
+      }
+    }
+    )
       .then(response => response.json())
       .then(json => {
+        console.log("FUCK")
         console.log(json)
         console.log(json.length)
-        let result = json.filter(order => order.user === userObj['id'])
+
+        // for(let i=0; i < json.length; i++) {
+        //   console.log('iteration ' + i)
+        //   console.log(json[i])
+        //   console.log(typeof json[i])
+        // }
+        // let result = json.filter(order => order.user === userObj['id'])
         // let result = []
         // for(let i = 0; i < json.length; i++) {
         //   console.log("outside")
@@ -40,10 +61,11 @@ const PastOrdersScreen = ({navigation}) => {
         //     result.push(json[i])
         //   }
         // }
-        console.log(result)
+        // console.log(result)
         // console.log(json)
-        console.log("here")
-        setPastOrderList(result)
+        console.log("Hello")
+        console.log(typeof JSON.parse(json))
+        setPastOrderList(JSON.parse(json))
         // setLoaded(true)
         setIsLoading(false)
       })
@@ -61,8 +83,10 @@ const PastOrdersScreen = ({navigation}) => {
     //     console.log(userObj)
     //   }, 1000);
     // }
-    getReceipts()
-  }, [userObj, isFocused])
+    if(token) {
+      getReceipts()
+    }
+  }, [userObj, isFocused, token])
   
   
 const oneOrder = ({item}) => (
@@ -81,7 +105,6 @@ if (isLoading || pastOrderList == null || userObj == false) {
 }
 
   return (
-    console.log("PasO"),
     console.log(pastOrderList),
     // getReceipts(),
     <View style = {styles.container}>

@@ -123,6 +123,8 @@ const ProfileScreen = ({navigation}) => {
         {
           text: "Delete Account",
           onPress: () => {
+            console.log("DELETING ACCOUNT")
+            console.log(authorization)
             return fetch('https://dutch-pay-test.herokuapp.com/delete-user/', {
               method: 'DELETE',
               headers: {
@@ -133,12 +135,12 @@ const ProfileScreen = ({navigation}) => {
                 Authorization: authorization
               },
             })
-              .then(res => res.json())
+              .then(response => response.json())
               .then(async (json) => {
-                console.log(json)
                 await deleteToken("access")
                 await deleteToken("refresh")
-                setIsLoggedIn(false)
+                await setIsLoggedIn(false)
+                // navigation.navigate("HomeTabs")
               })
               .catch(error => {
                 console.error(error);
@@ -184,7 +186,7 @@ const ProfileScreen = ({navigation}) => {
       <ScrollView style ={{height: '100%', flex: 1}} showsVerticalScrollIndicator = {true}>
         <View style={styles.profileBody}>
           <ProfileButton name="Update Profile" onPress={() => navigation.navigate('EditProfile')} imageSource={profileIcon2}/>
-          {/* <ProfileButton name="Past Orders" onPress={() => navigation.navigate('PastOrders')} imageSource={pastorders}/> */}
+          <ProfileButton name="Past Orders" onPress={() => navigation.navigate('PastOrders')} imageSource={pastorders}/>
           <ProfileButton name="Payment" onPress={() => navigation.navigate('Payments')} imageSource={payment}/>
         </View>
         <View style={styles.profileFooter}>
@@ -193,7 +195,9 @@ const ProfileScreen = ({navigation}) => {
             <Text style={styles.signOut}>Sign Out</Text>
           </TouchableOpacity>
           <TouchableOpacity
-              onPress={handleDeleteAccount}>
+              onPress={handleDeleteAccount}
+              style={{marginTop: 30}}
+              >
             <Text style={styles.deleteAccount}>Delete Account</Text>
           </TouchableOpacity>
         </View>

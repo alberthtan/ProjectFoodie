@@ -12,6 +12,7 @@ import homeIcon from '../../assets/icons/home.png';
 import accountIcon from '../../assets/icons/account.png';
 import profile from '../../assets/icons/profile.png';
 import qrIcon from '../../assets/icons/qr.png';
+import giftIcon from '../../assets/icons/gift.png'
 
 const Tab = createBottomTabNavigator();
 
@@ -19,15 +20,15 @@ const Tabs = () => {
     // const { count } = route.params
     return(
         <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false}}
-                        initialRouteName="PastOrders">
+                        initialRouteName="HomeScreen">
             <Tab.Screen 
-                name="PastOrders" 
-                component={PastOrdersScreen}
+                name="HomeScreen" 
+                component={HomeScreen}
                 options={{
                     tabBarIcon: ({focused}) => (
                         <View style = {{alignItems:'center', justifyContent: 'center', top: 10}}>
                             <Image
-                                source={homeIcon}
+                                source={giftIcon}
                                 resizeMode="contain"
                                 style={{
                                     width: 25,

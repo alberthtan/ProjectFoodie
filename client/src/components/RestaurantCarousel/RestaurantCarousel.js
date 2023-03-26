@@ -5,8 +5,10 @@ import Carousel from 'react-native-snap-carousel'
 import RestaurantCard from '../RestaurantCard'
 // import data from './data'
 
+// const SLIDER_WIDTH = Dimensions.get('window').width + 80
+// const ITEM_WIDTH = 250
 const SLIDER_WIDTH = Dimensions.get('window').width + 80
-const ITEM_WIDTH = 250
+const ITEM_WIDTH = SLIDER_WIDTH * 0.6
 
 const CarouselCards = ({data}) => {
   const isCarousel = React.useRef(null)
