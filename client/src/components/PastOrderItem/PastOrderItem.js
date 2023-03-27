@@ -21,9 +21,11 @@ const PastOrderItem = ({navigation, user, timestamp, restaurant_id, cart_string}
 
 
     const getRestaurant = async () => {
+        console.log(restaurant_id)
         return fetch('https://dutch-pay-test.herokuapp.com/restaurants/' + restaurant_id + '/')
       .then(response => response.json())
       .then(json => {
+        console.log(json)
         setRestaurant(json)
       })
       .catch(error => {

@@ -65,6 +65,7 @@ const PastOrdersScreen = ({navigation}) => {
         // console.log(json)
         console.log("Hello")
         console.log(typeof JSON.parse(json))
+        console.log(JSON.parse(json)[0].fields.restaurant)
         setPastOrderList(JSON.parse(json))
         // setLoaded(true)
         setIsLoading(false)
@@ -92,10 +93,10 @@ const PastOrdersScreen = ({navigation}) => {
 const oneOrder = ({item}) => (
   <PastOrderItem
       navigation = {navigation}
-      restaurant_id = {item.restaurant}
-      timestamp= {item.timestamp}
-      cart_string = {item.cart_string}
-      user={item.user}
+      restaurant_id = {item.fields.restaurant}
+      timestamp= {item.fields.timestamp}
+      cart_string = {item.fields.cart_string}
+      user={item.fields.user}
   />
 )
 
@@ -108,13 +109,17 @@ if (isLoading || pastOrderList == null || userObj == false) {
     console.log(pastOrderList),
     // getReceipts(),
     <View style = {styles.container}>
+      <HeaderBar 
+                name='Past Orders' 
+                navigation={navigation} 
+            />
 
     {userObj != false ?
       pastOrderList.length != 0 ?
       <>
-        <View style = {styles.title2}>
+        {/* <View style = {styles.title2}>
           <Text style={styles.text}>  DutchPay</Text>
-        </View>
+        </View> */}
       <View style={{flex: 5}}>
         <FlatList
           data={pastOrderList}
@@ -125,9 +130,9 @@ if (isLoading || pastOrderList == null || userObj == false) {
       </>
       :
       <>
-      <View style = {styles.title2}>
+      {/* <View style = {styles.title2}>
           <Text style={styles.text}>  DutchPay</Text>
-        </View>
+        </View> */}
       <View style={{flex: 5}}>
       <ScrollView contentContainerStyle= {{justifyContent: 'center', height: '100%'}}>
         <View style={{bottom: Dimensions.get('window').height * 0.1}}>
